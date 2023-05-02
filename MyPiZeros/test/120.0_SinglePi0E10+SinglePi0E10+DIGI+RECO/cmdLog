@@ -1,0 +1,12 @@
+
+# in: /eos/home-c/cgupta/MyProjects/flashgg/CMSSW_10_6_29/src/MySampleProduction/MyPiZeros/test going to execute cd 120.0_SinglePi0E10+SinglePi0E10+DIGI+RECO
+ cmsDriver.py SinglePi0E10_pythia8_cfi  --conditions auto:run1_mc -n 10 --eventcontent RAWSIM --relval 25000,100 -s GEN,SIM --datatier GEN-SIM --beamspot Realistic8TeVCollision --fileout file:step1.root  > step1_SinglePi0E10+SinglePi0E10+DIGI+RECO.log  2>&1
+ 
+
+# in: /eos/home-c/cgupta/MyProjects/flashgg/CMSSW_10_6_29/src/MySampleProduction/MyPiZeros/test going to execute cd 120.0_SinglePi0E10+SinglePi0E10+DIGI+RECO
+ cmsDriver.py step2  --datatier GEN-SIM-DIGI-RAW-HLTDEBUG --conditions auto:run1_mc -s DIGI:pdigi_valid,L1,DIGI2RAW,HLT:@fake --eventcontent FEVTDEBUGHLT -n 100  --filein  file:step1.root  --fileout file:step2.root  > step2_SinglePi0E10+SinglePi0E10+DIGI+RECO.log  2>&1
+ 
+
+# in: /eos/home-c/cgupta/MyProjects/flashgg/CMSSW_10_6_29/src/MySampleProduction/MyPiZeros/test going to execute cd 120.0_SinglePi0E10+SinglePi0E10+DIGI+RECO
+ cmsDriver.py step3  --datatier GEN-SIM-RECO,MINIAODSIM,DQMIO --runUnscheduled  --conditions auto:run1_mc -s RAW2DIGI,L1Reco,RECO,RECOSIM,EI,PAT,VALIDATION:@standardValidationNoHLT+@miniAODValidation,DQM:@standardDQMFakeHLT+@miniAODDQM --eventcontent RECOSIM,MINIAODSIM,DQM -n 100  --filein  file:step2.root  --fileout file:step3.root  > step3_SinglePi0E10+SinglePi0E10+DIGI+RECO.log  2>&1
+ 
