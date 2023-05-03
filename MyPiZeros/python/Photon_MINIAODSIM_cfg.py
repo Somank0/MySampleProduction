@@ -30,7 +30,7 @@ process.source = cms.Source(
     # replace 'myfile.root' with the source file you want to use
     fileNames=cms.untracked.vstring(
         #"file:step3pionsUncompressed.root"
-        "file:step1HToGGUncompressed.root"
+        "file:step1HToAAToGGUncompressed.root"
         #'root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/GluGluHToGG_M-125_TuneCP5_13TeV-powheg-pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/40000/52EA6B6E-16AD-8141-8F44-B20F1AE8F7A3.root',
         #'root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/GluGluHToGG_M-125_TuneCP5_13TeV-powheg-pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/40000/5BAC5863-D457-1147-A9BC-859465E10114.root',
         #'root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/GluGluHToGG_M-125_TuneCP5_13TeV-powheg-pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/40000/913ED97A-F22E-8E43-AEB3-D9722EF35C55.root'

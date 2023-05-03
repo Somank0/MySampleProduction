@@ -56,7 +56,7 @@ process.RAWSIMoutput = cms.OutputModule("PoolOutputModule",
         filterName = cms.untracked.string('')
     ),
     # eventAutoFlushCompressedSize = cms.untracked.int32(20971520),
-    fileName = cms.untracked.string('file:step1HToAAUncompressed.root'),
+    fileName = cms.untracked.string('file:step1HToAAToGGUncompressed.root'),
     outputCommands = process.RAWSIMEventContent.outputCommands,
     # splitLevel = cms.untracked.int32(0)
 )
@@ -109,7 +109,7 @@ process.generator = cms.EDFilter("Pythia8PtGun",
 			parameterSets = cms.vstring('pythia8CommonSettings', 
 						    'py8HDecaySettings'),
 			py8HDecaySettings = cms.vstring('35:onMode = off',
-							'35:onIfAny = 36'),
+							'35:onIfAll = 36 36','36:onMode = off','36:onIfAny = 22 22'),
 			pythia8CUEP8M1Settings = cms.vstring('Tune:pp 14', 
 							     'Tune:ee 7', 
 							     'MultipartonInteractions:pT0Ref=2.4024', 
