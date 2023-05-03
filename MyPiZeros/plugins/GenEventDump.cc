@@ -123,14 +123,17 @@ void GenEventDump::analyze(const edm::Event &iEvent, const edm::EventSetup &iSet
     const auto part = genParticles->ptrAt(i);
     auto mother = part->mother();
     std::cout << "pdgID: " << part->pdgId() << " , Status: " << (part->status()) << " , Pt: " << part->pt()
-              << " , Eta: " << part->eta() << " , Phi: " << part->phi() << " , Energy: " << part->energy() << std::endl;
+              << " , Eta: " << part->eta() << " , Phi: " << part->phi() << " , Energy: " << part->energy();
     if (mother) {
-      std::cout << "Mother Info" << std::endl;
-      std::cout << "pdgID: " << mother->pdgId() << " , Status: " << (mother->status()) << " , Pt: " << mother->pt()
-                << " , Eta: " << mother->eta() << " , Phi: " << mother->phi() << " , Energy: " << mother->energy()
-                << std::endl;
-	std::cout<<std::endl;
+    std::cout << " , MotherID: "<<mother->pdgId() << " , MotherStatus: "<<mother->status()<<" , MotherPt: "<<mother->pt();
+//    if (mother) {
+//      std::cout << "Mother Info" << std::endl;
+//      std::cout << "pdgID: " << mother->pdgId() << " , Status: " << (mother->status()) << " , Pt: " << mother->pt()
+//                << " , Eta: " << mother->eta() << " , Phi: " << mother->phi() << " , Energy: " << mother->energy()
+//                << std::endl;
+//	std::cout<<std::endl;
     }
+    std::cout<<std::endl;
   }
   T->Fill();
 #ifdef THIS_IS_AN_EVENTSETUP_EXAMPLE
