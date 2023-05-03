@@ -69,69 +69,69 @@ from Configuration.AlCa.GlobalTag import GlobalTag
 process.GlobalTag = GlobalTag(process.GlobalTag, 'auto:run1_mc', '')
 
 #Pion Generation
-#process.generator = cms.EDFilter("Pythia8EGun",
-#    PGunParameters = cms.PSet(
-#        AddAntiParticle = cms.bool(False),
-#        MaxE = cms.double(50),
-#        MaxEta = cms.double(3.0),
-#        MaxPhi = cms.double(3.14159265359),
-#        MinE = cms.double(10),
-#        MinEta = cms.double(-3.0),
-#        MinPhi = cms.double(-3.14159265359),
-#        ParticleID = cms.vint32(25)
-#        # ParticleID = cms.vint32(111)
-#    ),
-#    PythiaParameters = cms.PSet(
-#        parameterSets = cms.vstring()
-#    ),
-#    Verbosity = cms.untracked.int32(0),
-#    # firstRun = cms.untracked.uint32(1),
-#    psethack = cms.string('single pi0 E 10')
-#)
+process.generator = cms.EDFilter("Pythia8EGun",
+    PGunParameters = cms.PSet(
+        AddAntiParticle = cms.bool(False),
+        MaxE = cms.double(50),
+        MaxEta = cms.double(3.0),
+        MaxPhi = cms.double(3.14159265359),
+        MinE = cms.double(10),
+        MinEta = cms.double(-3.0),
+        MinPhi = cms.double(-3.14159265359),
+        ParticleID = cms.vint32(25)
+        # ParticleID = cms.vint32(111)
+    ),
+    PythiaParameters = cms.PSet(
+        parameterSets = cms.vstring()
+    ),
+    Verbosity = cms.untracked.int32(0),
+    # firstRun = cms.untracked.uint32(1),
+    psethack = cms.string('single pi0 E 10')
+)
 #W generation
-process.generator = cms.EDFilter("Pythia8PtGun",
-	PGunParameters = cms.PSet(
-		AddAntiParticle = cms.bool(False),
-		MaxEta = cms.double(2.4),
-		MaxPhi = cms.double(3.14159265359),
-		MaxPt = cms.double(160.0),
-		MinEta = cms.double(-2.4),
-		MinPhi = cms.double(-3.14159265359),
-		MinPt = cms.double(0.0),
-		ParticleID = cms.vint32(-24)
-		),
-		 initialSeed = cms.untracked.uint32(123456789),
-		 engineName = cms.untracked.string('HepJamesRandom'),
-		 PythiaParameters = cms.PSet(
-			#parameterSets = cms.vstring('pythia8CommonSettings', 
-			#			    'py8WDecaySettings', 
-			#			    'pythiaTauJets'),
-			parameterSets = cms.vstring('pythia8CommonSettings', 
-						    'py8WDecaySettings'),
-			py8WDecaySettings = cms.vstring('24:onMode = off'),
-#							'24:onIfAny = 15 16'),
-			pythia8CUEP8M1Settings = cms.vstring('Tune:pp 14', 
-							     'Tune:ee 7', 
-							     'MultipartonInteractions:pT0Ref=2.4024', 
-							     'MultipartonInteractions:ecmPow=0.25208', 
-							     'MultipartonInteractions:expPow=1.6'),
-			pythia8CommonSettings = cms.vstring('Tune:preferLHAPDF = 2', 
-							    'Main:timesAllowErrors = 10000', 
-							    'Check:epTolErr = 0.01', 
-							    'Beams:setProductionScalesFromLHEF = off', 
-							    'SLHA:keepSM = on', 
-							    'SLHA:minMassSM = 1000.', 
-							    'ParticleDecays:limitTau0 = on', 
-							    'ParticleDecays:tau0Max = 10', 
-							    'ParticleDecays:allowPhotonRadiation = on'),
-#			pythiaTauJets = cms.vstring(#'ParticleDecays:sophisticatedTau = 2', 
-#				#'ParticleDecays:tauPolarization = 0', 
-#				'15:onMode = off', 
-#				'15:onIfAny = 211 -211 321 -321')
-		)
-	 )
-
-
+#process.generator = cms.EDFilter("Pythia8PtGun",
+#	PGunParameters = cms.PSet(
+#		AddAntiParticle = cms.bool(False),
+#		MaxEta = cms.double(2.4),
+#		MaxPhi = cms.double(3.14159265359),
+#		MaxPt = cms.double(160.0),
+#		MinEta = cms.double(-2.4),
+#		MinPhi = cms.double(-3.14159265359),
+#		MinPt = cms.double(0.0),
+#		ParticleID = cms.vint32(-24)
+#		),
+#		 initialSeed = cms.untracked.uint32(123456789),
+#		 engineName = cms.untracked.string('HepJamesRandom'),
+#		 PythiaParameters = cms.PSet(
+#			#parameterSets = cms.vstring('pythia8CommonSettings', 
+#			#			    'py8WDecaySettings', 
+#			#			    'pythiaTauJets'),
+#			parameterSets = cms.vstring('pythia8CommonSettings', 
+#						    'py8WDecaySettings'),
+#			py8WDecaySettings = cms.vstring('24:onMode = off'),
+##							'24:onIfAny = 15 16'),
+#			pythia8CUEP8M1Settings = cms.vstring('Tune:pp 14', 
+#							     'Tune:ee 7', 
+#							     'MultipartonInteractions:pT0Ref=2.4024', 
+#							     'MultipartonInteractions:ecmPow=0.25208', 
+#							     'MultipartonInteractions:expPow=1.6'),
+#			pythia8CommonSettings = cms.vstring('Tune:preferLHAPDF = 2', 
+#							    'Main:timesAllowErrors = 10000', 
+#							    'Check:epTolErr = 0.01', 
+#							    'Beams:setProductionScalesFromLHEF = off', 
+#							    'SLHA:keepSM = on', 
+#							    'SLHA:minMassSM = 1000.', 
+#							    'ParticleDecays:limitTau0 = on', 
+#							    'ParticleDecays:tau0Max = 10', 
+#							    'ParticleDecays:allowPhotonRadiation = on'),
+##			pythiaTauJets = cms.vstring(#'ParticleDecays:sophisticatedTau = 2', 
+##				#'ParticleDecays:tauPolarization = 0', 
+##				'15:onMode = off', 
+##				'15:onIfAny = 211 -211 321 -321')
+#		)
+#	 )
+#
+#
 # Path and EndPath definitions
 process.generation_step = cms.Path(process.pgen)
 process.simulation_step = cms.Path(process.psim)
