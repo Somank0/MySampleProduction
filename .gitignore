@@ -1,0 +1,9 @@
+*.pickle
+*.root
+*.npz
+*.tar
+__init__.py
+*.pyc
+.*.swp
+*.txt
+*.log

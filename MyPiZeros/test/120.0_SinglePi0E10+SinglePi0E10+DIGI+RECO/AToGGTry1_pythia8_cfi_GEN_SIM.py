@@ -26,7 +26,7 @@ process.load('Configuration.StandardSequences.EndOfProcess_cff')
 process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
 
 process.maxEvents = cms.untracked.PSet(
-    input = cms.untracked.int32(10)
+    input = cms.untracked.int32(1000)
 )
 
 # Input source
@@ -56,7 +56,7 @@ process.RAWSIMoutput = cms.OutputModule("PoolOutputModule",
         filterName = cms.untracked.string('')
     ),
     # eventAutoFlushCompressedSize = cms.untracked.int32(20971520),
-    fileName = cms.untracked.string('file:step1AToGGUncompressed.root'),
+    fileName = cms.untracked.string('file:step1AToGG_Gamma250-500_M100_SingleEtaPhi.root'),
     outputCommands = process.RAWSIMEventContent.outputCommands,
     # splitLevel = cms.untracked.int32(0)
 )
@@ -89,15 +89,19 @@ process.GlobalTag = GlobalTag(process.GlobalTag, 'auto:run1_mc', '')
 #    psethack = cms.string('single pi0 E 10')
 #)
 #W generation
-process.generator = cms.EDFilter("Pythia8PtGun",
+process.generator = cms.EDFilter("Pythia8EGun",
 	PGunParameters = cms.PSet(
 		AddAntiParticle = cms.bool(False),
-		MaxEta = cms.double(2.4),
-		MaxPhi = cms.double(3.14159265359),
-		MaxPt = cms.double(160.0),
-		MinEta = cms.double(-2.4),
-		MinPhi = cms.double(-3.14159265359),
-		MinPt = cms.double(0.0),
+		#MaxEta = cms.double(2.4),
+		MaxEta = cms.double(0),
+		#MaxPhi = cms.double(3.14159265359),
+		MaxPhi = cms.double(0),
+		MaxE = cms.double(50.0),
+		#MinEta = cms.double(-2.4),
+		MinEta = cms.double(0),
+		#MinPhi = cms.double(-3.14159265359),
+		MinPhi = cms.double(0),
+		MinE = cms.double(25.0),
 		ParticleID = cms.vint32(36)
 		),
 		 initialSeed = cms.untracked.uint32(123456789),
@@ -122,7 +126,7 @@ process.generator = cms.EDFilter("Pythia8PtGun",
 							    'SLHA:minMassSM = 1000.', 
 							    'ParticleDecays:limitTau0 = on', 
 							    'ParticleDecays:tau0Max = 10', 
-							    'ParticleDecays:allowPhotonRadiation = on','Higgs:useBSM = on','HiggsBSM:all = on','35:m0 = 125','36:m0 = 10'),
+							    'ParticleDecays:allowPhotonRadiation = on','Higgs:useBSM = on','HiggsBSM:all = on','35:m0 = 125','36:m0 = 0.1'),
 #			pythiaTauJets = cms.vstring(#'ParticleDecays:sophisticatedTau = 2', 
 #				#'ParticleDecays:tauPolarization = 0', 
 #				'15:onMode = off', 
