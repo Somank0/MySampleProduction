@@ -30,7 +30,7 @@ process.source = cms.Source(
     # replace 'myfile.root' with the source file you want to use
     fileNames=cms.untracked.vstring(
         #"file:step3pionsUncompressed.root"
-        "file:step1AToGG_Gamma250-500_M100_SingleEtaPhi.root"
+        "file:step3AToGG_Gamma50-250_M400_SingleEtaPhi.root"
         #'root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/GluGluHToGG_M-125_TuneCP5_13TeV-powheg-pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/40000/52EA6B6E-16AD-8141-8F44-B20F1AE8F7A3.root',
         #'root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/GluGluHToGG_M-125_TuneCP5_13TeV-powheg-pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/40000/5BAC5863-D457-1147-A9BC-859465E10114.root',
         #'root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/GluGluHToGG_M-125_TuneCP5_13TeV-powheg-pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/40000/913ED97A-F22E-8E43-AEB3-D9722EF35C55.root'
@@ -70,11 +70,10 @@ for idmod in my_id_modules:
     setupAllVIDIdsInModule(process, idmod, setupVIDPhotonSelection)
 
 process.nTuplelize = cms.EDAnalyzer(
-    "GenTreeMaker",
+    "GenEventDump",
     #rhoFastJet=cms.InputTag("fixedGridRhoFastjetAll"),
     genParticles=cms.InputTag("genParticles"),
-    # photons=cms.InputTag("caloStage2Digis:EGamma"),
-    # genParticles=cms.InputTag("prunedGenParticles"),
+    photons=cms.InputTag("photons"),
     # MVA Based Id
     #eleMediumIdMap=cms.InputTag(""),
     #eleTightIdMap=cms.InputTag(""),
@@ -84,7 +83,7 @@ process.nTuplelize = cms.EDAnalyzer(
 process.TFileService = cms.Service(
     "TFileService",
     #fileName=cms.string("GammaRecHits_ntuple.root"),
-    fileName=cms.string("GenParticles_Gamma250-500_M100_SingleEtaPhi.root"),
+    fileName=cms.string("AToGG_Gamma50-250_M400_SingleEtaPhi.root"),
     #     fileName = cms.string("Tree_Gamma_ABCD.root"),
     closeFileFast=cms.untracked.bool(True),
 )

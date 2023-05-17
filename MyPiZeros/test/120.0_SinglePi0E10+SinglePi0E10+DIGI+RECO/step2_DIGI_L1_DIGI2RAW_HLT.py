@@ -25,13 +25,13 @@ process.load('Configuration.StandardSequences.EndOfProcess_cff')
 process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
 
 process.maxEvents = cms.untracked.PSet(
-    input = cms.untracked.int32(-1)
+    input = cms.untracked.int32(10)
 )
 
 # Input source
 process.source = cms.Source("PoolSource",
     dropDescendantsOfDroppedBranches = cms.untracked.bool(False),
-    fileNames = cms.untracked.vstring('file:step1higgsUncompressed.root'),
+    fileNames = cms.untracked.vstring('file:step1AToGG_Gamma50-250_M400_SingleEtaPhi.root'),
     inputCommands = cms.untracked.vstring(
         'keep *' 
         # 'drop *_genParticles_*_*', 
@@ -72,7 +72,7 @@ process.FEVTDEBUGHLToutput = cms.OutputModule("PoolOutputModule",
         dataTier = cms.untracked.string('GEN-SIM-DIGI-RAW-HLTDEBUG'),
         filterName = cms.untracked.string('')
     ),
-    fileName = cms.untracked.string('file:step2higgsUncompressed.root'),
+    fileName = cms.untracked.string('file:step2AToGG_Gamma50-250_M400_SingleEtaPhi.root'),
     outputCommands = process.FEVTDEBUGHLTEventContent.outputCommands,
     # splitLevel = cms.untracked.int32(0)
 )

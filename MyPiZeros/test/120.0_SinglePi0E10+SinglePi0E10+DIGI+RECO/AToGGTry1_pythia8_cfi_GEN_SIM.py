@@ -56,7 +56,7 @@ process.RAWSIMoutput = cms.OutputModule("PoolOutputModule",
         filterName = cms.untracked.string('')
     ),
     # eventAutoFlushCompressedSize = cms.untracked.int32(20971520),
-    fileName = cms.untracked.string('file:step1AToGG_Gamma250-500_M100_SingleEtaPhi.root'),
+    fileName = cms.untracked.string('file:step1AToGG_Gamma50_M1000_SingleEtaPhi_GT.root'),
     outputCommands = process.RAWSIMEventContent.outputCommands,
     # splitLevel = cms.untracked.int32(0)
 )
@@ -66,7 +66,7 @@ process.RAWSIMoutput = cms.OutputModule("PoolOutputModule",
 # Other statements
 process.genstepfilter.triggerConditions=cms.vstring("generation_step")
 from Configuration.AlCa.GlobalTag import GlobalTag
-process.GlobalTag = GlobalTag(process.GlobalTag, 'auto:run1_mc', '')
+process.GlobalTag = GlobalTag(process.GlobalTag, '106X_upgrade2018_realistic_v11_L1v1', '')
 
 #Pion Generation
 #process.generator = cms.EDFilter("Pythia8EGun",
@@ -101,7 +101,7 @@ process.generator = cms.EDFilter("Pythia8EGun",
 		MinEta = cms.double(0),
 		#MinPhi = cms.double(-3.14159265359),
 		MinPhi = cms.double(0),
-		MinE = cms.double(25.0),
+		MinE = cms.double(50.0),
 		ParticleID = cms.vint32(36)
 		),
 		 initialSeed = cms.untracked.uint32(123456789),
@@ -126,7 +126,7 @@ process.generator = cms.EDFilter("Pythia8EGun",
 							    'SLHA:minMassSM = 1000.', 
 							    'ParticleDecays:limitTau0 = on', 
 							    'ParticleDecays:tau0Max = 10', 
-							    'ParticleDecays:allowPhotonRadiation = on','Higgs:useBSM = on','HiggsBSM:all = on','35:m0 = 125','36:m0 = 0.1'),
+							    'ParticleDecays:allowPhotonRadiation = on','Higgs:useBSM = on','HiggsBSM:all = on','35:m0 = 125','36:m0 = 1'),
 #			pythiaTauJets = cms.vstring(#'ParticleDecays:sophisticatedTau = 2', 
 #				#'ParticleDecays:tauPolarization = 0', 
 #				'15:onMode = off', 

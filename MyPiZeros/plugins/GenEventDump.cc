@@ -35,6 +35,10 @@
 #include "FWCore/Utilities/interface/InputTag.h"
 #include "DataFormats/TrackReco/interface/Track.h"
 #include "DataFormats/TrackReco/interface/TrackFwd.h"
+#include "DataFormats/EgammaCandidates/interface/Photon.h"
+#include "DataFormats/EgammaCandidates/interface/Electron.h"
+#include "DataFormats/EgammaCandidates/interface/GsfElectron.h"
+#include "DataFormats/PatCandidates/interface/Photon.h"
 #include "DataFormats/PatCandidates/interface/PackedGenParticle.h"
 //
 // class declaration
@@ -64,7 +68,9 @@ private:
   int lumi;
   int run;
   edm::EDGetToken genParticlesToken_;
+  edm::EDGetToken photonsToken_;
   edm::Handle<edm::View<reco::GenParticle>> genParticles;
+  edm::Handle<edm::View<reco::Photon>> photons;
 
   // ----------member data ---------------------------
   edm::EDGetTokenT<TrackCollection> tracksToken_;  // used to select what tracks to read from configuration file
@@ -90,6 +96,7 @@ GenEventDump::GenEventDump(const edm::ParameterSet &iConfig)
 #ifdef THIS_IS_AN_EVENTSETUP_EXAMPLE
   setupDataToken_ = esConsumes<SetupData, SetupRecord>();
 #endif
+  photonsToken_ = mayConsume<edm::View<reco::Photon>>(iConfig.getParameter<edm::InputTag>("photons"));
   genParticlesToken_ = mayConsume<edm::View<reco::GenParticle>>(iConfig.getParameter<edm::InputTag>("genParticles"));
   usesResource("TFileService");
   // now do what ever initialization is needed
@@ -111,6 +118,7 @@ void GenEventDump::analyze(const edm::Event &iEvent, const edm::EventSetup &iSet
   using namespace edm;
 
   iEvent.getByToken(genParticlesToken_, genParticles);
+  iEvent.getByToken(photonsToken_, photons);
   run = iEvent.id().run();
   event = iEvent.id().event();
   lumi = iEvent.luminosityBlock();
@@ -135,6 +143,17 @@ void GenEventDump::analyze(const edm::Event &iEvent, const edm::EventSetup &iSet
     }
     std::cout<<std::endl;
   }
+  std::cout << "-------------------------------------" << std::endl;
+  std::cout << "Size of reco photons: " << photons->size() << std::endl;
+  std::cout << "-------------------------------------" << std::endl;
+  std::cout << "Reco Photons" << std::endl;
+  std::cout << "-------------------------------------" << std::endl;
+  for (size_t i = 0; i < photons->size(); ++i) {
+    // if (nPhotons_ == 2) break;
+    const auto pho = photons->ptrAt(i);
+    std::cout << "Pt: " << pho->pt() << " , Eta: " << pho->eta() << " , Phi: " << pho->phi()
+              << " , Energy: " << pho->energy() << std::endl;
+    }
   T->Fill();
 #ifdef THIS_IS_AN_EVENTSETUP_EXAMPLE
   // if the SetupData is always needed

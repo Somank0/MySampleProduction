@@ -35,7 +35,7 @@ process.maxEvents = cms.untracked.PSet(
 
 # Input source
 process.source = cms.Source("PoolSource",
-    fileNames = cms.untracked.vstring('file:step2pionsUncompressed.root'),
+    fileNames = cms.untracked.vstring('file:step2AToGG_Gamma50-250_M400_SingleEtaPhi.root'),
     secondaryFileNames = cms.untracked.vstring()
 )
 
@@ -56,7 +56,7 @@ process.RECOSIMoutput = cms.OutputModule("PoolOutputModule",
         dataTier = cms.untracked.string('GEN-SIM-RECO'),
         filterName = cms.untracked.string('')
     ),
-    fileName = cms.untracked.string('file:step3pionsUncompressed.root'),
+    fileName = cms.untracked.string('file:step3AToGG_Gamma50-250_M400_SingleEtaPhi.root'),
     outputCommands = process.RECOSIMEventContent.outputCommands,
     splitLevel = cms.untracked.int32(0)
 )
@@ -71,7 +71,7 @@ process.MINIAODSIMoutput = cms.OutputModule("PoolOutputModule",
     dropMetaData = cms.untracked.string('ALL'),
     # eventAutoFlushCompressedSize = cms.untracked.int32(-900),
     fastCloning = cms.untracked.bool(False),
-    fileName = cms.untracked.string('file:step3_inMINIAODSIMpionsUncompressed.root'),
+    fileName = cms.untracked.string('file:step3_miniaodsim_AToGG_Gamma50-250_M400_SingleEtaPhi.root'),
     outputCommands = process.MINIAODSIMEventContent.outputCommands,
 #    overrideBranchesSplitLevel = cms.untracked.VPSet(
 #        cms.untracked.PSet(
@@ -193,9 +193,9 @@ process.dqmofflineOnPAT_1_step = cms.EndPath(process.PostDQMOfflineMiniAOD)
 process.RECOSIMoutput_step = cms.EndPath(process.RECOSIMoutput)
 process.MINIAODSIMoutput_step = cms.EndPath(process.MINIAODSIMoutput)
 process.DQMoutput_step = cms.EndPath(process.DQMoutput)
-process.photons.minSCEtBarrel = cms.double(0.001)
-process.photons.minSCEtEndcap = cms.double(0.001)
-process.photonCore.minSCEt= cms.double(0.001)
+#process.photons.minSCEtBarrel = cms.double(0.001)
+#process.photons.minSCEtEndcap = cms.double(0.001)
+#process.photonCore.minSCEt= cms.double(0.001)
 # process.mvaConfigsForPhoProducer.phoIsoCutoff = cms.double(0.05)
 # process.photonMVAValueMapProducer.phoIsoCutoff = cms.double(0.05)
 
