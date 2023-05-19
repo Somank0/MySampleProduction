@@ -1,7 +1,7 @@
 GEN-SIM:
 CMSSW_10_6_29
 
-cmsRun AToGGTry1_pythia8_cfi_GEN_SIM.py mass=1.2 gammaMin=0 gammaMax=50 etaMin=0 etaMax=1.4 phiMin=0 phiMax=3 maxEvents=10
+cmsRun AToGG_pythia8_cfi_GEN_SIM.py mass=1.2 gammaMin=0 gammaMax=50 etaMin=0 etaMax=1.4 phiMin=0 phiMax=3 maxEvents=10
 
 DIGI-PREMIX-RAW:
 
