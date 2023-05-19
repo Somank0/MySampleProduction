@@ -48,7 +48,7 @@ options.register ('phiMax',
                   "Maximum value of phi")
 options.maxEvents = 11
 options.parseArguments()
-options.outputFile="step1AToGG_Gamma"+str(int(options.gammaMin))+"-"+str(int(options.gammaMax))+"_M"+str(int(options.mass))+".root"
+options.outputFile="step1AToGG_Gamma"+str(int(options.gammaMin))+"-"+str(int(options.gammaMax))+"_M"+str(options.mass)+".root"
 
 # import of standard configurations
 process.load('Configuration.StandardSequences.Services_cff')
