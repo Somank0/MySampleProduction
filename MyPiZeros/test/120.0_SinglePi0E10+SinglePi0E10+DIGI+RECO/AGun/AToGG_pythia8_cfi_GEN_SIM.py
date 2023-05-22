@@ -16,16 +16,16 @@ options.register ('mass',
                   VarParsing.VarParsing.multiplicity.singleton, # singleton or list
                   VarParsing.VarParsing.varType.float,          # string, int, or float
                   "Mass of A")
-options.register ('gammaMin',
+options.register ('ptMin',
                   50, # default value
                   VarParsing.VarParsing.multiplicity.singleton, # singleton or list
                   VarParsing.VarParsing.varType.float,          # string, int, or float
-                  "Minimum value of gamma(Lorentz boost)")
-options.register ('gammaMax',
+                  "Minimum value of Pt")
+options.register ('ptMax',
                   50, # default value
                   VarParsing.VarParsing.multiplicity.singleton, # singleton or list
                   VarParsing.VarParsing.varType.float,          # string, int, or float
-                  "Maximum value of gamma(Lorentz boost)")
+                  "Maximum value of Pt")
 options.register ('etaMin',
                   -1.4, # default value
                   VarParsing.VarParsing.multiplicity.singleton, # singleton or list
@@ -48,7 +48,7 @@ options.register ('phiMax',
                   "Maximum value of phi")
 options.maxEvents = 11
 options.parseArguments()
-options.outputFile="step1AToGG_Gamma"+str(int(options.gammaMin))+"-"+str(int(options.gammaMax))+"_M"+str(options.mass)+".root"
+options.outputFile="step1AToGG_Pt"+str(int(options.ptMin))+"-"+str(int(options.ptMax))+"_M"+str(options.mass)+".root"
 
 # import of standard configurations
 process.load('Configuration.StandardSequences.Services_cff')
@@ -130,21 +130,21 @@ process.GlobalTag = GlobalTag(process.GlobalTag, '106X_upgrade2018_realistic_v11
 #    psethack = cms.string('single pi0 E 10')
 #)
 #W generation
-Emin = options.gammaMin * options.mass
-Emax = options.gammaMax * options.mass
-process.generator = cms.EDFilter("Pythia8EGun",
+#Emin = options.gammaMin * options.mass
+#Emax = options.gammaMax * options.mass
+process.generator = cms.EDFilter("Pythia8PtGun",
 	PGunParameters = cms.PSet(
 		AddAntiParticle = cms.bool(False),
 		#MaxEta = cms.double(2.4),
 		MaxEta = cms.double(options.etaMax),
 		#MaxPhi = cms.double(3.14159265359),
 		MaxPhi = cms.double(options.phiMax),
-		MaxE = cms.double(Emax),
+		MaxPt = cms.double(options.ptMax),
 		#MinEta = cms.double(-2.4),
 		MinEta = cms.double(options.etaMin),
 		#MinPhi = cms.double(-3.14159265359),
 		MinPhi = cms.double(options.phiMin),
-		MinE = cms.double(Emin),
+		MinPt = cms.double(options.ptMin),
 		ParticleID = cms.vint32(36)
 		),
 		 initialSeed = cms.untracked.uint32(123456789),
