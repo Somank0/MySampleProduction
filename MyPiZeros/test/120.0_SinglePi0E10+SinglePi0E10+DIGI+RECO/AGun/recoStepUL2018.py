@@ -27,12 +27,20 @@ process.load('Configuration.StandardSequences.EndOfProcess_cff')
 process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
 
 process.maxEvents = cms.untracked.PSet(
-    input = cms.untracked.int32(100)
+    input = cms.untracked.int32(-1)
 )
 
+import FWCore.ParameterSet.VarParsing as VarParsing
+options = VarParsing.VarParsing ('analysis')
+options.register ('mass',
+                  1, # default value
+                  VarParsing.VarParsing.multiplicity.singleton, # singleton or list
+                  VarParsing.VarParsing.varType.float,          # string, int, or float
+                  "Mass of A")
+options.parseArguments()
 # Input source
 process.source = cms.Source("PoolSource",
-    fileNames = cms.untracked.vstring('file:HAA_PGun_HLT.root'),
+    fileNames = cms.untracked.vstring('file:AToGG_HLT_M'+str(int(options.mass))+'.root'),
     secondaryFileNames = cms.untracked.vstring()
 )
 
@@ -50,14 +58,14 @@ process.configurationMetadata = cms.untracked.PSet(
 # Output definition
 
 process.AODSIMoutput = cms.OutputModule("PoolOutputModule",
-    compressionAlgorithm = cms.untracked.string('LZMA'),
-    compressionLevel = cms.untracked.int32(4),
+    #compressionAlgorithm = cms.untracked.string('LZMA'),
+    #compressionLevel = cms.untracked.int32(4),
     dataset = cms.untracked.PSet(
         dataTier = cms.untracked.string('AODSIM'),
         filterName = cms.untracked.string('')
     ),
     eventAutoFlushCompressedSize = cms.untracked.int32(31457280),
-    fileName = cms.untracked.string('file:BPH-RunIISummer20UL18RECO-00125.root'),
+    fileName = cms.untracked.string('file:AToGG_RECO_M'+str(options.mass)+'.root'),
     outputCommands = process.AODSIMEventContent.outputCommands
 )
 

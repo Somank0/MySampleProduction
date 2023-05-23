@@ -48,7 +48,8 @@ options.register ('phiMax',
                   "Maximum value of phi")
 options.maxEvents = 11
 options.parseArguments()
-options.outputFile="step1AToGG_Pt"+str(int(options.ptMin))+"-"+str(int(options.ptMax))+"_M"+str(options.mass)+".root"
+#options.outputFile="step1AToGG_Pt"+str(int(options.ptMin))+"-"+str(int(options.ptMax))+"_M"+str(options.mass)+".root"
+outputFile= "AToGG_GENSIM_M"+str(int(options.mass))+".root"
 
 # import of standard configurations
 process.load('Configuration.StandardSequences.Services_cff')
@@ -97,7 +98,7 @@ process.RAWSIMoutput = cms.OutputModule("PoolOutputModule",
         filterName = cms.untracked.string('')
     ),
     # eventAutoFlushCompressedSize = cms.untracked.int32(20971520),
-    fileName = cms.untracked.string(options.outputFile),
+    fileName = cms.untracked.string(outputFile),
     outputCommands = process.RAWSIMEventContent.outputCommands,
     # splitLevel = cms.untracked.int32(0)
 )
@@ -132,6 +133,7 @@ process.GlobalTag = GlobalTag(process.GlobalTag, '106X_upgrade2018_realistic_v11
 #W generation
 #Emin = options.gammaMin * options.mass
 #Emax = options.gammaMax * options.mass
+#options.mass = options.mass/1000
 process.generator = cms.EDFilter("Pythia8PtGun",
 	PGunParameters = cms.PSet(
 		AddAntiParticle = cms.bool(False),
