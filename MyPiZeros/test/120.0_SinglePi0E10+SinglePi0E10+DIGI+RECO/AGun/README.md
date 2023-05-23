@@ -1,6 +1,8 @@
 To Generate samples in a 2D mass grid (This runs all the steps and deletes digi and hlt file after running):
+
 ./runSampleGen [massMin(MeV)] [massMax(MeV)] [stepSize(MeV)]
 
+Note: To run above script please make sure the directory structure is the same as AGun directory. You will need to run : cmsrel CMSSW_10_2_16_UL to get relavant version of cmssw and make sure CMSSW_10_2_16_UL/src has the correct files.
 GEN-SIM:
 CMSSW_10_6_29
 
