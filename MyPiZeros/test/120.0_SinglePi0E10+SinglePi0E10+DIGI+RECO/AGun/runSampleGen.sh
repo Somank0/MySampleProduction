@@ -14,7 +14,7 @@ do
 	
 	echo "==============================Starting Sample generation for mass $i. GEN-SIM step=============================="
 	echo "------------------------------Using CMSSW_10_6_29------------------------------"
-	cmsRun AToGG_pythia8_cfi_GEN_SIM.py mass=$i ptMin=20 ptMax=100 etaMin=-1.4 etaMax=1.4 maxEvents=4000;
+	cmsRun AToGG_GEN_SIM_MeV_mass.py mass=$i ptMin=20 ptMax=60 etaMin=-1.4 etaMax=1.4 maxEvents=4000;
 	echo "==============================GEN-SIM step complete! Starting DIGI-PREMIX-RAW step=============================="
 	cmsRun genSimDigiRaw_mcProd.py mass=$i;
 	echo "==============================DIGI-PREMIX-RAW step complete! Starting HLT step=============================="
@@ -27,7 +27,9 @@ do
 	cmsenv;
 	echo "------------------------------Using CMSSW_10_6_29------------------------------"
 	rm AToGG_DIGI_*;
+	echo "Deleted DIGI file";
 	cmsRun recoStepUL2018.py mass=$i;
 	rm AToGG_HLT_*;
+	echo "Deleted HLT file";
 	echo "==============================RECO-AOD step complete! Sample generation complete !=============================="
 done

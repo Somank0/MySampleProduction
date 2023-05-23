@@ -1,3 +1,6 @@
+To Generate samples in a 2D mass grid (This runs all the steps and deletes digi and hlt file after running):
+./runSampleGen [massMin(MeV)] [massMax(MeV)] [stepSize(MeV)]
+
 GEN-SIM:
 CMSSW_10_6_29
 
