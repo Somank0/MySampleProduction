@@ -5,6 +5,7 @@
 # with command line options: SinglePi0E10_pythia8_cfi --conditions auto:run1_mc -n 10 --eventcontent RAWSIM --relval 25000,100 -s GEN,SIM --datatier GEN-SIM --beamspot Realistic8TeVCollision --fileout file:step1.root
 import FWCore.ParameterSet.Config as cms
 
+import random
 
 
 process = cms.Process('SIM')
@@ -149,7 +150,7 @@ process.generator = cms.EDFilter("Pythia8PtGun",
 		MinPt = cms.double(options.ptMin),
 		ParticleID = cms.vint32(36)
 		),
-		 initialSeed = cms.untracked.uint32(123456789),
+		 initialSeed = cms.untracked.uint32(int(random.random()*100000000)),
 		 engineName = cms.untracked.string('HepJamesRandom'),
 		 PythiaParameters = cms.PSet(
 			#parameterSets = cms.vstring('pythia8CommonSettings', 

@@ -7,24 +7,23 @@ process.load("FWCore.MessageService.MessageLogger_cfi")
 
 process.load("Configuration.StandardSequences.GeometryRecoDB_cff")
 
-process.maxEvents = cms.untracked.PSet(input=cms.untracked.int32(5000))
+process.maxEvents = cms.untracked.PSet(input=cms.untracked.int32(-1))
 
 process.MessageLogger.cerr.FwkReport.reportEvery = cms.untracked.int32(2500)
 
 # options = VarParsing.VarParsing('standard')
 options = VarParsing.VarParsing("analysis")
 
-# options.register('inputFile',
-#        "~/",
-#        VarParsing.VarParsing.multiplicity.singleton,
-#        VarParsing.VarParsing.varType.string,
-#        "File containing a list of the EXACT location of the output file  (default = ~/)"
-#        )
+options.register('inputFile',
+       "file:name1.root",
+       VarParsing.VarParsing.multiplicity.singleton,
+       VarParsing.VarParsing.varType.string,
+       "File containing a list of the EXACT location of the input file"
+       )
 
 
 options.parseArguments()
-# options.inputFile = 'root://eoscms//' + options.inputFile
-# print(options.inputFile)
+options.inputFile = "file:"+options.inputFile
 process.source = cms.Source(
     "PoolSource",
     # replace 'myfile.root' with the source file you want to use
@@ -32,7 +31,8 @@ process.source = cms.Source(
         #"file:step3pionsUncompressed.root"
         #"file:step3AToGG_Gamma50-250_M400_SingleEtaPhi.root"
         #"file:Chirayu_GIT_GEN_SIM_AODSIM.root"
-        "file:AToGG_Gamma50_M1000_SingleEtaPhi_RECO.root"
+#        "file:AToGG_Gamma50_M1000_SingleEtaPhi_RECO.root"
+	options.inputFile
 
         #'root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/GluGluHToGG_M-125_TuneCP5_13TeV-powheg-pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/40000/52EA6B6E-16AD-8141-8F44-B20F1AE8F7A3.root',
         #'root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/GluGluHToGG_M-125_TuneCP5_13TeV-powheg-pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/40000/5BAC5863-D457-1147-A9BC-859465E10114.root',
@@ -90,7 +90,7 @@ process.nTuplelize = cms.EDAnalyzer(
 process.TFileService = cms.Service(
     "TFileService",
     #fileName=cms.string("GammaRecHits_ntuple.root"),
-    fileName=cms.string("AToGG_Gamma50_M1000_RECO_Skimmed.root"),
+    fileName=cms.string("Skimmed_"+options.inputFile),
     #fileName=cms.string("RhoNPUPlots.root"),
     closeFileFast=cms.untracked.bool(True),
 )

@@ -4,6 +4,7 @@
 # Source: /local/reps/CMSSW/CMSSW/Configuration/Applications/python/ConfigBuilder.py,v 
 # with command line options: SinglePi0E10_pythia8_cfi --conditions auto:run1_mc -n 10 --eventcontent RAWSIM --relval 25000,100 -s GEN,SIM --datatier GEN-SIM --beamspot Realistic8TeVCollision --fileout file:step1.root
 import FWCore.ParameterSet.Config as cms
+import random
 
 
 
@@ -17,12 +18,12 @@ options.register ('mass',
                   VarParsing.VarParsing.varType.float,          # string, int, or float
                   "Mass of A")
 options.register ('ptMin',
-                  50, # default value
+                  20, # default value
                   VarParsing.VarParsing.multiplicity.singleton, # singleton or list
                   VarParsing.VarParsing.varType.float,          # string, int, or float
                   "Minimum value of Pt")
 options.register ('ptMax',
-                  50, # default value
+                  100, # default value
                   VarParsing.VarParsing.multiplicity.singleton, # singleton or list
                   VarParsing.VarParsing.varType.float,          # string, int, or float
                   "Maximum value of Pt")
@@ -46,10 +47,15 @@ options.register ('phiMax',
                   VarParsing.VarParsing.multiplicity.singleton, # singleton or list
                   VarParsing.VarParsing.varType.float,          # string, int, or float
                   "Maximum value of phi")
+options.register ('clusterID',
+                  '123', # default value
+                  VarParsing.VarParsing.multiplicity.singleton, # singleton or list
+                  VarParsing.VarParsing.varType.string,          # string, int, or float
+                  "Unique ID for every job")
 options.maxEvents = 11
 options.parseArguments()
 #options.outputFile="step1AToGG_Pt"+str(int(options.ptMin))+"-"+str(int(options.ptMax))+"_M"+str(options.mass)+".root"
-outputFile= "AToGG_GENSIM_M"+str(int(options.mass))+".root"
+outputFile= options.clusterID+"_AToGG_GENSIM_M"+str(int(options.mass))+".root"
 
 # import of standard configurations
 process.load('Configuration.StandardSequences.Services_cff')
@@ -149,7 +155,7 @@ process.generator = cms.EDFilter("Pythia8PtGun",
 		MinPt = cms.double(options.ptMin),
 		ParticleID = cms.vint32(36)
 		),
-		 initialSeed = cms.untracked.uint32(123456789),
+		 initialSeed = cms.untracked.uint32(int(random.random()*100000000)),
 		 engineName = cms.untracked.string('HepJamesRandom'),
 		 PythiaParameters = cms.PSet(
 			#parameterSets = cms.vstring('pythia8CommonSettings', 
