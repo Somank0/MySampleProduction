@@ -75,8 +75,6 @@ Implementation:
 #include "DataFormats/EcalDetId/interface/ESDetId.h"
 #include "DataFormats/EcalRecHit/interface/EcalRecHit.h"
 #include "DataFormats/EcalRecHit/interface/EcalRecHitCollections.h"
-#include "TLorentzVector.h"
-
 //
 //
 // class declaration
@@ -89,9 +87,7 @@ Implementation:
 
 
 //using reco::TrackCollection;
-using namespace edm;
 using namespace std;
-using namespace reco;
 
 class Photon_Skimmer : public edm::one::EDAnalyzer<edm::one::SharedResources>  {
    public:
@@ -145,60 +141,60 @@ class Photon_Skimmer : public edm::one::EDAnalyzer<edm::one::SharedResources>  {
       // Electron variables
       int nPhotons_;
       Float_t rho;
-      std::vector<float> iEta[20];
-      std::vector<float> iPhi[20];
-      std::vector<float> Hit_Eta[20];
-      std::vector<float> Hit_Phi[20];
-      std::vector<float> Hit_X[20];
-      std::vector<float> Hit_Y[20];
-      std::vector<float> Hit_Z[20];
+      std::vector<float> iEta[2];
+      std::vector<float> iPhi[2];
+      std::vector<float> Hit_Eta[2];
+      std::vector<float> Hit_Phi[2];
+      std::vector<float> Hit_X[2];
+      std::vector<float> Hit_Y[2];
+      std::vector<float> Hit_Z[2];
 
 
-      std::vector<float> RecHitFrac[20];
-      std::vector<float> RecHitEn[20];
-      std::vector<int>   RecHitGain[20];
-      std::vector<bool>  RecHitQuality[20];
-      std::vector<float> HitNoise[20];
+      std::vector<float> RecHitFrac[2];
+      std::vector<float> RecHitEn[2];
+      std::vector<int>   RecHitGain[2];
+      std::vector<bool>  RecHitQuality[2];
+      std::vector<float> HitNoise[2];
 
       // individual flags
-      std::vector<bool> RecHitFlag_kGood[20];                   // channel ok, the energy and time measurement are reliable
-      std::vector<bool> RecHitFlag_kPoorReco[20];                 // the energy is available from the UncalibRecHit, but approximate (bad shape, large chi2)
-      std::vector<bool> RecHitFlag_kOutOfTime[20];                // the energy is available from the UncalibRecHit (sync reco), but the event is out of time
-      std::vector<bool> RecHitFlag_kFaultyHardware[20];           // The energy is available from the UncalibRecHit, channel is faulty at some hardware level (e.g. noisy)
-      std::vector<bool> RecHitFlag_kNoisy[20];                    // the channel is very noisy
-      std::vector<bool> RecHitFlag_kPoorCalib[20];                // the energy is available from the UncalibRecHit, but the calibration of the channel is poor
-      std::vector<bool> RecHitFlag_kSaturated[20];                // saturated channel (recovery not tried)
-      std::vector<bool> RecHitFlag_kLeadingEdgeRecovered[20];     // saturated channel: energy estimated from the leading edge before saturation
-      std::vector<bool> RecHitFlag_kNeighboursRecovered[20];      // saturated/isolated dead: energy estimated from neighbours
-      std::vector<bool> RecHitFlag_kTowerRecovered[20];           // channel in TT with no data link, info retrieved from Trigger Primitive
-      std::vector<bool> RecHitFlag_kDead[20];                     // channel is dead and any recovery fails
-      std::vector<bool> RecHitFlag_kKilled[20];                   // MC only flag: the channel is killed in the real detector
-      std::vector<bool> RecHitFlag_kTPSaturated[20];              // the channel is in a region with saturated TP
-      std::vector<bool> RecHitFlag_kL1SpikeFlag[20];              // the channel is in a region with TP with sFGVB = 0
-      std::vector<bool> RecHitFlag_kWeird[20];                    // the signal is believed to originate from an anomalous deposit (spike) 
-      std::vector<bool> RecHitFlag_kDiWeird[20];                  // the signal is anomalous, and neighbors another anomalous signal  
-      std::vector<bool> RecHitFlag_kHasSwitchToGain6[20];         // at least one data frame is in G6
-      std::vector<bool> RecHitFlag_kHasSwitchToGain1[20];         // at least one data frame is in G1
+      std::vector<bool> RecHitFlag_kGood[2];                   // channel ok, the energy and time measurement are reliable
+      std::vector<bool> RecHitFlag_kPoorReco[2];                 // the energy is available from the UncalibRecHit, but approximate (bad shape, large chi2)
+      std::vector<bool> RecHitFlag_kOutOfTime[2];                // the energy is available from the UncalibRecHit (sync reco), but the event is out of time
+      std::vector<bool> RecHitFlag_kFaultyHardware[2];           // The energy is available from the UncalibRecHit, channel is faulty at some hardware level (e.g. noisy)
+      std::vector<bool> RecHitFlag_kNoisy[2];                    // the channel is very noisy
+      std::vector<bool> RecHitFlag_kPoorCalib[2];                // the energy is available from the UncalibRecHit, but the calibration of the channel is poor
+      std::vector<bool> RecHitFlag_kSaturated[2];                // saturated channel (recovery not tried)
+      std::vector<bool> RecHitFlag_kLeadingEdgeRecovered[2];     // saturated channel: energy estimated from the leading edge before saturation
+      std::vector<bool> RecHitFlag_kNeighboursRecovered[2];      // saturated/isolated dead: energy estimated from neighbours
+      std::vector<bool> RecHitFlag_kTowerRecovered[2];           // channel in TT with no data link, info retrieved from Trigger Primitive
+      std::vector<bool> RecHitFlag_kDead[2];                     // channel is dead and any recovery fails
+      std::vector<bool> RecHitFlag_kKilled[2];                   // MC only flag: the channel is killed in the real detector
+      std::vector<bool> RecHitFlag_kTPSaturated[2];              // the channel is in a region with saturated TP
+      std::vector<bool> RecHitFlag_kL1SpikeFlag[2];              // the channel is in a region with TP with sFGVB = 0
+      std::vector<bool> RecHitFlag_kWeird[2];                    // the signal is believed to originate from an anomalous deposit (spike) 
+      std::vector<bool> RecHitFlag_kDiWeird[2];                  // the signal is anomalous, and neighbors another anomalous signal  
+      std::vector<bool> RecHitFlag_kHasSwitchToGain6[2];         // at least one data frame is in G6
+      std::vector<bool> RecHitFlag_kHasSwitchToGain1[2];         // at least one data frame is in G1
 
       // individual ES flags
-      std::vector<bool> RecHitFlag_kESGood[20];
-      std::vector<bool> RecHitFlag_kESDead[20];
-      std::vector<bool> RecHitFlag_kESHot[20];
-      std::vector<bool> RecHitFlag_kESPassBX[20];
-      std::vector<bool> RecHitFlag_kESTwoGoodRatios[20];
-      std::vector<bool> RecHitFlag_kESBadRatioFor12[20];
-      std::vector<bool> RecHitFlag_kESBadRatioFor23Upper[20];
-      std::vector<bool> RecHitFlag_kESBadRatioFor23Lower[20];
-      std::vector<bool> RecHitFlag_kESTS1Largest[20];
-      std::vector<bool> RecHitFlag_kESTS3Largest[20];
-      std::vector<bool> RecHitFlag_kESTS3Negative[20];
-      std::vector<bool> RecHitFlag_kESSaturated[20];
-      std::vector<bool> RecHitFlag_kESTS2Saturated[20];
-      std::vector<bool> RecHitFlag_kESTS3Saturated[20];
-      std::vector<bool> RecHitFlag_kESTS13Sigmas[20];
-      std::vector<bool> RecHitFlag_kESTS15Sigmas[20];
+      std::vector<bool> RecHitFlag_kESGood[2];
+      std::vector<bool> RecHitFlag_kESDead[2];
+      std::vector<bool> RecHitFlag_kESHot[2];
+      std::vector<bool> RecHitFlag_kESPassBX[2];
+      std::vector<bool> RecHitFlag_kESTwoGoodRatios[2];
+      std::vector<bool> RecHitFlag_kESBadRatioFor12[2];
+      std::vector<bool> RecHitFlag_kESBadRatioFor23Upper[2];
+      std::vector<bool> RecHitFlag_kESBadRatioFor23Lower[2];
+      std::vector<bool> RecHitFlag_kESTS1Largest[2];
+      std::vector<bool> RecHitFlag_kESTS3Largest[2];
+      std::vector<bool> RecHitFlag_kESTS3Negative[2];
+      std::vector<bool> RecHitFlag_kESSaturated[2];
+      std::vector<bool> RecHitFlag_kESTS2Saturated[2];
+      std::vector<bool> RecHitFlag_kESTS3Saturated[2];
+      std::vector<bool> RecHitFlag_kESTS13Sigmas[2];
+      std::vector<bool> RecHitFlag_kESTS15Sigmas[2];
 
-      std::vector<bool>* RecHitFlag_container[180] = {
+      std::vector<bool>* RecHitFlag_container[18] = {
          RecHitFlag_kGood,
          RecHitFlag_kPoorReco,
          RecHitFlag_kOutOfTime,
@@ -219,7 +215,7 @@ class Photon_Skimmer : public edm::one::EDAnalyzer<edm::one::SharedResources>  {
          RecHitFlag_kHasSwitchToGain1
       };
 
-      std::vector<bool>* RecHitESFlag_container[160] = {
+      std::vector<bool>* RecHitESFlag_container[16] = {
          RecHitFlag_kESGood,
          RecHitFlag_kESDead,
          RecHitFlag_kESHot,
@@ -262,10 +258,6 @@ class Photon_Skimmer : public edm::one::EDAnalyzer<edm::one::SharedResources>  {
       std::vector<float> Pho_Gen_Eta;
       std::vector<float> Pho_Gen_Phi;
       std::vector<float> Pho_Gen_E;
-      std::vector<int> Pho_Gen_matchedIndex;
-	std::vector<double> drminLead;
-	std::vector<double> drminSubLead;
-	std::vector<double> drminOther;
 
 
       std::vector<int> passLooseId_;
@@ -340,24 +332,6 @@ Photon_Skimmer::~Photon_Skimmer()
 //
 
 // ------------ method called for each event  ------------
-double MDeltaPhi(double phi1, double phi2) {
-  double result = phi1 - phi2;
-  while (result > M_PI)
-    result -= 2 * M_PI;
-  while (result <= -M_PI)
-    result += 2 * M_PI;
-  return result;
-}
-
-double MDeltaR(double eta1, double phi1, double eta2, double phi2) {
-  double deta = eta1 - eta2;
-  double dphi = MDeltaPhi(phi1, phi2);
-  return std::sqrt(deta * deta + dphi * dphi);
-}
-bool photonsCompare(const reco::GenParticle& p1,const reco::GenParticle& p2)
-{
-	return ( p1.pt() > p2.pt());
-}
    void
 Photon_Skimmer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 {
@@ -397,11 +371,10 @@ Photon_Skimmer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
    nPhotons_ = 0;
    const EcalRecHitCollection *recHitsEB = clustertools_NoZS->getEcalEBRecHitCollection();
    const EcalRecHitCollection *recHitsEE = clustertools_NoZS->getEcalEERecHitCollection();
-	
    for (size_t i = 0; i < photons->size(); ++i){
-      //if (nPhotons_ == 2) break;
+      if (nPhotons_ == 2) break;
       const auto pho = photons->ptrAt(i);
-      //if( pho->pt() < 10 ) continue;
+      if( pho->pt() < 10 ) continue;
       const SuperClusterRef& sc = pho->superCluster(); 
       //const SuperClusterRef& sc = pho->parentSuperCluster(); // mustache cluster
       std::vector< std::pair<DetId, float> > hitsAndFractions = sc->hitsAndFractions();
@@ -494,71 +467,15 @@ Photon_Skimmer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 
    //////////////////////// Gen Stuff hardcaded for status 1 photons for now /////////////////////////////////////
 
+   for(edm::View<GenParticle>::const_iterator part = genParticles->begin(); part != genParticles->end(); ++part){
+      if( part->status()==1  && abs(part->pdgId())==22 ){
+         Pho_Gen_Pt.push_back(part->pt());
+         Pho_Gen_Eta.push_back(part->eta());
+         Pho_Gen_Phi.push_back(part->phi());
+         Pho_Gen_E.push_back(part->energy());
+      }
+   }
 
-
- //  for(edm::View<GenParticle>::const_iterator part = genParticles->begin(); part != genParticles->end(); ++part){
- //     if( part->status()==1 && abs(part->pdgId())==22 ){
- //     }
- //  }
-
-//std::sort(genParticles->begin(), genParticles->end(), photonsCompare);
-      std::vector<reco::GenParticle> sortedParticles(genParticles->begin(), genParticles->end());
-      std::sort(sortedParticles.begin(), sortedParticles.end(), photonsCompare);
-using namespace std;
-int matchedIdx[photons->size()];
-std::fill(matchedIdx,matchedIdx+photons->size(), 0);
-int genitr=0;
-//   for(edm::View<GenParticle>::const_iterator part = genParticles->begin(); part != genParticles->end(); ++part){
-for (const reco::GenParticle& part : sortedParticles) {
-      if( part.status()==1 && abs(part.pdgId())==22 ){
-	double mindr=999;
-	int matchedPhoton=-1;
-	   for (size_t i = 0; i < photons->size(); ++i){
-
-		if(matchedIdx[i] == 1)
-		{
-			continue;
-		}
-		auto recopho = photons->ptrAt(i)->superCluster();
-		double dr = MDeltaR(part.eta(),part.phi(),recopho->eta(),recopho->phi()); 
-		if(dr < mindr)
-		{
-			mindr = dr;
-			matchedPhoton=i;
-		}
-		
-		}
-	if(matchedPhoton>=0)
-	{
-		matchedIdx[matchedPhoton]=1;
-	}
-	if(matchedPhoton<0)
-	{
-		mindr=-999;
-	}
-if(genitr==0)
-{
-	drminLead.push_back(mindr);	
-}
-else if(genitr==1)
-{
-	drminSubLead.push_back(mindr);
-}
-else
-{
-	drminOther.push_back(mindr);
-}
-
-         Pho_Gen_Pt.push_back(part.pt());
-         Pho_Gen_Eta.push_back(part.eta());
-         Pho_Gen_Phi.push_back(part.phi());
-         Pho_Gen_E.push_back(part.energy());
-	 Pho_Gen_matchedIndex.push_back(matchedPhoton);
-	 genitr++;
-	}
-}
-	
-	
    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
    /////////////////////////Run, event, lumi//////////////////////////////////
@@ -635,6 +552,11 @@ Photon_Skimmer::beginJob()
    T->Branch("RecHitFlag_kESTS1Largest_pho1", &(RecHitFlag_kESTS1Largest[0]));
    T->Branch("RecHitFlag_kESTS3Largest_pho1", &(RecHitFlag_kESTS3Largest[0]));
    T->Branch("RecHitFlag_kESTS3Negative_pho1", &(RecHitFlag_kESTS3Negative[0]));
+   T->Branch("RecHitFlag_kESSaturated_pho1", &(RecHitFlag_kESSaturated[0]));
+   T->Branch("RecHitFlag_kESTS2Saturated_pho1", &(RecHitFlag_kESTS2Saturated[0]));
+   T->Branch("RecHitFlag_kESTS3Saturated_pho1", &(RecHitFlag_kESTS3Saturated[0]));
+   T->Branch("RecHitFlag_kESTS13Sigmas_pho1", &(RecHitFlag_kESTS13Sigmas[0]));
+   T->Branch("RecHitFlag_kESTS15Sigmas_pho1", &(RecHitFlag_kESTS15Sigmas[0]));
 
    T->Branch("iEtaPho2"  ,  &(iEta[1]));
    T->Branch("iPhiPho2"  ,  &(iPhi[1]));
@@ -686,61 +608,11 @@ Photon_Skimmer::beginJob()
    T->Branch("RecHitFlag_kESTS1Largest_pho2", &(RecHitFlag_kESTS1Largest[1]));
    T->Branch("RecHitFlag_kESTS3Largest_pho2", &(RecHitFlag_kESTS3Largest[1]));
    T->Branch("RecHitFlag_kESTS3Negative_pho2", &(RecHitFlag_kESTS3Negative[1]));
-
-   T->Branch("iEtaPho3"  ,  &(iEta[2]));
-   T->Branch("iPhiPho3"  ,  &(iPhi[2]));
-   T->Branch("Hit_ES_Eta_Pho3"  ,  &(Hit_ES_Eta[2]));
-   T->Branch("Hit_ES_Phi_Pho3"  ,  &(Hit_ES_Phi[2]));
-   T->Branch("Hit_ES_X_Pho3"  ,  &(Hit_ES_X[2]));
-   T->Branch("Hit_ES_Y_Pho3"  ,  &(Hit_ES_Y[2]));
-   T->Branch("Hit_ES_Z_Pho3"  ,  &(Hit_ES_Z[2]));
-   T->Branch("ES_RecHitEnPho3"  ,  &(ES_RecHitEn[2]));
-
-   T->Branch("Hit_Eta_Pho3"  ,  &(Hit_Eta[2]));
-   T->Branch("Hit_Phi_Pho3"  ,  &(Hit_Phi[2]));
-   T->Branch("Hit_X_Pho3"  ,  &(Hit_X[2]));
-   T->Branch("Hit_Y_Pho3"  ,  &(Hit_Y[2]));
-   T->Branch("Hit_Z_Pho3"  ,  &(Hit_Z[2]));
-   T->Branch("RecHitEnPho3"  ,  &(RecHitEn[2]));
-   T->Branch("RecHitFracPho3"  ,  &(RecHitFrac[2]));
-   T->Branch("RecHitGain2"  ,  &(RecHitGain[2]));
-   T->Branch("RecHitQuality2", &(RecHitQuality[2]));
-   T->Branch("HitNoisePho3", &(HitNoise[2]));
-
-   T->Branch("RecHitFlag_kGood_pho3", &(RecHitFlag_kGood[2]));
-   T->Branch("RecHitFlag_kPoorReco_pho3", &(RecHitFlag_kPoorReco[2]));
-   T->Branch("RecHitFlag_kOutOfTime_pho3", &(RecHitFlag_kOutOfTime[2]));
-   T->Branch("RecHitFlag_kFaultyHardware_pho3", &(RecHitFlag_kFaultyHardware[2]));
-   T->Branch("RecHitFlag_kNoisy_pho3", &(RecHitFlag_kNoisy[2]));
-   T->Branch("RecHitFlag_kPoorCalib_pho3", &(RecHitFlag_kPoorCalib[2]));
-   T->Branch("RecHitFlag_kSaturated_pho3", &(RecHitFlag_kSaturated[2]));
-   T->Branch("RecHitFlag_kLeadingEdgeRecovered_pho3", &(RecHitFlag_kLeadingEdgeRecovered[2]));
-   T->Branch("RecHitFlag_kNeighboursRecovered_pho3", &(RecHitFlag_kNeighboursRecovered[2]));
-   T->Branch("RecHitFlag_kTowerRecovered_pho3", &(RecHitFlag_kTowerRecovered[2]));
-   T->Branch("RecHitFlag_kDead_pho3", &(RecHitFlag_kDead[2]));
-   T->Branch("RecHitFlag_kKilled_pho3", &(RecHitFlag_kKilled[2]));
-   T->Branch("RecHitFlag_kTPSaturated_pho3", &(RecHitFlag_kTPSaturated[2]));
-   T->Branch("RecHitFlag_kL1SpikeFlag_pho3", &(RecHitFlag_kL1SpikeFlag[2]));
-   T->Branch("RecHitFlag_kWeird_pho3", &(RecHitFlag_kWeird[2]));
-   T->Branch("RecHitFlag_kDiWeird_pho3", &(RecHitFlag_kDiWeird[2]));
-   T->Branch("RecHitFlag_kHasSwitchToGain6_pho3", &(RecHitFlag_kHasSwitchToGain6[2]));
-   T->Branch("RecHitFlag_kHasSwitchToGain1_pho3", &(RecHitFlag_kHasSwitchToGain1[2]));
-
-   T->Branch("RecHitFlag_kESGood_pho3", &(RecHitFlag_kESGood[2]));
-   T->Branch("RecHitFlag_kESDead_pho3", &(RecHitFlag_kESDead[2]));
-   T->Branch("RecHitFlag_kESHot_pho3", &(RecHitFlag_kESHot[2]));
-   T->Branch("RecHitFlag_kESPassBX_pho3", &(RecHitFlag_kESPassBX[2]));
-   T->Branch("RecHitFlag_kESTwoGoodRatios_pho3", &(RecHitFlag_kESTwoGoodRatios[2]));
-   T->Branch("RecHitFlag_kESBadRatioFor12_pho3", &(RecHitFlag_kESBadRatioFor12[2]));
-   T->Branch("RecHitFlag_kESBadRatioFor23Upper_pho3", &(RecHitFlag_kESBadRatioFor23Upper[2]));
-   T->Branch("RecHitFlag_kESBadRatioFor23Lower_pho3", &(RecHitFlag_kESBadRatioFor23Lower[2]));
-   T->Branch("RecHitFlag_kESTS1Largest_pho3", &(RecHitFlag_kESTS1Largest[2]));
-   T->Branch("RecHitFlag_kESTS3Largest_pho3", &(RecHitFlag_kESTS3Largest[2]));
-   T->Branch("RecHitFlag_kESTS3Negative_pho3", &(RecHitFlag_kESTS3Negative[2]));
-
-	T->Branch("DrminLead",&drminLead);
-	T->Branch("DrminSubLead",&drminSubLead);
-	T->Branch("DrminOther",&drminOther);
+   T->Branch("RecHitFlag_kESSaturated_pho2", &(RecHitFlag_kESSaturated[1]));
+   T->Branch("RecHitFlag_kESTS2Saturated_pho2", &(RecHitFlag_kESTS2Saturated[1]));
+   T->Branch("RecHitFlag_kESTS3Saturated_pho2", &(RecHitFlag_kESTS3Saturated[1]));
+   T->Branch("RecHitFlag_kESTS13Sigmas_pho2", &(RecHitFlag_kESTS13Sigmas[1]));
+   T->Branch("RecHitFlag_kESTS15Sigmas_pho2", &(RecHitFlag_kESTS15Sigmas[1]));
 
    T->Branch("nPhotons",  &nPhotons_ , "nPho/I");
    T->Branch("pt"  ,  &Pho_pt_);
@@ -770,7 +642,6 @@ Photon_Skimmer::beginJob()
    T->Branch("Pho_Gen_Eta" , &Pho_Gen_Eta);
    T->Branch("Pho_Gen_Phi" , &Pho_Gen_Phi);
    T->Branch("Pho_Gen_E" , &Pho_Gen_E);
-   T->Branch("Pho_Gen_matchedIndex" , &Pho_Gen_matchedIndex);
 
    T->Branch("rho", &rho, "rho/F");
 
@@ -854,9 +725,6 @@ void Photon_Skimmer::GetESPlaneRecHits(const reco::SuperCluster& sc, const CaloG
 //Clear tree vectors each time analyze method is called
 void Photon_Skimmer::ClearTreeVectors()
 {
-	drminLead.clear();
-drminSubLead.clear();
-drminOther.clear();
    nPhotons_ = 0;
    iEta[0].clear();
    iPhi[0].clear();
@@ -973,60 +841,6 @@ drminOther.clear();
    RecHitFlag_kESTS13Sigmas[1].clear();
    RecHitFlag_kESTS15Sigmas[1].clear();
 
-   Hit_ES_Eta[2].clear();
-   Hit_ES_Phi[2].clear();
-   Hit_ES_X[2].clear();
-   Hit_ES_Y[2].clear();
-   Hit_ES_Z[2].clear();
-   ES_RecHitEn[2].clear();
-
-   Hit_Eta[2].clear();
-   Hit_Phi[2].clear();
-   Hit_X[2].clear();
-   Hit_Y[2].clear();
-   Hit_Z[2].clear();
-   RecHitEn[2].clear();
-   RecHitFrac[2].clear();
-   RecHitGain[2].clear();
-   RecHitQuality[2].clear();
-   HitNoise[2].clear();
-
-   RecHitFlag_kGood[2].clear();
-   RecHitFlag_kPoorReco[2].clear();
-   RecHitFlag_kOutOfTime[2].clear();
-   RecHitFlag_kFaultyHardware[2].clear();
-   RecHitFlag_kNoisy[2].clear();
-   RecHitFlag_kPoorCalib[2].clear();
-   RecHitFlag_kSaturated[2].clear();
-   RecHitFlag_kLeadingEdgeRecovered[2].clear();
-   RecHitFlag_kNeighboursRecovered[2].clear();
-   RecHitFlag_kTowerRecovered[2].clear();
-   RecHitFlag_kDead[2].clear();
-   RecHitFlag_kKilled[2].clear();
-   RecHitFlag_kTPSaturated[2].clear();
-   RecHitFlag_kL1SpikeFlag[2].clear();
-   RecHitFlag_kWeird[2].clear();
-   RecHitFlag_kDiWeird[2].clear();
-   RecHitFlag_kHasSwitchToGain6[2].clear();
-   RecHitFlag_kHasSwitchToGain1[2].clear();
-
-   RecHitFlag_kESGood[2].clear();
-   RecHitFlag_kESDead[2].clear();
-   RecHitFlag_kESHot[2].clear();
-   RecHitFlag_kESPassBX[2].clear();
-   RecHitFlag_kESTwoGoodRatios[2].clear();
-   RecHitFlag_kESBadRatioFor12[2].clear();
-   RecHitFlag_kESBadRatioFor23Upper[2].clear();
-   RecHitFlag_kESBadRatioFor23Lower[2].clear();
-   RecHitFlag_kESTS1Largest[2].clear();
-   RecHitFlag_kESTS3Largest[2].clear();
-   RecHitFlag_kESTS3Negative[2].clear();
-   RecHitFlag_kESSaturated[2].clear();
-   RecHitFlag_kESTS2Saturated[2].clear();
-   RecHitFlag_kESTS3Saturated[2].clear();
-   RecHitFlag_kESTS13Sigmas[2].clear();
-   RecHitFlag_kESTS15Sigmas[2].clear();
-
    Pho_pt_.clear();
    Pho_eta_.clear();
    Pho_phi_.clear();
@@ -1049,7 +863,6 @@ drminOther.clear();
    Pho_Gen_Eta.clear();
    Pho_Gen_Phi.clear();
    Pho_Gen_E.clear();
-   Pho_Gen_matchedIndex.clear();
 
    passMediumId_.clear();
    passTightId_ .clear();
