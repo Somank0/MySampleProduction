@@ -100,12 +100,12 @@ class Photon_Skimmer : public edm::one::EDAnalyzer<edm::one::SharedResources>  {
 
       static void fillDescriptions(edm::ConfigurationDescriptions& descriptions);
 
-      std::vector<float> Hit_ES_Eta[2];
-      std::vector<float> Hit_ES_Phi[2];
-      std::vector<float> Hit_ES_X[2];
-      std::vector<float> Hit_ES_Y[2];
-      std::vector<float> Hit_ES_Z[2];
-      std::vector<float> ES_RecHitEn[2];
+      std::vector<float> Hit_ES_Eta;
+      std::vector<float> Hit_ES_Phi;
+      std::vector<float> Hit_ES_X;
+      std::vector<float> Hit_ES_Y;
+      std::vector<float> Hit_ES_Z;
+      std::vector<float> ES_RecHitEn;
 
 
    private:
@@ -145,98 +145,60 @@ class Photon_Skimmer : public edm::one::EDAnalyzer<edm::one::SharedResources>  {
       // Electron variables
       int nPhotons_;
       Float_t rho;
-      std::vector<float> iEta[20];
-      std::vector<float> iPhi[20];
-      std::vector<float> Hit_Eta[20];
-      std::vector<float> Hit_Phi[20];
-      std::vector<float> Hit_X[20];
-      std::vector<float> Hit_Y[20];
-      std::vector<float> Hit_Z[20];
+      std::vector<float> iEta;
+      std::vector<float> iPhi;
+      std::vector<float> Hit_Eta;
+      std::vector<float> Hit_Phi;
+      std::vector<float> Hit_X;
+      std::vector<float> Hit_Y;
+      std::vector<float> Hit_Z;
+ 	std::vector<float> recoPhotonIdx;
 
 
-      std::vector<float> RecHitFrac[20];
-      std::vector<float> RecHitEn[20];
-      std::vector<int>   RecHitGain[20];
-      std::vector<bool>  RecHitQuality[20];
-      std::vector<float> HitNoise[20];
+      std::vector<float> RecHitFrac;
+      std::vector<float> RecHitEn;
+      std::vector<int>   RecHitGain;
+      std::vector<bool>  RecHitQuality;
+      std::vector<float> HitNoise;
 
       // individual flags
-      std::vector<bool> RecHitFlag_kGood[20];                   // channel ok, the energy and time measurement are reliable
-      std::vector<bool> RecHitFlag_kPoorReco[20];                 // the energy is available from the UncalibRecHit, but approximate (bad shape, large chi2)
-      std::vector<bool> RecHitFlag_kOutOfTime[20];                // the energy is available from the UncalibRecHit (sync reco), but the event is out of time
-      std::vector<bool> RecHitFlag_kFaultyHardware[20];           // The energy is available from the UncalibRecHit, channel is faulty at some hardware level (e.g. noisy)
-      std::vector<bool> RecHitFlag_kNoisy[20];                    // the channel is very noisy
-      std::vector<bool> RecHitFlag_kPoorCalib[20];                // the energy is available from the UncalibRecHit, but the calibration of the channel is poor
-      std::vector<bool> RecHitFlag_kSaturated[20];                // saturated channel (recovery not tried)
-      std::vector<bool> RecHitFlag_kLeadingEdgeRecovered[20];     // saturated channel: energy estimated from the leading edge before saturation
-      std::vector<bool> RecHitFlag_kNeighboursRecovered[20];      // saturated/isolated dead: energy estimated from neighbours
-      std::vector<bool> RecHitFlag_kTowerRecovered[20];           // channel in TT with no data link, info retrieved from Trigger Primitive
-      std::vector<bool> RecHitFlag_kDead[20];                     // channel is dead and any recovery fails
-      std::vector<bool> RecHitFlag_kKilled[20];                   // MC only flag: the channel is killed in the real detector
-      std::vector<bool> RecHitFlag_kTPSaturated[20];              // the channel is in a region with saturated TP
-      std::vector<bool> RecHitFlag_kL1SpikeFlag[20];              // the channel is in a region with TP with sFGVB = 0
-      std::vector<bool> RecHitFlag_kWeird[20];                    // the signal is believed to originate from an anomalous deposit (spike) 
-      std::vector<bool> RecHitFlag_kDiWeird[20];                  // the signal is anomalous, and neighbors another anomalous signal  
-      std::vector<bool> RecHitFlag_kHasSwitchToGain6[20];         // at least one data frame is in G6
-      std::vector<bool> RecHitFlag_kHasSwitchToGain1[20];         // at least one data frame is in G1
+      std::vector<bool> RecHitFlag_kGood;                   // channel ok, the energy and time measurement are reliable
+      std::vector<bool> RecHitFlag_kPoorReco;                 // the energy is available from the UncalibRecHit, but approximate (bad shape, large chi2)
+      std::vector<bool> RecHitFlag_kOutOfTime;                // the energy is available from the UncalibRecHit (sync reco), but the event is out of time
+      std::vector<bool> RecHitFlag_kFaultyHardware;           // The energy is available from the UncalibRecHit, channel is faulty at some hardware level (e.g. noisy)
+      std::vector<bool> RecHitFlag_kNoisy;                    // the channel is very noisy
+      std::vector<bool> RecHitFlag_kPoorCalib;                // the energy is available from the UncalibRecHit, but the calibration of the channel is poor
+      std::vector<bool> RecHitFlag_kSaturated;                // saturated channel (recovery not tried)
+      std::vector<bool> RecHitFlag_kLeadingEdgeRecovered;     // saturated channel: energy estimated from the leading edge before saturation
+      std::vector<bool> RecHitFlag_kNeighboursRecovered;      // saturated/isolated dead: energy estimated from neighbours
+      std::vector<bool> RecHitFlag_kTowerRecovered;           // channel in TT with no data link, info retrieved from Trigger Primitive
+      std::vector<bool> RecHitFlag_kDead;                     // channel is dead and any recovery fails
+      std::vector<bool> RecHitFlag_kKilled;                   // MC only flag: the channel is killed in the real detector
+      std::vector<bool> RecHitFlag_kTPSaturated;              // the channel is in a region with saturated TP
+      std::vector<bool> RecHitFlag_kL1SpikeFlag;              // the channel is in a region with TP with sFGVB = 0
+      std::vector<bool> RecHitFlag_kWeird;                    // the signal is believed to originate from an anomalous deposit (spike) 
+      std::vector<bool> RecHitFlag_kDiWeird;                  // the signal is anomalous, and neighbors another anomalous signal  
+      std::vector<bool> RecHitFlag_kHasSwitchToGain6;         // at least one data frame is in G6
+      std::vector<bool> RecHitFlag_kHasSwitchToGain1;         // at least one data frame is in G1
 
       // individual ES flags
-      std::vector<bool> RecHitFlag_kESGood[20];
-      std::vector<bool> RecHitFlag_kESDead[20];
-      std::vector<bool> RecHitFlag_kESHot[20];
-      std::vector<bool> RecHitFlag_kESPassBX[20];
-      std::vector<bool> RecHitFlag_kESTwoGoodRatios[20];
-      std::vector<bool> RecHitFlag_kESBadRatioFor12[20];
-      std::vector<bool> RecHitFlag_kESBadRatioFor23Upper[20];
-      std::vector<bool> RecHitFlag_kESBadRatioFor23Lower[20];
-      std::vector<bool> RecHitFlag_kESTS1Largest[20];
-      std::vector<bool> RecHitFlag_kESTS3Largest[20];
-      std::vector<bool> RecHitFlag_kESTS3Negative[20];
-      std::vector<bool> RecHitFlag_kESSaturated[20];
-      std::vector<bool> RecHitFlag_kESTS2Saturated[20];
-      std::vector<bool> RecHitFlag_kESTS3Saturated[20];
-      std::vector<bool> RecHitFlag_kESTS13Sigmas[20];
-      std::vector<bool> RecHitFlag_kESTS15Sigmas[20];
+      std::vector<bool> RecHitFlag_kESGood;
+      std::vector<bool> RecHitFlag_kESDead;
+      std::vector<bool> RecHitFlag_kESHot;
+      std::vector<bool> RecHitFlag_kESPassBX;
+      std::vector<bool> RecHitFlag_kESTwoGoodRatios;
+      std::vector<bool> RecHitFlag_kESBadRatioFor12;
+      std::vector<bool> RecHitFlag_kESBadRatioFor23Upper;
+      std::vector<bool> RecHitFlag_kESBadRatioFor23Lower;
+      std::vector<bool> RecHitFlag_kESTS1Largest;
+      std::vector<bool> RecHitFlag_kESTS3Largest;
+      std::vector<bool> RecHitFlag_kESTS3Negative;
+      std::vector<bool> RecHitFlag_kESSaturated;
+      std::vector<bool> RecHitFlag_kESTS2Saturated;
+      std::vector<bool> RecHitFlag_kESTS3Saturated;
+      std::vector<bool> RecHitFlag_kESTS13Sigmas;
+      std::vector<bool> RecHitFlag_kESTS15Sigmas;
 
-      std::vector<bool>* RecHitFlag_container[180] = {
-         RecHitFlag_kGood,
-         RecHitFlag_kPoorReco,
-         RecHitFlag_kOutOfTime,
-         RecHitFlag_kFaultyHardware,
-         RecHitFlag_kNoisy,
-         RecHitFlag_kPoorCalib,
-         RecHitFlag_kSaturated,
-         RecHitFlag_kLeadingEdgeRecovered,
-         RecHitFlag_kNeighboursRecovered,
-         RecHitFlag_kTowerRecovered,
-         RecHitFlag_kDead,
-         RecHitFlag_kKilled,
-         RecHitFlag_kTPSaturated,
-         RecHitFlag_kL1SpikeFlag,
-         RecHitFlag_kWeird,
-         RecHitFlag_kDiWeird,
-         RecHitFlag_kHasSwitchToGain6,
-         RecHitFlag_kHasSwitchToGain1
-      };
-
-      std::vector<bool>* RecHitESFlag_container[160] = {
-         RecHitFlag_kESGood,
-         RecHitFlag_kESDead,
-         RecHitFlag_kESHot,
-         RecHitFlag_kESPassBX,
-         RecHitFlag_kESTwoGoodRatios,
-         RecHitFlag_kESBadRatioFor12,
-         RecHitFlag_kESBadRatioFor23Upper,
-         RecHitFlag_kESBadRatioFor23Lower,
-         RecHitFlag_kESTS1Largest,
-         RecHitFlag_kESTS3Largest,
-         RecHitFlag_kESTS3Negative,
-         RecHitFlag_kESSaturated,
-         RecHitFlag_kESTS2Saturated,
-         RecHitFlag_kESTS3Saturated,
-         RecHitFlag_kESTS13Sigmas,
-         RecHitFlag_kESTS15Sigmas
-      };
 
 
       std::vector<float> Pho_pt_;
@@ -416,48 +378,49 @@ Photon_Skimmer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
             DetId Did   = detitr.first.rawId();
             shared_ptr<const CaloCellGeometry> geom = ecalEBGeom->getGeometry(Did);
             oneHit = recHitsEB->find( (detitr.first) ) ;
-            iEta[nPhotons_].push_back(DidEB->ieta());
-            iPhi[nPhotons_].push_back(DidEB->iphi());
-            Hit_Eta[nPhotons_].push_back(geom->etaPos());
-            Hit_Phi[nPhotons_].push_back(geom->phiPos());
-            Hit_X[nPhotons_].push_back(geom->getPosition().x());
-            Hit_Y[nPhotons_].push_back(geom->getPosition().y());
-            Hit_Z[nPhotons_].push_back(geom->getPosition().z());
+            iEta.push_back(DidEB->ieta());
+            iPhi.push_back(DidEB->iphi());
+            Hit_Eta.push_back(geom->etaPos());
+            Hit_Phi.push_back(geom->phiPos());
+            Hit_X.push_back(geom->getPosition().x());
+            Hit_Y.push_back(geom->getPosition().y());
+            Hit_Z.push_back(geom->getPosition().z());
          }
          else if(isEE){
             DidEE = new EEDetId(detitr.first.rawId());
             DetId Did   = detitr.first.rawId();
             shared_ptr<const CaloCellGeometry> geom = ecalEEGeom->getGeometry(Did);
             oneHit = recHitsEE->find( (detitr.first) ) ;
-            iEta[nPhotons_].push_back(DidEE->ix());
-            iPhi[nPhotons_].push_back(DidEE->iy());
-            Hit_Eta[nPhotons_].push_back(geom->etaPos());
-            Hit_Phi[nPhotons_].push_back(geom->phiPos());
-            Hit_X[nPhotons_].push_back(geom->getPosition().x());
-            Hit_Y[nPhotons_].push_back(geom->getPosition().y());
-            Hit_Z[nPhotons_].push_back(geom->getPosition().z());
+            iEta.push_back(DidEE->ix());
+            iPhi.push_back(DidEE->iy());
+            Hit_Eta.push_back(geom->etaPos());
+            Hit_Phi.push_back(geom->phiPos());
+            Hit_X.push_back(geom->getPosition().x());
+            Hit_Y.push_back(geom->getPosition().y());
+            Hit_Z.push_back(geom->getPosition().z());
          }
+	recoPhotonIdx.push_back(i);
 
-         RecHitEn[nPhotons_].push_back(oneHit->energy());
-         RecHitFrac[nPhotons_].push_back(detitr.second);
-         if(oneHit->checkFlag(EcalRecHit::kGood))	RecHitQuality[nPhotons_].push_back(1);
-         else RecHitQuality[nPhotons_].push_back(0);
+         RecHitEn.push_back(oneHit->energy());
+         RecHitFrac.push_back(detitr.second);
+         if(oneHit->checkFlag(EcalRecHit::kGood))	RecHitQuality.push_back(1);
+         else RecHitQuality.push_back(0);
 
-         for (int iflag=0; iflag<EcalRecHit::kHasSwitchToGain1+1; iflag++){
-            RecHitFlag_container[iflag][nPhotons_].push_back(oneHit->checkFlag(iflag));
-         }
+//         for (int iflag=0; iflag<EcalRecHit::kHasSwitchToGain1+1; iflag++){
+ //           RecHitFlag_container[iflag]->push_back(oneHit->checkFlag(iflag));
+  //       }
 
          if (DEBUG) cout<<endl<<" Reco Flags = "<<oneHit->recoFlag()<<endl;
 
-         if(oneHit->checkFlag(EcalRecHit::kHasSwitchToGain6)) 		RecHitGain[nPhotons_].push_back(6);
-         else if(oneHit->checkFlag(EcalRecHit::kHasSwitchToGain1))            RecHitGain[nPhotons_].push_back(1);
-         else RecHitGain[nPhotons_].push_back(12);
-         HitNoise[nPhotons_].push_back(_ped->find(detitr.first)->rms(1));
+         if(oneHit->checkFlag(EcalRecHit::kHasSwitchToGain6)) 		RecHitGain.push_back(6);
+         else if(oneHit->checkFlag(EcalRecHit::kHasSwitchToGain1))            RecHitGain.push_back(1);
+         else RecHitGain.push_back(12);
+         HitNoise.push_back(_ped->find(detitr.first)->rms(1));
       }  
 
       if(isEE){
-         GetESPlaneRecHits(*sc, geo, nPhotons_, 1);     
-         GetESPlaneRecHits(*sc, geo, nPhotons_, 2);
+         GetESPlaneRecHits(*sc, geo, i, 1);     
+         GetESPlaneRecHits(*sc, geo, i, 2);
       }
 
       nPhotons_++;
@@ -527,7 +490,7 @@ for (const reco::GenParticle& part : sortedParticles) {
 			matchedPhoton=i;
 		}
 		
-		}
+	}
 	if(matchedPhoton>=0)
 	{
 		matchedIdx[matchedPhoton]=1;
@@ -585,158 +548,58 @@ Photon_Skimmer::beginJob()
 {
    edm::Service<TFileService> fs;
    T=fs->make<TTree>("T","MyTuple");
-   T->Branch("iEtaPho1"  ,  &(iEta[0]));
-   T->Branch("iPhiPho1"  ,  &(iPhi[0]));
-   T->Branch("Hit_ES_Eta_Pho1"  ,  &(Hit_ES_Eta[0]));
-   T->Branch("Hit_ES_Phi_Pho1"  ,  &(Hit_ES_Phi[0]));
-   T->Branch("Hit_ES_X_Pho1"  ,  &(Hit_ES_X[0]));
-   T->Branch("Hit_ES_Y_Pho1"  ,  &(Hit_ES_Y[0]));
-   T->Branch("Hit_ES_Z_Pho1"  ,  &(Hit_ES_Z[0]));
-   T->Branch("ES_RecHitEnPho1"  ,  &(ES_RecHitEn[0]));
+   T->Branch("iEta"  ,  &(iEta));
+   T->Branch("iPhi"  ,  &(iPhi));
+   T->Branch("Hit_ES_Eta"  ,  &(Hit_ES_Eta));
+   T->Branch("Hit_ES_Phi"  ,  &(Hit_ES_Phi));
+   T->Branch("Hit_ES_X"  ,  &(Hit_ES_X));
+   T->Branch("Hit_ES_Y"  ,  &(Hit_ES_Y));
+   T->Branch("Hit_ES_Z"  ,  &(Hit_ES_Z));
+   T->Branch("ES_RecHitEn"  ,  &(ES_RecHitEn));
+	T->Branch("recoPhotonIdx",&(recoPhotonIdx));
 
-   T->Branch("Hit_Eta_Pho1"  ,  &(Hit_Eta[0]));
-   T->Branch("Hit_Phi_Pho1"  ,  &(Hit_Phi[0]));
-   T->Branch("Hit_X_Pho1"  ,  &(Hit_X[0]));
-   T->Branch("Hit_Y_Pho1"  ,  &(Hit_Y[0]));
-   T->Branch("Hit_Z_Pho1"  ,  &(Hit_Z[0]));
-   T->Branch("RecHitEnPho1"  ,  &(RecHitEn[0]));
-   T->Branch("RecHitFracPho1"  ,  &(RecHitFrac[0]));
-   T->Branch("RecHitGain1"  ,  &(RecHitGain[0]));
-   T->Branch("RecHitQuality1", &(RecHitQuality[0]));
-   T->Branch("HitNoisePho1", &(HitNoise[0]));
+   T->Branch("Hit_Eta"  ,  &(Hit_Eta));
+   T->Branch("Hit_Phi"  ,  &(Hit_Phi));
+   T->Branch("Hit_X"  ,  &(Hit_X));
+   T->Branch("Hit_Y"  ,  &(Hit_Y));
+   T->Branch("Hit_Z"  ,  &(Hit_Z));
+   T->Branch("RecHitEn"  ,  &(RecHitEn));
+   T->Branch("RecHitFrac"  ,  &(RecHitFrac));
+   T->Branch("RecHitGain1"  ,  &(RecHitGain));
+   T->Branch("RecHitQuality1", &(RecHitQuality));
+   T->Branch("HitNoise", &(HitNoise));
 
-   T->Branch("RecHitFlag_kGood_pho1", &(RecHitFlag_kGood[0]));
-   T->Branch("RecHitFlag_kPoorReco_pho1", &(RecHitFlag_kPoorReco[0]));
-   T->Branch("RecHitFlag_kOutOfTime_pho1", &(RecHitFlag_kOutOfTime[0]));
-   T->Branch("RecHitFlag_kFaultyHardware_pho1", &(RecHitFlag_kFaultyHardware[0]));
-   T->Branch("RecHitFlag_kNoisy_pho1", &(RecHitFlag_kNoisy[0]));
-   T->Branch("RecHitFlag_kPoorCalib_pho1", &(RecHitFlag_kPoorCalib[0]));
-   T->Branch("RecHitFlag_kSaturated_pho1", &(RecHitFlag_kSaturated[0]));
-   T->Branch("RecHitFlag_kLeadingEdgeRecovered_pho1", &(RecHitFlag_kLeadingEdgeRecovered[0]));
-   T->Branch("RecHitFlag_kNeighboursRecovered_pho1", &(RecHitFlag_kNeighboursRecovered[0]));
-   T->Branch("RecHitFlag_kTowerRecovered_pho1", &(RecHitFlag_kTowerRecovered[0]));
-   T->Branch("RecHitFlag_kDead_pho1", &(RecHitFlag_kDead[0]));
-   T->Branch("RecHitFlag_kKilled_pho1", &(RecHitFlag_kKilled[0]));
-   T->Branch("RecHitFlag_kTPSaturated_pho1", &(RecHitFlag_kTPSaturated[0]));
-   T->Branch("RecHitFlag_kL1SpikeFlag_pho1", &(RecHitFlag_kL1SpikeFlag[0]));
-   T->Branch("RecHitFlag_kWeird_pho1", &(RecHitFlag_kWeird[0]));
-   T->Branch("RecHitFlag_kDiWeird_pho1", &(RecHitFlag_kDiWeird[0]));
-   T->Branch("RecHitFlag_kHasSwitchToGain6_pho1", &(RecHitFlag_kHasSwitchToGain6[0]));
-   T->Branch("RecHitFlag_kHasSwitchToGain1_pho1", &(RecHitFlag_kHasSwitchToGain1[0]));
+   T->Branch("RecHitFlag_kGood", &(RecHitFlag_kGood));
+   T->Branch("RecHitFlag_kPoorReco", &(RecHitFlag_kPoorReco));
+   T->Branch("RecHitFlag_kOutOfTime", &(RecHitFlag_kOutOfTime));
+   T->Branch("RecHitFlag_kFaultyHardware", &(RecHitFlag_kFaultyHardware));
+   T->Branch("RecHitFlag_kNoisy", &(RecHitFlag_kNoisy));
+   T->Branch("RecHitFlag_kPoorCalib", &(RecHitFlag_kPoorCalib));
+   T->Branch("RecHitFlag_kSaturated", &(RecHitFlag_kSaturated));
+   T->Branch("RecHitFlag_kLeadingEdgeRecovered", &(RecHitFlag_kLeadingEdgeRecovered));
+   T->Branch("RecHitFlag_kNeighboursRecovered", &(RecHitFlag_kNeighboursRecovered));
+   T->Branch("RecHitFlag_kTowerRecovered", &(RecHitFlag_kTowerRecovered));
+   T->Branch("RecHitFlag_kDead", &(RecHitFlag_kDead));
+   T->Branch("RecHitFlag_kKilled", &(RecHitFlag_kKilled));
+   T->Branch("RecHitFlag_kTPSaturated", &(RecHitFlag_kTPSaturated));
+   T->Branch("RecHitFlag_kL1SpikeFlag", &(RecHitFlag_kL1SpikeFlag));
+   T->Branch("RecHitFlag_kWeird", &(RecHitFlag_kWeird));
+   T->Branch("RecHitFlag_kDiWeird", &(RecHitFlag_kDiWeird));
+   T->Branch("RecHitFlag_kHasSwitchToGain6", &(RecHitFlag_kHasSwitchToGain6));
+   T->Branch("RecHitFlag_kHasSwitchToGain1", &(RecHitFlag_kHasSwitchToGain1));
 
-   T->Branch("RecHitFlag_kESGood_pho1", &(RecHitFlag_kESGood[0]));
-   T->Branch("RecHitFlag_kESDead_pho1", &(RecHitFlag_kESDead[0]));
-   T->Branch("RecHitFlag_kESHot_pho1", &(RecHitFlag_kESHot[0]));
-   T->Branch("RecHitFlag_kESPassBX_pho1", &(RecHitFlag_kESPassBX[0]));
-   T->Branch("RecHitFlag_kESTwoGoodRatios_pho1", &(RecHitFlag_kESTwoGoodRatios[0]));
-   T->Branch("RecHitFlag_kESBadRatioFor12_pho1", &(RecHitFlag_kESBadRatioFor12[0]));
-   T->Branch("RecHitFlag_kESBadRatioFor23Upper_pho1", &(RecHitFlag_kESBadRatioFor23Upper[0]));
-   T->Branch("RecHitFlag_kESBadRatioFor23Lower_pho1", &(RecHitFlag_kESBadRatioFor23Lower[0]));
-   T->Branch("RecHitFlag_kESTS1Largest_pho1", &(RecHitFlag_kESTS1Largest[0]));
-   T->Branch("RecHitFlag_kESTS3Largest_pho1", &(RecHitFlag_kESTS3Largest[0]));
-   T->Branch("RecHitFlag_kESTS3Negative_pho1", &(RecHitFlag_kESTS3Negative[0]));
+   T->Branch("RecHitFlag_kESGood", &(RecHitFlag_kESGood));
+   T->Branch("RecHitFlag_kESDead", &(RecHitFlag_kESDead));
+   T->Branch("RecHitFlag_kESHot", &(RecHitFlag_kESHot));
+   T->Branch("RecHitFlag_kESPassBX", &(RecHitFlag_kESPassBX));
+   T->Branch("RecHitFlag_kESTwoGoodRatios", &(RecHitFlag_kESTwoGoodRatios));
+   T->Branch("RecHitFlag_kESBadRatioFor12", &(RecHitFlag_kESBadRatioFor12));
+   T->Branch("RecHitFlag_kESBadRatioFor23Upper", &(RecHitFlag_kESBadRatioFor23Upper));
+   T->Branch("RecHitFlag_kESBadRatioFor23Lower", &(RecHitFlag_kESBadRatioFor23Lower));
+   T->Branch("RecHitFlag_kESTS1Largest", &(RecHitFlag_kESTS1Largest));
+   T->Branch("RecHitFlag_kESTS3Largest", &(RecHitFlag_kESTS3Largest));
+   T->Branch("RecHitFlag_kESTS3Negative", &(RecHitFlag_kESTS3Negative));
 
-   T->Branch("iEtaPho2"  ,  &(iEta[1]));
-   T->Branch("iPhiPho2"  ,  &(iPhi[1]));
-   T->Branch("Hit_ES_Eta_Pho2"  ,  &(Hit_ES_Eta[1]));
-   T->Branch("Hit_ES_Phi_Pho2"  ,  &(Hit_ES_Phi[1]));
-   T->Branch("Hit_ES_X_Pho2"  ,  &(Hit_ES_X[1]));
-   T->Branch("Hit_ES_Y_Pho2"  ,  &(Hit_ES_Y[1]));
-   T->Branch("Hit_ES_Z_Pho2"  ,  &(Hit_ES_Z[1]));
-   T->Branch("ES_RecHitEnPho2"  ,  &(ES_RecHitEn[1]));
-
-   T->Branch("Hit_Eta_Pho2"  ,  &(Hit_Eta[1]));
-   T->Branch("Hit_Phi_Pho2"  ,  &(Hit_Phi[1]));
-   T->Branch("Hit_X_Pho2"  ,  &(Hit_X[1]));
-   T->Branch("Hit_Y_Pho2"  ,  &(Hit_Y[1]));
-   T->Branch("Hit_Z_Pho2"  ,  &(Hit_Z[1]));
-   T->Branch("RecHitEnPho2"  ,  &(RecHitEn[1]));
-   T->Branch("RecHitFracPho2"  ,  &(RecHitFrac[1]));
-   T->Branch("RecHitGain2"  ,  &(RecHitGain[1]));
-   T->Branch("RecHitQuality2", &(RecHitQuality[1]));
-   T->Branch("HitNoisePho2", &(HitNoise[1]));
-
-   T->Branch("RecHitFlag_kGood_pho2", &(RecHitFlag_kGood[1]));
-   T->Branch("RecHitFlag_kPoorReco_pho2", &(RecHitFlag_kPoorReco[1]));
-   T->Branch("RecHitFlag_kOutOfTime_pho2", &(RecHitFlag_kOutOfTime[1]));
-   T->Branch("RecHitFlag_kFaultyHardware_pho2", &(RecHitFlag_kFaultyHardware[1]));
-   T->Branch("RecHitFlag_kNoisy_pho2", &(RecHitFlag_kNoisy[1]));
-   T->Branch("RecHitFlag_kPoorCalib_pho2", &(RecHitFlag_kPoorCalib[1]));
-   T->Branch("RecHitFlag_kSaturated_pho2", &(RecHitFlag_kSaturated[1]));
-   T->Branch("RecHitFlag_kLeadingEdgeRecovered_pho2", &(RecHitFlag_kLeadingEdgeRecovered[1]));
-   T->Branch("RecHitFlag_kNeighboursRecovered_pho2", &(RecHitFlag_kNeighboursRecovered[1]));
-   T->Branch("RecHitFlag_kTowerRecovered_pho2", &(RecHitFlag_kTowerRecovered[1]));
-   T->Branch("RecHitFlag_kDead_pho2", &(RecHitFlag_kDead[1]));
-   T->Branch("RecHitFlag_kKilled_pho2", &(RecHitFlag_kKilled[1]));
-   T->Branch("RecHitFlag_kTPSaturated_pho2", &(RecHitFlag_kTPSaturated[1]));
-   T->Branch("RecHitFlag_kL1SpikeFlag_pho2", &(RecHitFlag_kL1SpikeFlag[1]));
-   T->Branch("RecHitFlag_kWeird_pho2", &(RecHitFlag_kWeird[1]));
-   T->Branch("RecHitFlag_kDiWeird_pho2", &(RecHitFlag_kDiWeird[1]));
-   T->Branch("RecHitFlag_kHasSwitchToGain6_pho2", &(RecHitFlag_kHasSwitchToGain6[1]));
-   T->Branch("RecHitFlag_kHasSwitchToGain1_pho2", &(RecHitFlag_kHasSwitchToGain1[1]));
-
-   T->Branch("RecHitFlag_kESGood_pho2", &(RecHitFlag_kESGood[1]));
-   T->Branch("RecHitFlag_kESDead_pho2", &(RecHitFlag_kESDead[1]));
-   T->Branch("RecHitFlag_kESHot_pho2", &(RecHitFlag_kESHot[1]));
-   T->Branch("RecHitFlag_kESPassBX_pho2", &(RecHitFlag_kESPassBX[1]));
-   T->Branch("RecHitFlag_kESTwoGoodRatios_pho2", &(RecHitFlag_kESTwoGoodRatios[1]));
-   T->Branch("RecHitFlag_kESBadRatioFor12_pho2", &(RecHitFlag_kESBadRatioFor12[1]));
-   T->Branch("RecHitFlag_kESBadRatioFor23Upper_pho2", &(RecHitFlag_kESBadRatioFor23Upper[1]));
-   T->Branch("RecHitFlag_kESBadRatioFor23Lower_pho2", &(RecHitFlag_kESBadRatioFor23Lower[1]));
-   T->Branch("RecHitFlag_kESTS1Largest_pho2", &(RecHitFlag_kESTS1Largest[1]));
-   T->Branch("RecHitFlag_kESTS3Largest_pho2", &(RecHitFlag_kESTS3Largest[1]));
-   T->Branch("RecHitFlag_kESTS3Negative_pho2", &(RecHitFlag_kESTS3Negative[1]));
-
-   T->Branch("iEtaPho3"  ,  &(iEta[2]));
-   T->Branch("iPhiPho3"  ,  &(iPhi[2]));
-   T->Branch("Hit_ES_Eta_Pho3"  ,  &(Hit_ES_Eta[2]));
-   T->Branch("Hit_ES_Phi_Pho3"  ,  &(Hit_ES_Phi[2]));
-   T->Branch("Hit_ES_X_Pho3"  ,  &(Hit_ES_X[2]));
-   T->Branch("Hit_ES_Y_Pho3"  ,  &(Hit_ES_Y[2]));
-   T->Branch("Hit_ES_Z_Pho3"  ,  &(Hit_ES_Z[2]));
-   T->Branch("ES_RecHitEnPho3"  ,  &(ES_RecHitEn[2]));
-
-   T->Branch("Hit_Eta_Pho3"  ,  &(Hit_Eta[2]));
-   T->Branch("Hit_Phi_Pho3"  ,  &(Hit_Phi[2]));
-   T->Branch("Hit_X_Pho3"  ,  &(Hit_X[2]));
-   T->Branch("Hit_Y_Pho3"  ,  &(Hit_Y[2]));
-   T->Branch("Hit_Z_Pho3"  ,  &(Hit_Z[2]));
-   T->Branch("RecHitEnPho3"  ,  &(RecHitEn[2]));
-   T->Branch("RecHitFracPho3"  ,  &(RecHitFrac[2]));
-   T->Branch("RecHitGain2"  ,  &(RecHitGain[2]));
-   T->Branch("RecHitQuality2", &(RecHitQuality[2]));
-   T->Branch("HitNoisePho3", &(HitNoise[2]));
-
-   T->Branch("RecHitFlag_kGood_pho3", &(RecHitFlag_kGood[2]));
-   T->Branch("RecHitFlag_kPoorReco_pho3", &(RecHitFlag_kPoorReco[2]));
-   T->Branch("RecHitFlag_kOutOfTime_pho3", &(RecHitFlag_kOutOfTime[2]));
-   T->Branch("RecHitFlag_kFaultyHardware_pho3", &(RecHitFlag_kFaultyHardware[2]));
-   T->Branch("RecHitFlag_kNoisy_pho3", &(RecHitFlag_kNoisy[2]));
-   T->Branch("RecHitFlag_kPoorCalib_pho3", &(RecHitFlag_kPoorCalib[2]));
-   T->Branch("RecHitFlag_kSaturated_pho3", &(RecHitFlag_kSaturated[2]));
-   T->Branch("RecHitFlag_kLeadingEdgeRecovered_pho3", &(RecHitFlag_kLeadingEdgeRecovered[2]));
-   T->Branch("RecHitFlag_kNeighboursRecovered_pho3", &(RecHitFlag_kNeighboursRecovered[2]));
-   T->Branch("RecHitFlag_kTowerRecovered_pho3", &(RecHitFlag_kTowerRecovered[2]));
-   T->Branch("RecHitFlag_kDead_pho3", &(RecHitFlag_kDead[2]));
-   T->Branch("RecHitFlag_kKilled_pho3", &(RecHitFlag_kKilled[2]));
-   T->Branch("RecHitFlag_kTPSaturated_pho3", &(RecHitFlag_kTPSaturated[2]));
-   T->Branch("RecHitFlag_kL1SpikeFlag_pho3", &(RecHitFlag_kL1SpikeFlag[2]));
-   T->Branch("RecHitFlag_kWeird_pho3", &(RecHitFlag_kWeird[2]));
-   T->Branch("RecHitFlag_kDiWeird_pho3", &(RecHitFlag_kDiWeird[2]));
-   T->Branch("RecHitFlag_kHasSwitchToGain6_pho3", &(RecHitFlag_kHasSwitchToGain6[2]));
-   T->Branch("RecHitFlag_kHasSwitchToGain1_pho3", &(RecHitFlag_kHasSwitchToGain1[2]));
-
-   T->Branch("RecHitFlag_kESGood_pho3", &(RecHitFlag_kESGood[2]));
-   T->Branch("RecHitFlag_kESDead_pho3", &(RecHitFlag_kESDead[2]));
-   T->Branch("RecHitFlag_kESHot_pho3", &(RecHitFlag_kESHot[2]));
-   T->Branch("RecHitFlag_kESPassBX_pho3", &(RecHitFlag_kESPassBX[2]));
-   T->Branch("RecHitFlag_kESTwoGoodRatios_pho3", &(RecHitFlag_kESTwoGoodRatios[2]));
-   T->Branch("RecHitFlag_kESBadRatioFor12_pho3", &(RecHitFlag_kESBadRatioFor12[2]));
-   T->Branch("RecHitFlag_kESBadRatioFor23Upper_pho3", &(RecHitFlag_kESBadRatioFor23Upper[2]));
-   T->Branch("RecHitFlag_kESBadRatioFor23Lower_pho3", &(RecHitFlag_kESBadRatioFor23Lower[2]));
-   T->Branch("RecHitFlag_kESTS1Largest_pho3", &(RecHitFlag_kESTS1Largest[2]));
-   T->Branch("RecHitFlag_kESTS3Largest_pho3", &(RecHitFlag_kESTS3Largest[2]));
-   T->Branch("RecHitFlag_kESTS3Negative_pho3", &(RecHitFlag_kESTS3Negative[2]));
 
 	T->Branch("DrminLead",&drminLead);
 	T->Branch("DrminSubLead",&drminSubLead);
@@ -821,19 +684,20 @@ void Photon_Skimmer::GetESPlaneRecHits(const reco::SuperCluster& sc, const CaloG
                //                                        std::cout << " ES energy = " << esItr->energy() << " pf energy = " << (*rh).second << std::endl;
                if((int) rhid.plane() == (int) planeIndex) {
                   std::shared_ptr<const CaloCellGeometry> geom = ecalESGeom->getGeometry(rhid);
-                  Hit_ES_Eta[phonum].push_back( geom->etaPos() );
-                  Hit_ES_Phi[phonum].push_back( geom->phiPos() );
-                  Hit_ES_X[phonum].push_back( geom->getPosition().x() );
-                  Hit_ES_Y[phonum].push_back( geom->getPosition().y() );
-                  Hit_ES_Z[phonum].push_back( geom->getPosition().z() ) ;
-                  ES_RecHitEn[phonum].push_back(esItr->energy());
+                  Hit_ES_Eta.push_back( geom->etaPos() );
+                  Hit_ES_Phi.push_back( geom->phiPos() );
+                  Hit_ES_X.push_back( geom->getPosition().x() );
+                  Hit_ES_Y.push_back( geom->getPosition().y() );
+                  Hit_ES_Z.push_back( geom->getPosition().z() ) ;
+                  ES_RecHitEn.push_back(esItr->energy());
+	recoPhotonIdx.push_back(phonum);
 
-                  for (int iflag=EcalRecHit::kESGood; iflag<EcalRecHit::kESTS15Sigmas+1; iflag++){
-                     bool check_bit = esItr->checkFlag(iflag);
-                     RecHitESFlag_container[iflag][phonum].push_back(check_bit);
+            //      for (int iflag=EcalRecHit::kESGood; iflag<EcalRecHit::kESTS15Sigmas+1; iflag++){
+             //        bool check_bit = esItr->checkFlag(iflag);
+              //       RecHitESFlag_container[iflag]->push_back(check_bit);
 
-                     if (DEBUG) cout<< "ES Flag: "<<iflag<<endl;
-                  }
+               //      if (DEBUG) cout<< "ES Flag: "<<iflag<<endl;
+                //  }
                   //						std::cout << "Preshower" <<std::setprecision(4) << " Eta = " <<geom->etaPos() << " : " <<" Phi = "<< geom->phiPos() << " 3D position" << geom->getPosition().z() << std::endl;
                   RawenergyPlane += esItr->energy();
                   pfRawenergyPlane += rh->second;
@@ -858,174 +722,65 @@ void Photon_Skimmer::ClearTreeVectors()
 drminSubLead.clear();
 drminOther.clear();
    nPhotons_ = 0;
-   iEta[0].clear();
-   iPhi[0].clear();
+   iEta.clear();
+   iPhi.clear();
+   recoPhotonIdx.clear();
 
 
-   Hit_ES_Eta[0].clear();
-   Hit_ES_Phi[0].clear();
-   Hit_ES_X[0].clear();
-   Hit_ES_Y[0].clear();
-   Hit_ES_Z[0].clear();
-   ES_RecHitEn[0].clear();
+   Hit_ES_Eta.clear();
+   Hit_ES_Phi.clear();
+   Hit_ES_X.clear();
+   Hit_ES_Y.clear();
+   Hit_ES_Z.clear();
+   ES_RecHitEn.clear();
 
 
-   Hit_Eta[0].clear();
-   Hit_Phi[0].clear();
-   Hit_X[0].clear();
-   Hit_Y[0].clear();
-   Hit_Z[0].clear();
-   RecHitEn[0].clear();
-   RecHitFrac[0].clear();
-   RecHitGain[0].clear();
-   RecHitQuality[0].clear();
-   HitNoise[0].clear();
-   iEta[1].clear();
-   iPhi[1].clear();
+   Hit_Eta.clear();
+   Hit_Phi.clear();
+   Hit_X.clear();
+   Hit_Y.clear();
+   Hit_Z.clear();
+   RecHitEn.clear();
+   RecHitFrac.clear();
+   RecHitGain.clear();
+   RecHitQuality.clear();
+   HitNoise.clear();
 
-   RecHitFlag_kGood[0].clear();
-   RecHitFlag_kPoorReco[0].clear();
-   RecHitFlag_kOutOfTime[0].clear();
-   RecHitFlag_kFaultyHardware[0].clear();
-   RecHitFlag_kNoisy[0].clear();
-   RecHitFlag_kPoorCalib[0].clear();
-   RecHitFlag_kSaturated[0].clear();
-   RecHitFlag_kLeadingEdgeRecovered[0].clear();
-   RecHitFlag_kNeighboursRecovered[0].clear();
-   RecHitFlag_kTowerRecovered[0].clear();
-   RecHitFlag_kDead[0].clear();
-   RecHitFlag_kKilled[0].clear();
-   RecHitFlag_kTPSaturated[0].clear();
-   RecHitFlag_kL1SpikeFlag[0].clear();
-   RecHitFlag_kWeird[0].clear();
-   RecHitFlag_kDiWeird[0].clear();
-   RecHitFlag_kHasSwitchToGain6[0].clear();
-   RecHitFlag_kHasSwitchToGain1[0].clear();
+   RecHitFlag_kGood.clear();
+   RecHitFlag_kPoorReco.clear();
+   RecHitFlag_kOutOfTime.clear();
+   RecHitFlag_kFaultyHardware.clear();
+   RecHitFlag_kNoisy.clear();
+   RecHitFlag_kPoorCalib.clear();
+   RecHitFlag_kSaturated.clear();
+   RecHitFlag_kLeadingEdgeRecovered.clear();
+   RecHitFlag_kNeighboursRecovered.clear();
+   RecHitFlag_kTowerRecovered.clear();
+   RecHitFlag_kDead.clear();
+   RecHitFlag_kKilled.clear();
+   RecHitFlag_kTPSaturated.clear();
+   RecHitFlag_kL1SpikeFlag.clear();
+   RecHitFlag_kWeird.clear();
+   RecHitFlag_kDiWeird.clear();
+   RecHitFlag_kHasSwitchToGain6.clear();
+   RecHitFlag_kHasSwitchToGain1.clear();
 
-   RecHitFlag_kESGood[0].clear();
-   RecHitFlag_kESDead[0].clear();
-   RecHitFlag_kESHot[0].clear();
-   RecHitFlag_kESPassBX[0].clear();
-   RecHitFlag_kESTwoGoodRatios[0].clear();
-   RecHitFlag_kESBadRatioFor12[0].clear();
-   RecHitFlag_kESBadRatioFor23Upper[0].clear();
-   RecHitFlag_kESBadRatioFor23Lower[0].clear();
-   RecHitFlag_kESTS1Largest[0].clear();
-   RecHitFlag_kESTS3Largest[0].clear();
-   RecHitFlag_kESTS3Negative[0].clear();
-   RecHitFlag_kESSaturated[0].clear();
-   RecHitFlag_kESTS2Saturated[0].clear();
-   RecHitFlag_kESTS3Saturated[0].clear();
-   RecHitFlag_kESTS13Sigmas[0].clear();
-   RecHitFlag_kESTS15Sigmas[0].clear();
-
-   Hit_ES_Eta[1].clear();
-   Hit_ES_Phi[1].clear();
-   Hit_ES_X[1].clear();
-   Hit_ES_Y[1].clear();
-   Hit_ES_Z[1].clear();
-   ES_RecHitEn[1].clear();
-
-   Hit_Eta[1].clear();
-   Hit_Phi[1].clear();
-   Hit_X[1].clear();
-   Hit_Y[1].clear();
-   Hit_Z[1].clear();
-   RecHitEn[1].clear();
-   RecHitFrac[1].clear();
-   RecHitGain[1].clear();
-   RecHitQuality[1].clear();
-   HitNoise[1].clear();
-
-   RecHitFlag_kGood[1].clear();
-   RecHitFlag_kPoorReco[1].clear();
-   RecHitFlag_kOutOfTime[1].clear();
-   RecHitFlag_kFaultyHardware[1].clear();
-   RecHitFlag_kNoisy[1].clear();
-   RecHitFlag_kPoorCalib[1].clear();
-   RecHitFlag_kSaturated[1].clear();
-   RecHitFlag_kLeadingEdgeRecovered[1].clear();
-   RecHitFlag_kNeighboursRecovered[1].clear();
-   RecHitFlag_kTowerRecovered[1].clear();
-   RecHitFlag_kDead[1].clear();
-   RecHitFlag_kKilled[1].clear();
-   RecHitFlag_kTPSaturated[1].clear();
-   RecHitFlag_kL1SpikeFlag[1].clear();
-   RecHitFlag_kWeird[1].clear();
-   RecHitFlag_kDiWeird[1].clear();
-   RecHitFlag_kHasSwitchToGain6[1].clear();
-   RecHitFlag_kHasSwitchToGain1[1].clear();
-
-   RecHitFlag_kESGood[1].clear();
-   RecHitFlag_kESDead[1].clear();
-   RecHitFlag_kESHot[1].clear();
-   RecHitFlag_kESPassBX[1].clear();
-   RecHitFlag_kESTwoGoodRatios[1].clear();
-   RecHitFlag_kESBadRatioFor12[1].clear();
-   RecHitFlag_kESBadRatioFor23Upper[1].clear();
-   RecHitFlag_kESBadRatioFor23Lower[1].clear();
-   RecHitFlag_kESTS1Largest[1].clear();
-   RecHitFlag_kESTS3Largest[1].clear();
-   RecHitFlag_kESTS3Negative[1].clear();
-   RecHitFlag_kESSaturated[1].clear();
-   RecHitFlag_kESTS2Saturated[1].clear();
-   RecHitFlag_kESTS3Saturated[1].clear();
-   RecHitFlag_kESTS13Sigmas[1].clear();
-   RecHitFlag_kESTS15Sigmas[1].clear();
-
-   Hit_ES_Eta[2].clear();
-   Hit_ES_Phi[2].clear();
-   Hit_ES_X[2].clear();
-   Hit_ES_Y[2].clear();
-   Hit_ES_Z[2].clear();
-   ES_RecHitEn[2].clear();
-
-   Hit_Eta[2].clear();
-   Hit_Phi[2].clear();
-   Hit_X[2].clear();
-   Hit_Y[2].clear();
-   Hit_Z[2].clear();
-   RecHitEn[2].clear();
-   RecHitFrac[2].clear();
-   RecHitGain[2].clear();
-   RecHitQuality[2].clear();
-   HitNoise[2].clear();
-
-   RecHitFlag_kGood[2].clear();
-   RecHitFlag_kPoorReco[2].clear();
-   RecHitFlag_kOutOfTime[2].clear();
-   RecHitFlag_kFaultyHardware[2].clear();
-   RecHitFlag_kNoisy[2].clear();
-   RecHitFlag_kPoorCalib[2].clear();
-   RecHitFlag_kSaturated[2].clear();
-   RecHitFlag_kLeadingEdgeRecovered[2].clear();
-   RecHitFlag_kNeighboursRecovered[2].clear();
-   RecHitFlag_kTowerRecovered[2].clear();
-   RecHitFlag_kDead[2].clear();
-   RecHitFlag_kKilled[2].clear();
-   RecHitFlag_kTPSaturated[2].clear();
-   RecHitFlag_kL1SpikeFlag[2].clear();
-   RecHitFlag_kWeird[2].clear();
-   RecHitFlag_kDiWeird[2].clear();
-   RecHitFlag_kHasSwitchToGain6[2].clear();
-   RecHitFlag_kHasSwitchToGain1[2].clear();
-
-   RecHitFlag_kESGood[2].clear();
-   RecHitFlag_kESDead[2].clear();
-   RecHitFlag_kESHot[2].clear();
-   RecHitFlag_kESPassBX[2].clear();
-   RecHitFlag_kESTwoGoodRatios[2].clear();
-   RecHitFlag_kESBadRatioFor12[2].clear();
-   RecHitFlag_kESBadRatioFor23Upper[2].clear();
-   RecHitFlag_kESBadRatioFor23Lower[2].clear();
-   RecHitFlag_kESTS1Largest[2].clear();
-   RecHitFlag_kESTS3Largest[2].clear();
-   RecHitFlag_kESTS3Negative[2].clear();
-   RecHitFlag_kESSaturated[2].clear();
-   RecHitFlag_kESTS2Saturated[2].clear();
-   RecHitFlag_kESTS3Saturated[2].clear();
-   RecHitFlag_kESTS13Sigmas[2].clear();
-   RecHitFlag_kESTS15Sigmas[2].clear();
+   RecHitFlag_kESGood.clear();
+   RecHitFlag_kESDead.clear();
+   RecHitFlag_kESHot.clear();
+   RecHitFlag_kESPassBX.clear();
+   RecHitFlag_kESTwoGoodRatios.clear();
+   RecHitFlag_kESBadRatioFor12.clear();
+   RecHitFlag_kESBadRatioFor23Upper.clear();
+   RecHitFlag_kESBadRatioFor23Lower.clear();
+   RecHitFlag_kESTS1Largest.clear();
+   RecHitFlag_kESTS3Largest.clear();
+   RecHitFlag_kESTS3Negative.clear();
+   RecHitFlag_kESSaturated.clear();
+   RecHitFlag_kESTS2Saturated.clear();
+   RecHitFlag_kESTS3Saturated.clear();
+   RecHitFlag_kESTS13Sigmas.clear();
+   RecHitFlag_kESTS15Sigmas.clear();
 
    Pho_pt_.clear();
    Pho_eta_.clear();
