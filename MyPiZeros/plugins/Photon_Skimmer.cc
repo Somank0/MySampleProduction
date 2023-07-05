@@ -118,8 +118,8 @@ class Photon_Skimmer : public edm::one::EDAnalyzer<edm::one::SharedResources>  {
 
 
       //   cluster tools
-      EcalClusterLazyTools *clustertools;
       EcalClusterLazyTools *clustertools_NoZS;
+      EcalClusterLazyTools *clustertools;
       edm::ESHandle<EcalPedestals> _ped;
 
       //   Identify if the SC lies in EB OR EE based on its seed
@@ -387,7 +387,7 @@ Photon_Skimmer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
    ///////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-   clustertools_NoZS = new EcalClusterLazyTools(iEvent, iSetup, recHitCollectionEBToken_, recHitCollectionEEToken_);
+   clustertools = new EcalClusterLazyTools(iEvent, iSetup, recHitCollectionEBToken_, recHitCollectionEEToken_);
 
    //Clear all vectors to be written to the tree
    ClearTreeVectors();
@@ -395,8 +395,8 @@ Photon_Skimmer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 
    ///////////////////////////Fill Electron/Photon related stuff/////////////////////////////////////////////////////
    nPhotons_ = 0;
-   const EcalRecHitCollection *recHitsEB = clustertools_NoZS->getEcalEBRecHitCollection();
-   const EcalRecHitCollection *recHitsEE = clustertools_NoZS->getEcalEERecHitCollection();
+   const EcalRecHitCollection *recHitsEB = clustertools->getEcalEBRecHitCollection();
+   const EcalRecHitCollection *recHitsEE = clustertools->getEcalEERecHitCollection();
 	
    for (size_t i = 0; i < photons->size(); ++i){
       //if (nPhotons_ == 2) break;
@@ -570,7 +570,7 @@ else
 
 
    T->Fill(); // Write out the events
-   delete clustertools_NoZS;
+   //delete clustertools_NoZS;
 
 #ifdef THIS_IS_AN_EVENTSETUP_EXAMPLE
    ESHandle<SetupData> pSetup;
