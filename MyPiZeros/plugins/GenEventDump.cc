@@ -96,7 +96,7 @@ GenEventDump::GenEventDump(const edm::ParameterSet &iConfig)
 #ifdef THIS_IS_AN_EVENTSETUP_EXAMPLE
   setupDataToken_ = esConsumes<SetupData, SetupRecord>();
 #endif
-  photonsToken_ = mayConsume<edm::View<reco::Photon>>(iConfig.getParameter<edm::InputTag>("photons"));
+  //photonsToken_ = mayConsume<edm::View<reco::Photon>>(iConfig.getParameter<edm::InputTag>("photons"));
   genParticlesToken_ = mayConsume<edm::View<reco::GenParticle>>(iConfig.getParameter<edm::InputTag>("genParticles"));
   usesResource("TFileService");
   // now do what ever initialization is needed
@@ -118,7 +118,7 @@ void GenEventDump::analyze(const edm::Event &iEvent, const edm::EventSetup &iSet
   using namespace edm;
 
   iEvent.getByToken(genParticlesToken_, genParticles);
-  iEvent.getByToken(photonsToken_, photons);
+  //iEvent.getByToken(photonsToken_, photons);
   run = iEvent.id().run();
   event = iEvent.id().event();
   lumi = iEvent.luminosityBlock();
@@ -133,7 +133,7 @@ void GenEventDump::analyze(const edm::Event &iEvent, const edm::EventSetup &iSet
     std::cout << "pdgID: " << part->pdgId() << " , Status: " << (part->status()) << " , Pt: " << part->pt()
               << " , Eta: " << part->eta() << " , Phi: " << part->phi() << " , Energy: " << part->energy();
     if (mother) {
-    std::cout << " , MotherID: "<<mother->pdgId() << " , MotherStatus: "<<mother->status()<<" , MotherPt: "<<mother->pt();
+    std::cout << " , MotherID: "<<mother->pdgId() << " , MotherStatus: "<<mother->status()<<" , MotherPt: "<<mother->pt()<<" , MotherMass: "<<mother->mass();
 //    if (mother) {
 //      std::cout << "Mother Info" << std::endl;
 //      std::cout << "pdgID: " << mother->pdgId() << " , Status: " << (mother->status()) << " , Pt: " << mother->pt()
@@ -143,6 +143,7 @@ void GenEventDump::analyze(const edm::Event &iEvent, const edm::EventSetup &iSet
     }
     std::cout<<std::endl;
   }
+/**
   std::cout << "-------------------------------------" << std::endl;
   std::cout << "Size of reco photons: " << photons->size() << std::endl;
   std::cout << "-------------------------------------" << std::endl;
@@ -154,6 +155,7 @@ void GenEventDump::analyze(const edm::Event &iEvent, const edm::EventSetup &iSet
     std::cout << "Pt: " << pho->pt() << " , Eta: " << pho->eta() << " , Phi: " << pho->phi()
               << " , Energy: " << pho->energy() << std::endl;
     }
+**/
   T->Fill();
 #ifdef THIS_IS_AN_EVENTSETUP_EXAMPLE
   // if the SetupData is always needed

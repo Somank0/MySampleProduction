@@ -21,8 +21,9 @@ options.register('inputFile',
        "File containing a list of the EXACT location of the input file"
        )
 
-
 options.parseArguments()
+infilename = str(options.inputFile).split('/')[-1]
+print(infilename)
 options.inputFile = "file:"+options.inputFile
 process.source = cms.Source(
     "PoolSource",
@@ -33,6 +34,16 @@ process.source = cms.Source(
         #"file:Chirayu_GIT_GEN_SIM_AODSIM.root"
 #        "file:AToGG_Gamma50_M1000_SingleEtaPhi_RECO.root"
 	options.inputFile
+
+        #"root://cms-xrd-global.cern.ch///store/mc/RunIISummer16DR80Premix/HAHMHToAA_AToGG_MA-0p1GeV_TuneCUETP8M1_PSweights_13TeV-madgraph_pythia8/AODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/110000/02D3FB65-FEF1-EA11-9430-008CFAC93C4C.root"
+        #"root://cms-xrd-global.cern.ch///store/mc/RunIISummer16DR80Premix/HAHMHToAA_AToGG_MA-0p2GeV_TuneCUETP8M1_PSweights_13TeV-madgraph_pythia8/AODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/100000/0AB9E3C9-81F3-EA11-9D9E-44A842BE8F98.root"
+        #"root://cms-xrd-global.cern.ch///store/mc/RunIISummer16DR80Premix/HAHMHToAA_AToGG_MA-0p4GeV_TuneCUETP8M1_PSweights_13TeV-madgraph_pythia8/AODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/130000/06A81ACE-E0F0-EA11-8DAA-E0071B749C50.root"
+	#"root://cms-xrd-global.cern.ch///store/mc/RunIISummer16DR80Premix/HAHMHToAA_AToGG_MA-0p6GeV_TuneCUETP8M1_PSweights_13TeV-madgraph_pythia8/AODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/100000/1649B7BE-B5F1-EA11-AD36-008CFAE451DC.root"
+        #"root://cms-xrd-global.cern.ch///store/mc/RunIISummer16DR80Premix/HAHMHToAA_AToGG_MA-0p8GeV_TuneCUETP8M1_PSweights_13TeV-madgraph_pythia8/AODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/120000/0409B94B-73F2-EA11-BDF3-20CF3027A61A.root"
+        #"root://cms-xrd-global.cern.ch///store/mc/RunIISummer16DR80Premix/HAHMHToAA_AToGG_MA-1GeV_TuneCUETP8M1_PSweights_13TeV-madgraph_pythia8/AODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/110000/00B123F7-FBF0-EA11-B576-008CFAC94188.root"
+	#"root://cms-xrd-global.cern.ch///store/mc/RunIISummer16DR80Premix/HAHMHToAA_AToGG_MA-1p2GeV_TuneCUETP8M1_PSweights_13TeV-madgraph_pythia8/AODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/100000/20572B9F-DDF3-EA11-8752-000E1E875C10.root"
+
+	#'root://cms-xrd-global.cern.ch///store/mc/RunIISummer16DR80Premix/HAHMHToAA_AToGG_MA-0p1GeV_TuneCUETP8M1_PSweights_13TeV-madgraph_pythia8/AODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/110000/02D3FB65-FEF1-EA11-9430-008CFAC93C4C.root',
 
         #'root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/GluGluHToGG_M-125_TuneCP5_13TeV-powheg-pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/40000/52EA6B6E-16AD-8141-8F44-B20F1AE8F7A3.root',
         #'root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/GluGluHToGG_M-125_TuneCP5_13TeV-powheg-pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/40000/5BAC5863-D457-1147-A9BC-859465E10114.root',
@@ -74,8 +85,9 @@ for idmod in my_id_modules:
 
 process.nTuplelize = cms.EDAnalyzer(
     "Photon_Skimmer",
+    #"GenEventDump",
     rhoFastJet=cms.InputTag("fixedGridRhoFastjetAll"),
-	#pileupInfo = cms.InputTag("addPileupInfo"),
+	pileupInfo = cms.InputTag("addPileupInfo"),
     genParticles=cms.InputTag("genParticles"),
     reducedEcalRecHitsEB=cms.InputTag("reducedEcalRechitsEB"),
     reducedEcalRecHitsEE=cms.InputTag("reducedEcalRechitsEE"),
@@ -90,7 +102,7 @@ process.nTuplelize = cms.EDAnalyzer(
 process.TFileService = cms.Service(
     "TFileService",
     #fileName=cms.string("GammaRecHits_ntuple.root"),
-    fileName=cms.string("Skimmed_"+options.inputFile),
+    fileName=cms.string("Skimmed_endcaps/"+infilename),
     #fileName=cms.string("RhoNPUPlots.root"),
     closeFileFast=cms.untracked.bool(True),
 )

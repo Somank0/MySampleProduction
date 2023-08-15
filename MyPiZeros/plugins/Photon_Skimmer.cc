@@ -100,13 +100,19 @@ class Photon_Skimmer : public edm::one::EDAnalyzer<edm::one::SharedResources>  {
 
       static void fillDescriptions(edm::ConfigurationDescriptions& descriptions);
 
-      std::vector<float> Hit_ES_Eta;
-      std::vector<float> Hit_ES_Phi;
-      std::vector<float> Hit_ES_X;
-      std::vector<float> Hit_ES_Y;
-      std::vector<float> Hit_ES_Z;
-      std::vector<float> ES_RecHitEn;
+      std::vector<std::vector<float>> Hit_ES_Eta;
+      std::vector<std::vector<float>> Hit_ES_Phi;
+      std::vector<std::vector<float>> Hit_ES_X;
+      std::vector<std::vector<float>> Hit_ES_Y;
+      std::vector<std::vector<float>> Hit_ES_Z;
+      std::vector<std::vector<float>> ES_RecHitEn;
 
+      std::vector<float> mHit_ES_Eta;
+      std::vector<float> mHit_ES_Phi;
+      std::vector<float> mHit_ES_X;
+      std::vector<float> mHit_ES_Y;
+      std::vector<float> mHit_ES_Z;
+      std::vector<float> mES_RecHitEn;
 
    private:
       virtual void beginJob() override;
@@ -369,7 +375,7 @@ const EcalRecHitCollection *recHitsEE = EERechitsHandle.product() ;
       const SuperClusterRef& sc = pho->superCluster(); 
       //const SuperClusterRef& sc = pho->parentSuperCluster(); // mustache cluster
       std::vector< std::pair<DetId, float> > hitsAndFractions = sc->hitsAndFractions();
-	cout<<"Hits Size:"<<hitsAndFractions.size()<<endl;
+	//cout<<"Hits Size:"<<hitsAndFractions.size()<<endl;
       isEB = ((*sc->seed()).hitsAndFractions().at(0).first.subdetId() == EcalBarrel);
       isEE = ((*sc->seed()).hitsAndFractions().at(0).first.subdetId() == EcalEndcap);
       EBDetId* DidEB;
@@ -434,15 +440,31 @@ const EcalRecHitCollection *recHitsEE = EERechitsHandle.product() ;
          mHitNoise.push_back(_ped->find(detitr.first)->rms(1));
       } //End of Rechit Loop 
 
+	mHit_ES_X.clear();
+	mHit_ES_Y.clear();
+	mHit_ES_Z.clear();
+	mHit_ES_Eta.clear();
+        mES_RecHitEn.clear();
+	mHit_ES_Phi.clear();
       if(isEE){
          GetESPlaneRecHits(*sc, geo, i, 1);     
          GetESPlaneRecHits(*sc, geo, i, 2);
       }
+	
+	
+	Hit_ES_X.push_back(mHit_ES_X);
+	Hit_ES_Y.push_back(mHit_ES_Y);
+	Hit_ES_Z.push_back(mHit_ES_Z);
+	Hit_ES_Eta.push_back(mHit_ES_Eta);
+	Hit_ES_Phi.push_back(mHit_ES_Phi);
+	ES_RecHitEn.push_back(mES_RecHitEn);
+
 	Hit_X.push_back(mHit_X);
 	Hit_Y.push_back(mHit_Y);
 	Hit_Z.push_back(mHit_Z);
 	Hit_Eta.push_back(mHit_Eta);
 	Hit_Phi.push_back(mHit_Phi);
+
 	iEta.push_back(miEta);
 	iPhi.push_back(miPhi);
 
@@ -499,11 +521,21 @@ using namespace std;
 int matchedIdx[photons->size()];
 std::fill(matchedIdx,matchedIdx+photons->size(), 0);
 int genitr=0;
+const reco::Candidate* mother;
 //   for(edm::View<GenParticle>::const_iterator part = genParticles->begin(); part != genParticles->end(); ++part){
 for (const reco::GenParticle& part : sortedParticles) {
-      if( part.status()==1 && abs(part.pdgId())==22 ){
+      if( part.status()==1 && abs(part.pdgId())==22 && part.mother()->pdgId() == 36 && genitr<2){
 	double mindr=999;
 	int matchedPhoton=-1;
+	if(genitr == 0 )
+	{
+		mother = part.mother();
+	}	
+	if(genitr == 1 && part.mother() != mother)
+	{
+		continue;
+	}
+		
 	   for (size_t i = 0; i < photons->size(); ++i){
 
 		if(matchedIdx[i] == 1)
@@ -584,7 +616,7 @@ Photon_Skimmer::beginJob()
    T->Branch("Hit_ES_Y"  ,  &(Hit_ES_Y));
    T->Branch("Hit_ES_Z"  ,  &(Hit_ES_Z));
    T->Branch("ES_RecHitEn"  ,  &(ES_RecHitEn));
-	T->Branch("recoPhotonIdx",&(recoPhotonIdx));
+   T->Branch("recoPhotonIdx",&(recoPhotonIdx));
 
    T->Branch("Hit_Eta"  ,  &(Hit_Eta));
    T->Branch("Hit_Phi"  ,  &(Hit_Phi));
@@ -701,7 +733,10 @@ void Photon_Skimmer::GetESPlaneRecHits(const reco::SuperCluster& sc, const CaloG
    const CaloSubdetectorGeometry* ecalESGeom = static_cast<const CaloSubdetectorGeometry*>(geo->getSubdetectorGeometry(DetId::Ecal, EcalPreshower));
 
 
+	std::cout<<"In GetESPlane:"<<std::endl;
+	std::cout<<sc.preshowerClustersSize()<<std::endl;
    for(auto iES = sc.preshowerClustersBegin(); iES != sc.preshowerClustersEnd(); ++iES) {//loop over preshower clusters
+	std::cout<<"Here"<<std::endl;
       const std::vector< std::pair<DetId, float> > hits = (*iES)->hitsAndFractions();
       for(std::vector<std::pair<DetId, float> >::const_iterator rh = hits.begin(); rh != hits.end(); ++rh) { // loop over recHits of the cluster
          //      std::cout << "print = " << (*iES)->printHitAndFraction(iCount);
@@ -712,13 +747,13 @@ void Photon_Skimmer::GetESPlaneRecHits(const reco::SuperCluster& sc, const CaloG
                //                                        std::cout << " ES energy = " << esItr->energy() << " pf energy = " << (*rh).second << std::endl;
                if((int) rhid.plane() == (int) planeIndex) {
                   std::shared_ptr<const CaloCellGeometry> geom = ecalESGeom->getGeometry(rhid);
-                  Hit_ES_Eta.push_back( geom->etaPos() );
-                  Hit_ES_Phi.push_back( geom->phiPos() );
-                  Hit_ES_X.push_back( geom->getPosition().x() );
-                  Hit_ES_Y.push_back( geom->getPosition().y() );
-                  Hit_ES_Z.push_back( geom->getPosition().z() ) ;
-                  ES_RecHitEn.push_back(esItr->energy());
-	recoPhotonIdx.push_back(phonum);
+                  mHit_ES_Eta.push_back( geom->etaPos() );
+                  mHit_ES_Phi.push_back( geom->phiPos() );
+                  mHit_ES_X.push_back( geom->getPosition().x() );
+                  mHit_ES_Y.push_back( geom->getPosition().y() );
+                  mHit_ES_Z.push_back( geom->getPosition().z() ) ;
+                  mES_RecHitEn.push_back(esItr->energy());
+	// recoPhotonIdx.push_back(phonum);
 
             //      for (int iflag=EcalRecHit::kESGood; iflag<EcalRecHit::kESTS15Sigmas+1; iflag++){
              //        bool check_bit = esItr->checkFlag(iflag);
@@ -726,7 +761,7 @@ void Photon_Skimmer::GetESPlaneRecHits(const reco::SuperCluster& sc, const CaloG
 
                //      if (DEBUG) cout<< "ES Flag: "<<iflag<<endl;
                 //  }
-                  //						std::cout << "Preshower" <<std::setprecision(4) << " Eta = " <<geom->etaPos() << " : " <<" Phi = "<< geom->phiPos() << " 3D position" << geom->getPosition().z() << std::endl;
+						std::cout << "Preshower" <<std::setprecision(4) << " Eta = " <<geom->etaPos() << " : " <<" Phi = "<< geom->phiPos() << " 3D position" << geom->getPosition().z() << std::endl;
                   RawenergyPlane += esItr->energy();
                   pfRawenergyPlane += rh->second;
                   NumHits++;

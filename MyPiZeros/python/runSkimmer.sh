@@ -10,7 +10,7 @@ if [ -z $3 ] ; then
 fi
 cmsenv;
 folder=numEvents4000;
-mkdir Skimmed_$folder/;
+mkdir Skimmed_dp/;
 for ((i=$1 ; i<=$2 ; i+=$3));
 do
 echo "Running Skimmer on $folder/AToGG_RECO_M$i.0.root"

@@ -52,7 +52,7 @@ options.register ('clusterID',
                   VarParsing.VarParsing.multiplicity.singleton, # singleton or list
                   VarParsing.VarParsing.varType.string,          # string, int, or float
                   "Unique ID for every job")
-options.maxEvents = 1000
+options.maxEvents = 10
 options.parseArguments()
 #options.outputFile="step1AToGG_Pt"+str(int(options.ptMin))+"-"+str(int(options.ptMax))+"_M"+str(options.mass)+".root"
 outputFile= options.clusterID+"_AToGG_GENSIM_M"+str(int(options.mass))+".root"

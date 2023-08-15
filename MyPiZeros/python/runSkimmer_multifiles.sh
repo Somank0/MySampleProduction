@@ -9,8 +9,9 @@ if [ -z $3 ] ; then
   echo "Please use: ./runSkimmer [massMin(MeV)] [massMax(MeV)] [stepSize(MeV)]" && exit 3;
 fi
 cmsenv;
-folder=numEvents30000;
-mkdir Skimmed_$folder/;
+folder=/eos/user/a/abala/Chirayu/CMSSW_10_6_29/src/;
+#folder=testsamplev5/
+mkdir Skimmed_endcaps/;
 for ((i=$1 ; i<=$2 ; i+=$3));
 do
 echo "Running Skimmer on $folder/${i}_AToGG_RECO_M2000.0.root"
