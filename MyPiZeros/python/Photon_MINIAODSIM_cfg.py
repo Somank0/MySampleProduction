@@ -1,7 +1,7 @@
 import FWCore.ParameterSet.Config as cms
 import FWCore.ParameterSet.VarParsing as VarParsing
 
-process = cms.Process("Demo")
+process = cms.Process("Skimmer")
 
 process.load("FWCore.MessageService.MessageLogger_cfi")
 
@@ -102,7 +102,7 @@ process.nTuplelize = cms.EDAnalyzer(
 process.TFileService = cms.Service(
     "TFileService",
     #fileName=cms.string("GammaRecHits_ntuple.root"),
-    fileName=cms.string("Skimmed_endcaps/"+infilename),
+    fileName=cms.string("Skimmed_fixedSample/"+infilename),
     #fileName=cms.string("RhoNPUPlots.root"),
     closeFileFast=cms.untracked.bool(True),
 )

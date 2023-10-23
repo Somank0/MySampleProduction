@@ -169,6 +169,7 @@ class Photon_Skimmer : public edm::one::EDAnalyzer<edm::one::SharedResources>  {
 
       // individual flags
       std::vector<bool> RecHitFlag_kGood;                   // channel ok, the energy and time measurement are reliable
+      std::vector<bool> RecHitFlag_Endcap;                   // True if rechit belongs to an endcap supercluster
       std::vector<bool> RecHitFlag_kPoorReco;                 // the energy is available from the UncalibRecHit, but approximate (bad shape, large chi2)
       std::vector<bool> RecHitFlag_kOutOfTime;                // the energy is available from the UncalibRecHit (sync reco), but the event is out of time
       std::vector<bool> RecHitFlag_kFaultyHardware;           // The energy is available from the UncalibRecHit, channel is faulty at some hardware level (e.g. noisy)
@@ -205,8 +206,6 @@ class Photon_Skimmer : public edm::one::EDAnalyzer<edm::one::SharedResources>  {
       std::vector<bool> RecHitFlag_kESTS13Sigmas;
       std::vector<bool> RecHitFlag_kESTS15Sigmas;
 
-
-
       std::vector<float> Pho_pt_;
       std::vector<float> Pho_eta_;
       std::vector<float> Pho_phi_;
@@ -235,6 +234,11 @@ class Photon_Skimmer : public edm::one::EDAnalyzer<edm::one::SharedResources>  {
 	std::vector<double> drminSubLead;
 	std::vector<double> drminOther;
 
+
+      std::vector<float> A_Gen_Pt;
+      std::vector<float> A_Gen_Eta;
+      std::vector<float> A_Gen_Phi;
+      std::vector<float> A_Gen_E;
 
       std::vector<int> passLooseId_;
       std::vector<int> passMediumId_;
@@ -452,6 +456,7 @@ const EcalRecHitCollection *recHitsEE = EERechitsHandle.product() ;
       }
 	
 	
+    	RecHitFlag_Endcap.push_back(isEE);
 	Hit_ES_X.push_back(mHit_ES_X);
 	Hit_ES_Y.push_back(mHit_ES_Y);
 	Hit_ES_Z.push_back(mHit_ES_Z);
@@ -522,6 +527,7 @@ int matchedIdx[photons->size()];
 std::fill(matchedIdx,matchedIdx+photons->size(), 0);
 int genitr=0;
 const reco::Candidate* mother;
+mother = nullptr;
 //   for(edm::View<GenParticle>::const_iterator part = genParticles->begin(); part != genParticles->end(); ++part){
 for (const reco::GenParticle& part : sortedParticles) {
       if( part.status()==1 && abs(part.pdgId())==22 && part.mother()->pdgId() == 36 && genitr<2){
@@ -580,6 +586,14 @@ else
 	 genitr++;
 	}
 }
+	if(mother != nullptr)
+	{
+         A_Gen_Pt.push_back(mother->pt());
+         A_Gen_Eta.push_back(mother->eta());
+         A_Gen_Phi.push_back(mother->phi());
+         A_Gen_E.push_back(mother->energy());
+	}
+
 	
 	
    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -630,6 +644,7 @@ Photon_Skimmer::beginJob()
    T->Branch("HitNoise", &(HitNoise));
 
    T->Branch("RecHitFlag_kGood", &(RecHitFlag_kGood));
+   T->Branch("RecHitFlag_Endcap", &(RecHitFlag_Endcap));
    T->Branch("RecHitFlag_kPoorReco", &(RecHitFlag_kPoorReco));
    T->Branch("RecHitFlag_kOutOfTime", &(RecHitFlag_kOutOfTime));
    T->Branch("RecHitFlag_kFaultyHardware", &(RecHitFlag_kFaultyHardware));
@@ -701,6 +716,10 @@ Photon_Skimmer::beginJob()
    T->Branch("event",&event,"event/I");
    T->Branch("lumi",&lumi,"lumi/I");
 
+   T->Branch("A_Gen_Pt" , &A_Gen_Pt);
+   T->Branch("A_Gen_Eta" , &A_Gen_Eta);
+   T->Branch("A_Gen_Phi" , &A_Gen_Phi);
+   T->Branch("A_Gen_E" , &A_Gen_E);
 }
 
 // ------------ method called once each job just after ending the event loop  ------------
@@ -733,10 +752,7 @@ void Photon_Skimmer::GetESPlaneRecHits(const reco::SuperCluster& sc, const CaloG
    const CaloSubdetectorGeometry* ecalESGeom = static_cast<const CaloSubdetectorGeometry*>(geo->getSubdetectorGeometry(DetId::Ecal, EcalPreshower));
 
 
-	std::cout<<"In GetESPlane:"<<std::endl;
-	std::cout<<sc.preshowerClustersSize()<<std::endl;
    for(auto iES = sc.preshowerClustersBegin(); iES != sc.preshowerClustersEnd(); ++iES) {//loop over preshower clusters
-	std::cout<<"Here"<<std::endl;
       const std::vector< std::pair<DetId, float> > hits = (*iES)->hitsAndFractions();
       for(std::vector<std::pair<DetId, float> >::const_iterator rh = hits.begin(); rh != hits.end(); ++rh) { // loop over recHits of the cluster
          //      std::cout << "print = " << (*iES)->printHitAndFraction(iCount);
@@ -810,6 +826,7 @@ drminOther.clear();
    HitNoise.clear();
 
    RecHitFlag_kGood.clear();
+   RecHitFlag_Endcap.clear();
    RecHitFlag_kPoorReco.clear();
    RecHitFlag_kOutOfTime.clear();
    RecHitFlag_kFaultyHardware.clear();
@@ -874,6 +891,10 @@ drminOther.clear();
    passMVAMediumId_.clear();
 
    isTrue_.clear();
+   A_Gen_Pt.clear();
+   A_Gen_Eta.clear();
+   A_Gen_Phi.clear();
+   A_Gen_E.clear();
 }
 
 // ------------ method fills 'descriptions' with the allowed parameters for the module  ------------
