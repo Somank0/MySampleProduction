@@ -30,3 +30,24 @@
 <use name="Calibration/Tools"/>
 
 <flags EDM_PLUGIN="1"/>
+<library name="Photon_Skimmer" file="Photon_Skimmer.cc">
+
+   <use name="root"/>
+   <use name="rootminuit"/>
+   <use name="clhep"/>
+   <use name="rootrflx"/>
+   <use name="rootmath"/>
+   <Flags EDM_PLUGIN="1"/>
+</library>
+
+<library name="Photon_RefinedRecHit_NTuplizer" file="Photon_RefinedRecHit_NTuplizer.cc">
+
+   <use name="root"/>
+   <use name="rootminuit"/>
+   <use name="clhep"/>
+   <use name="rootrflx"/>
+   <use name="rootmath"/>
+   <use name="boost"/>
+   <use name="rootxmlio"/>
+   <Flags EDM_PLUGIN="1"/>
+</library>

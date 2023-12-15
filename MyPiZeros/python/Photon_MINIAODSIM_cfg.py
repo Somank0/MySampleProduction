@@ -102,7 +102,7 @@ process.nTuplelize = cms.EDAnalyzer(
 process.TFileService = cms.Service(
     "TFileService",
     #fileName=cms.string("GammaRecHits_ntuple.root"),
-    fileName=cms.string("Skimmed_fixedSample/"+infilename),
+    fileName=cms.string("Skimmed_fixed_1M/"+infilename),
     #fileName=cms.string("RhoNPUPlots.root"),
     closeFileFast=cms.untracked.bool(True),
 )
