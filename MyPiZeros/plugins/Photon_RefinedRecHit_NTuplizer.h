@@ -169,9 +169,16 @@ class Photon_RefinedRecHit_NTuplizer : public edm::one::EDAnalyzer<edm::one::Sha
       std::vector<float> Hit_X[2];
       std::vector<float> Hit_Y[2];
       std::vector<float> Hit_Z[2];
+      std::vector<float> dRHit_Eta[2];
+      std::vector<float> dRHit_Phi[2];
+      std::vector<float> dRHit_X[2];
+      std::vector<float> dRHit_Y[2];
+      std::vector<float> dRHit_Z[2];
 
       std::vector<float> RecHitFrac[2];
       std::vector<float> RecHitEn[2];
+      std::vector<float> dRRecHitFrac[2];
+      std::vector<float> dRRecHitEn[2];
       std::vector<int>   RecHitGain[2];
       std::vector<bool>  RecHitQuality[2];
       std::vector<float> HitNoise[2];

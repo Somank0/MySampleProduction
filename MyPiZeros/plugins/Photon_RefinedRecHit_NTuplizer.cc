@@ -353,10 +353,6 @@ void Photon_RefinedRecHit_NTuplizer::analyze(const edm::Event &iEvent, const edm
             for (unsigned int ixtal = 0; ixtal < uncheckedXtals.size(); ixtal++)
             {
 
-                if (std::find(EBHitsAndFractions.begin(),
-                              EBHitsAndFractions.end(),
-                              uncheckedXtals[ixtal]) != EBHitsAndFractions.end())
-                    continue;
 
                 EBDetId detitr = EBDetId::unhashIndex(uncheckedXtals[ixtal]); // covert from hash to EBDetId
                 DetId Did = detitr.rawId();
@@ -372,16 +368,30 @@ void Photon_RefinedRecHit_NTuplizer::analyze(const edm::Event &iEvent, const edm
                 // float tmpdr = reco::deltaR(seed_ieta, seed_iphi, geom->etaPos(), geom->phiPos());
                 // if (tmpdr>0.3) cout<<"--------------!!!-------- dR = "<<tmpdr<<endl;
 
-                iEta[nPhotons_].push_back(DidEB->ieta());
-                iPhi[nPhotons_].push_back(DidEB->iphi());
-                Hit_Eta[nPhotons_].push_back(geom->etaPos());
-                Hit_Phi[nPhotons_].push_back(geom->phiPos());
-                Hit_X[nPhotons_].push_back(geom->getPosition().x());
-                Hit_Y[nPhotons_].push_back(geom->getPosition().y());
-                Hit_Z[nPhotons_].push_back(geom->getPosition().z());
+		dRHit_Eta[nPhotons_].push_back(geom->etaPos());
+		dRHit_Phi[nPhotons_].push_back(geom->phiPos());
+		dRHit_X[nPhotons_].push_back(geom->getPosition().x());
+		dRHit_Y[nPhotons_].push_back(geom->getPosition().y());
+		dRHit_Z[nPhotons_].push_back(geom->getPosition().z());
+		dRRecHitEn[nPhotons_].push_back(oneHit->energy());
+		dRRecHitFrac[nPhotons_].push_back(-1); // fraction does not apply to hits outside the cluster
 
-                RecHitEn[nPhotons_].push_back(oneHit->energy());
-                RecHitFrac[nPhotons_].push_back(-1); // fraction does not apply to hits outside the cluster
+                if (std::find(EBHitsAndFractions.begin(),
+                              EBHitsAndFractions.end(),
+                              uncheckedXtals[ixtal]) != EBHitsAndFractions.end())
+			continue;
+
+		iEta[nPhotons_].push_back(DidEB->ieta());
+		iPhi[nPhotons_].push_back(DidEB->iphi());
+		Hit_Eta[nPhotons_].push_back(geom->etaPos());
+		Hit_Phi[nPhotons_].push_back(geom->phiPos());
+		Hit_X[nPhotons_].push_back(geom->getPosition().x());
+		Hit_Y[nPhotons_].push_back(geom->getPosition().y());
+		Hit_Z[nPhotons_].push_back(geom->getPosition().z());
+		RecHitEn[nPhotons_].push_back(oneHit->energy());
+		RecHitFrac[nPhotons_].push_back(-1); // fraction does not apply to hits outside the cluster
+
+
 
                 if (oneHit->checkFlag(EcalRecHit::kGood))
                     RecHitQuality[nPhotons_].push_back(1);
@@ -423,10 +433,6 @@ void Photon_RefinedRecHit_NTuplizer::analyze(const edm::Event &iEvent, const edm
             for (unsigned int ixtal = 0; ixtal < uncheckedXtals.size(); ixtal++)
             {
 
-                if (std::find(EEHitsAndFractions.begin(),
-                              EEHitsAndFractions.end(),
-                              uncheckedXtals[ixtal]) != EEHitsAndFractions.end())
-                    continue;
 
                 EEDetId detitr = EEDetId::unhashIndex(uncheckedXtals[ixtal]); // covert from hash to EEDetId
                 DetId Did = detitr.rawId();
@@ -441,16 +447,30 @@ void Photon_RefinedRecHit_NTuplizer::analyze(const edm::Event &iEvent, const edm
                 // float tmpdr = reco::deltaR(seed_eta, seed_phi, geom->etaPos(), geom->phiPos());
                 // if (tmpdr>0.3) cout<<"--------------!!!-------- dR = "<<tmpdr<<endl;
 
-                iEta[nPhotons_].push_back(DidEE->ix());
-                iPhi[nPhotons_].push_back(DidEE->iy());
-                Hit_Eta[nPhotons_].push_back(geom->etaPos());
-                Hit_Phi[nPhotons_].push_back(geom->phiPos());
-                Hit_X[nPhotons_].push_back(geom->getPosition().x());
-                Hit_Y[nPhotons_].push_back(geom->getPosition().y());
-                Hit_Z[nPhotons_].push_back(geom->getPosition().z());
+		dRHit_Eta[nPhotons_].push_back(geom->etaPos());
+		dRHit_Phi[nPhotons_].push_back(geom->phiPos());
+		dRHit_X[nPhotons_].push_back(geom->getPosition().x());
+		dRHit_Y[nPhotons_].push_back(geom->getPosition().y());
+		dRHit_Z[nPhotons_].push_back(geom->getPosition().z());
 
-                RecHitEn[nPhotons_].push_back(oneHit->energy());
-                RecHitFrac[nPhotons_].push_back(-1);
+		dRRecHitEn[nPhotons_].push_back(oneHit->energy());
+		dRRecHitFrac[nPhotons_].push_back(-1);
+
+                if (std::find(EEHitsAndFractions.begin(),
+                              EEHitsAndFractions.end(),
+                              uncheckedXtals[ixtal]) != EEHitsAndFractions.end())
+			continue;
+
+		iEta[nPhotons_].push_back(DidEE->ix());
+		iPhi[nPhotons_].push_back(DidEE->iy());
+		Hit_Eta[nPhotons_].push_back(geom->etaPos());
+		Hit_Phi[nPhotons_].push_back(geom->phiPos());
+		Hit_X[nPhotons_].push_back(geom->getPosition().x());
+		Hit_Y[nPhotons_].push_back(geom->getPosition().y());
+		Hit_Z[nPhotons_].push_back(geom->getPosition().z());
+
+		RecHitEn[nPhotons_].push_back(oneHit->energy());
+		RecHitFrac[nPhotons_].push_back(-1);
 
                 if (oneHit->checkFlag(EcalRecHit::kGood))
                     RecHitQuality[nPhotons_].push_back(1);
@@ -581,6 +601,21 @@ void Photon_RefinedRecHit_NTuplizer::beginJob()
     T->Branch("RecHitGain1", &(RecHitGain[0]));
     T->Branch("RecHitQuality1", &(RecHitQuality[0]));
     T->Branch("HitNoisePho1", &(HitNoise[0]));
+
+    T->Branch("dRHit_Eta_Pho1", &(dRHit_Eta[0]));
+    T->Branch("dRHit_Phi_Pho1", &(dRHit_Phi[0]));
+    T->Branch("dRHit_X_Pho1", &(dRHit_X[0]));
+    T->Branch("dRHit_Y_Pho1", &(dRHit_Y[0]));
+    T->Branch("dRHit_Z_Pho1", &(dRHit_Z[0]));
+    T->Branch("dRRecHitEnPho1", &(dRRecHitEn[0]));
+    T->Branch("dRRecHitFracPho1", &(dRRecHitFrac[0]));
+    T->Branch("dRHit_Eta_Pho2", &(dRHit_Eta[1]));
+    T->Branch("dRHit_Phi_Pho2", &(dRHit_Phi[1]));
+    T->Branch("dRHit_X_Pho2", &(dRHit_X[1]));
+    T->Branch("dRHit_Y_Pho2", &(dRHit_Y[1]));
+    T->Branch("dRHit_Z_Pho2", &(dRHit_Z[1]));
+    T->Branch("dRRecHitEnPho2", &(dRRecHitEn[1]));
+    T->Branch("dRRecHitFracPho2", &(dRRecHitFrac[1]));
 
     T->Branch("RecHitFlag_kGood_pho1", &(RecHitFlag_kGood[0]));
     T->Branch("RecHitFlag_kPoorReco_pho1", &(RecHitFlag_kPoorReco[0]));
@@ -833,6 +868,21 @@ void Photon_RefinedRecHit_NTuplizer::ClearTreeVectors()
     HitNoise[0].clear();
     iEta[1].clear();
     iPhi[1].clear();
+
+    dRHit_Eta[0].clear();
+    dRHit_Phi[0].clear();
+    dRHit_X[0].clear();
+    dRHit_Y[0].clear();
+    dRHit_Z[0].clear();
+    dRRecHitEn[0].clear();
+    dRRecHitFrac[0].clear();
+    dRHit_Eta[1].clear();
+    dRHit_Phi[1].clear();
+    dRHit_X[1].clear();
+    dRHit_Y[1].clear();
+    dRHit_Z[1].clear();
+    dRRecHitEn[1].clear();
+    dRRecHitFrac[1].clear();
 
     RecHitFlag_kGood[0].clear();
     RecHitFlag_kPoorReco[0].clear();

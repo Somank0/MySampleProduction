@@ -75,7 +75,7 @@ process.nTuplelize = cms.EDAnalyzer('Photon_RefinedRecHit_NTuplizer',
 
 
 process.TFileService = cms.Service("TFileService",
-     fileName = cms.string("Rechits_rajdeep/"+infilename),
+     fileName = cms.string("Rechits_dRonly/"+infilename),
 #     fileName = cms.string("Tree_Gamma_ABCD.root"),
       closeFileFast = cms.untracked.bool(True)
   )
