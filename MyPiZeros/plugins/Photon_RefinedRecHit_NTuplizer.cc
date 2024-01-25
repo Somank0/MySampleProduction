@@ -221,9 +221,64 @@ void Photon_RefinedRecHit_NTuplizer::analyze(const edm::Event &iEvent, const edm
     lumi = 0;
 
     ///////////////////////////Fill Electron/Photon related stuff/////////////////////////////////////////////////////
+    
     nPhotons_ = 0;
     const EcalRecHitCollection *recHitsEB = clustertools_NoZS->getEcalEBRecHitCollection();
     const EcalRecHitCollection *recHitsEE = clustertools_NoZS->getEcalEERecHitCollection();
+    //std::unique_ptr<EcalRecHitCollection> ecalRecHits(new EcalRecHitCollection);
+    //ecalRecHits->insert(ecalRecHits->end(),recHitsEB->begin(),recHitsEB->end());
+    //ecalRecHits->insert(ecalRecHits->end(),recHitsEE->begin(),recHitsEE->end());
+    double maxEnergy = -1.0;
+    EcalRecHit seed;
+
+    for (EcalRecHitCollection::const_iterator hitItr = recHitsEB->begin(); hitItr != recHitsEB->end(); ++hitItr)
+    {
+	 double energy = hitItr->energy();
+         if (energy > maxEnergy)
+	 {
+		maxEnergy = energy;
+		seed = *hitItr;
+	 }
+    }
+    shared_ptr<const CaloCellGeometry> seedgeom = ecalEBGeom->getGeometry(seed.detid());
+    if(maxEnergy!=-1)
+    {
+	 //cout<<"Seed Energy is :"<<seed.energy()<<endl;
+	 //cout<<"Seed Eta is :"<<seedgeom->etaPos()<<endl;
+	 //cout<<"Seed Phi is :"<<seedgeom->phiPos()<<endl;
+         int nHits = 0;
+         for (EcalRecHitCollection::const_iterator hitItr = recHitsEB->begin(); hitItr != recHitsEB->end(); ++hitItr)
+         {
+		double energy = hitItr->energy();
+		DetId detId = hitItr->detid();
+		shared_ptr<const CaloCellGeometry> geom = ecalEBGeom->getGeometry(detId);
+		double eta = geom->etaPos();
+		double phi = geom->phiPos();
+		double deta = eta - seedgeom->etaPos();
+		double dphi = phi - seedgeom->phiPos();
+		while (dphi > M_PI)
+		  dphi -= 2 * M_PI;
+		while (dphi <= -M_PI)
+		  dphi += 2 * M_PI;
+		double dr = sqrt( deta*deta + dphi*dphi );
+		if(dr<0.3)
+		{
+			nHits++;
+			RawHit_Eta[0].push_back(eta);
+			RawHit_Phi[0].push_back(phi);
+			RawRecHitEn[0].push_back(energy);
+			//Fill Branches Here 
+			//cout<<"Hit "<<nHits<<" eta: "<<eta<<endl;
+			//cout<<"Hit "<<nHits<<" phi: "<<phi<<endl;
+			//cout<<"Hit "<<nHits<<" energy: "<<energy<<endl;
+		}
+         }
+    }
+    else
+    {
+    	cout<<"No barrel seed!"<<endl;
+    }
+    
 
     // cout<<"================ Event ==================="<<endl;
 
@@ -232,7 +287,7 @@ void Photon_RefinedRecHit_NTuplizer::analyze(const edm::Event &iEvent, const edm
         // cout<<"----------- Photon ------------"<<endl;
         if (nPhotons_ == 2)
 	{
-	    cout<<"More than two matched photons found"<<endl;
+	    //cout<<"More than two matched photons found"<<endl;
             break;
 	}
         const auto pho = photons->ptrAt(i);
@@ -604,6 +659,11 @@ void Photon_RefinedRecHit_NTuplizer::beginJob()
 
     T->Branch("dRHit_Eta_Pho1", &(dRHit_Eta[0]));
     T->Branch("dRHit_Phi_Pho1", &(dRHit_Phi[0]));
+
+    T->Branch("RawHit_Eta_Pho1", &(RawHit_Eta[0]));
+    T->Branch("RawHit_Phi_Pho1", &(RawHit_Phi[0]));
+    T->Branch("RawRecHitEnPho1", &(RawRecHitEn[0]));
+
     T->Branch("dRHit_X_Pho1", &(dRHit_X[0]));
     T->Branch("dRHit_Y_Pho1", &(dRHit_Y[0]));
     T->Branch("dRHit_Z_Pho1", &(dRHit_Z[0]));
@@ -883,6 +943,10 @@ void Photon_RefinedRecHit_NTuplizer::ClearTreeVectors()
     dRHit_Z[1].clear();
     dRRecHitEn[1].clear();
     dRRecHitFrac[1].clear();
+
+    RawHit_Eta[0].clear();
+    RawHit_Phi[0].clear();
+    RawRecHitEn[0].clear();
 
     RecHitFlag_kGood[0].clear();
     RecHitFlag_kPoorReco[0].clear();
