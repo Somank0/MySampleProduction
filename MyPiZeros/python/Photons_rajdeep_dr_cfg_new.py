@@ -7,7 +7,7 @@ process.load("FWCore.MessageService.MessageLogger_cfi")
 
 process.load("Configuration.StandardSequences.GeometryRecoDB_cff")
 
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) )
+process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(10000) )
 
 process.MessageLogger.cerr.FwkReport.reportEvery = cms.untracked.int32(2500)
 
@@ -75,7 +75,7 @@ process.nTuplelize = cms.EDAnalyzer('Photon_RefinedRecHit_NTuplizer',
 
 
 process.TFileService = cms.Service("TFileService",
-     fileName = cms.string("AToGG_3M_Clu_Unclu_test/"+infilename),
+     fileName = cms.string("Rechits_raw/"+infilename),
 #     fileName = cms.string("Tree_Gamma_ABCD.root"),
       closeFileFast = cms.untracked.bool(True)
   )

@@ -308,6 +308,12 @@ class Photon_RefinedRecHit_NTuplizer : public edm::one::EDAnalyzer<edm::one::Sha
       vector<float> Pho_CorrectedEnergyError;
 
       std::vector<float> Pho_Gen_Pt;
+
+      std::vector<float> A_Gen_mass;
+      std::vector<float> A_Gen_pt;
+      std::vector<float> A_Gen_eta;
+      std::vector<float> A_Gen_phi;
+
       std::vector<float> Pho_Gen_Eta;
       std::vector<float> Pho_Gen_Phi;
       std::vector<float> Pho_Gen_E;

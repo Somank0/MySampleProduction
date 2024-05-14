@@ -221,6 +221,18 @@ void Photon_RefinedRecHit_NTuplizer::analyze(const edm::Event &iEvent, const edm
     lumi = 0;
 
     ///////////////////////////Fill Electron/Photon related stuff/////////////////////////////////////////////////////
+    for (edm::View<GenParticle>::const_iterator part = genParticles->begin(); part != genParticles->end(); ++part)
+    {
+          if( abs(part->pdgId())==36)
+          {
+              //cout<<part->mass()<<endl;
+              A_Gen_mass.push_back(part->mass());
+              A_Gen_pt.push_back(part->pt());
+              A_Gen_eta.push_back(part->eta());
+              A_Gen_phi.push_back(part->phi());
+	  }
+    }
+		
     
     nPhotons_ = 0;
     const EcalRecHitCollection *recHitsEB = clustertools_NoZS->getEcalEBRecHitCollection();
@@ -230,7 +242,7 @@ void Photon_RefinedRecHit_NTuplizer::analyze(const edm::Event &iEvent, const edm
     //ecalRecHits->insert(ecalRecHits->end(),recHitsEE->begin(),recHitsEE->end());
     double maxEnergy = -1.0;
     EcalRecHit seed;
-
+    /**
     for (EcalRecHitCollection::const_iterator hitItr = recHitsEB->begin(); hitItr != recHitsEB->end(); ++hitItr)
     {
 	 double energy = hitItr->energy();
@@ -264,9 +276,9 @@ void Photon_RefinedRecHit_NTuplizer::analyze(const edm::Event &iEvent, const edm
 		if(dr<0.3)
 		{
 			nHits++;
-			RawHit_Eta[0].push_back(eta);
-			RawHit_Phi[0].push_back(phi);
-			RawRecHitEn[0].push_back(energy);
+			//RawHit_Eta[0].push_back(eta);
+			//RawHit_Phi[0].push_back(phi);
+			//RawRecHitEn[0].push_back(energy);
 			//Fill Branches Here 
 			//cout<<"Hit "<<nHits<<" eta: "<<eta<<endl;
 			//cout<<"Hit "<<nHits<<" phi: "<<phi<<endl;
@@ -274,10 +286,7 @@ void Photon_RefinedRecHit_NTuplizer::analyze(const edm::Event &iEvent, const edm
 		}
          }
     }
-    else
-    {
-    	cout<<"No barrel seed!"<<endl;
-    }
+    **/
     
 
     // cout<<"================ Event ==================="<<endl;
@@ -811,6 +820,10 @@ void Photon_RefinedRecHit_NTuplizer::beginJob()
 
     T->Branch("Pho_CorrectedEnergy", &Pho_CorrectedEnergy);           // Add corrected energy for photon
     T->Branch("Pho_CorrectedEnergyError", &Pho_CorrectedEnergyError); // Error in energy correction
+    T->Branch("A_Gen_mass", &A_Gen_mass);
+    T->Branch("A_Gen_pt", &A_Gen_pt);
+    T->Branch("A_Gen_eta", &A_Gen_eta);
+    T->Branch("A_Gen_phi", &A_Gen_phi);
 
     if (isMC_)
     {
@@ -928,6 +941,11 @@ void Photon_RefinedRecHit_NTuplizer::ClearTreeVectors()
     HitNoise[0].clear();
     iEta[1].clear();
     iPhi[1].clear();
+
+    A_Gen_mass.clear();
+    A_Gen_pt.clear();
+    A_Gen_eta.clear();
+    A_Gen_phi.clear();
 
     dRHit_Eta[0].clear();
     dRHit_Phi[0].clear();
