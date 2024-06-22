@@ -28,9 +28,9 @@ cmsenv;
 #done
 
 #Trache2
-#folder=/eos/cms/store/group/dpg_ecal/alca_ecalcalib/ecalelf/ntuples/rchatter/Particle_Gun/Tranche2/;
-#files=( 9029460 9029469 9080449 9108981 9029462 9080445 9080450 9108983 9029463 9080446 9080451 9108987 9029464 9080447 9080452 9108988 9029466 9080448 9108980 9108989 )
-
+folder=/eos/cms/store/group/dpg_ecal/alca_ecalcalib/ecalelf/ntuples/rchatter/Particle_Gun/Tranche2/;
+files=(9029460 9029469 9080449 9108981 9029462 9080445 9080450 9108983 9029463 9080446 9080451 9108987 9029464 9080447 9080452 9108988 9029466 9080448 9108980 9108989 )
+#files=(9029460)
 #for i in ${files[@]};
 #do
 #echo "Running Skimmer on $folder/${i}_AToGG_RECO_M2000.0.root"
@@ -45,13 +45,13 @@ cmsenv;
 #files=( 9131194 9139969 )
 
 #Trache4
-folder=/eos/cms/store/group/dpg_ecal/alca_ecalcalib/ecalelf/ntuples/rchatter/Particle_Gun/Tranche4/;
-files=( 9155515 9155523 9164382 9164387 9155516 9155524 9164383 9164388 9155519 9164378 9164384 9201337 9155520 9164380 9164385 9201338 9155522 9164381 9164386 9201342 )
-
+#folder=/eos/cms/store/group/dpg_ecal/alca_ecalcalib/ecalelf/ntuples/rchatter/Particle_Gun/Tranche4/;
+#files=( 9155515 9155523 9164382 9164387 9155516 9155524 9164383 9164388 9155519 9164378 9164384 9201337 9155520 9164380 9164385 9201338 9155522 9164381 9164386 9201342 )
+#files=(9201342)
 
 for i in ${files[@]};
 do
 echo "Running Skimmer on $folder/${i}_AToGG_RECO_M2000.0.root"
 cmsRun Photons_rajdeep_dr_cfg.py inputFile=$folder/${i}_AToGG_RECO_M2000.0.root
-echo "Trache1 done"
+echo "Trache2 done"
 done

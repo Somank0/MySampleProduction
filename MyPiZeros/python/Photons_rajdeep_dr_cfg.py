@@ -75,7 +75,7 @@ process.nTuplelize = cms.EDAnalyzer('Photon_RefinedRecHit_NTuplizer',
 
 
 process.TFileService = cms.Service("TFileService",
-     fileName = cms.string("AToGG_3M_Clu_Unclu_test/"+infilename),
+     fileName = cms.string("Skimmed/"+infilename),
 #     fileName = cms.string("Tree_Gamma_ABCD.root"),
       closeFileFast = cms.untracked.bool(True)
   )

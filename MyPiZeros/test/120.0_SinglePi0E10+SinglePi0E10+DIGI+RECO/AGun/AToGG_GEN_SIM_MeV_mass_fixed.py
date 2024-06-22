@@ -9,6 +9,7 @@ import random
 
 
 process = cms.Process('SIM')
+seed=int(random.random()*100000000)
 
 import FWCore.ParameterSet.VarParsing as VarParsing
 options = VarParsing.VarParsing ('analysis')
@@ -28,12 +29,12 @@ options.register ('ptMax',
                   VarParsing.VarParsing.varType.float,          # string, int, or float
                   "Maximum value of Pt")
 options.register ('etaMin',
-                  -1.4, # default value
+                  1.4, # default value
                   VarParsing.VarParsing.multiplicity.singleton, # singleton or list
                   VarParsing.VarParsing.varType.float,          # string, int, or float
                   "Minimum value of eta")
 options.register ('etaMax',
-                  1.4, # default value
+                  -1.4, # default value
                   VarParsing.VarParsing.multiplicity.singleton, # singleton or list
                   VarParsing.VarParsing.varType.float,          # string, int, or float
                   "Maximum value of eta")
@@ -48,14 +49,16 @@ options.register ('phiMax',
                   VarParsing.VarParsing.varType.float,          # string, int, or float
                   "Maximum value of phi")
 options.register ('clusterID',
-                  '123', # default value
+                  str(seed), # default value
                   VarParsing.VarParsing.multiplicity.singleton, # singleton or list
                   VarParsing.VarParsing.varType.string,          # string, int, or float
                   "Unique ID for every job")
 options.maxEvents = 11
 options.parseArguments()
+
 #options.outputFile="step1AToGG_Pt"+str(int(options.ptMin))+"-"+str(int(options.ptMax))+"_M"+str(options.mass)+".root"
 outputFile= options.clusterID+"_AToGG_GENSIM_M"+str(int(options.mass))+".root"
+
 
 # import of standard configurations
 process.load('Configuration.StandardSequences.Services_cff')
@@ -140,7 +143,7 @@ process.GlobalTag = GlobalTag(process.GlobalTag, '106X_upgrade2018_realistic_v11
 #Emin = options.gammaMin * options.mass
 #Emax = options.gammaMax * options.mass
 options.mass = options.mass/1000
-seed=int(random.random()*100000000)
+#seed=int(random.random()*100000000)
 process.generator = cms.EDFilter("Pythia8PtGun",
 	PGunParameters = cms.PSet(
 		AddAntiParticle = cms.bool(False),
