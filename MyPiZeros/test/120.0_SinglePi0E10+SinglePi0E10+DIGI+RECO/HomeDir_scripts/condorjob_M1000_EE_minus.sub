@@ -1,4 +1,4 @@
-executable = runSampleGen_EE_50K_minus.sh
+executable = runSampleGen_EE_minus.sh
 arguments             = 1000 1100 300 $(ClusterId)
 output                = output/myjob.$(ClusterId).$(ProcId).out
 error                 = output/myjob.$(ClusterId).$(ProcId).err
