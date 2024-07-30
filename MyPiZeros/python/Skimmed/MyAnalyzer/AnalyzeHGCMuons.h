@@ -179,27 +179,37 @@ public:
   TH1F *pho1_hitX;
   TH1F *pho1_hitY;
   TH1F *pho1_hit_Z;
+  TH1F *pho1_hit_E;
   TH1F *pho2_hitX;
   TH1F *pho2_hitY;
   TH1F *pho2_hit_Z;
+  TH1F *pho2_hit_E;
   TH1F *pho1_ES_hitX;
   TH1F *pho1_ES_hitY;
   TH1F *pho1_ES_hit_Z;
+  TH1F *pho1_ES_hit_E;
   TH1F *pho2_ES_hitX;
   TH1F *pho2_ES_hitY;
   TH1F *pho2_ES_hit_Z;
+  TH1F *pho2_ES_hit_E;
   TH1F *angle_240_260;
   TH1F *angle_490_510;
   TH1F *angle_740_760;
   TH1F *angle_990_1010;
   TH1F *nGen;
   TH1F *nreco;
+  TH1F *reco_pho1_pt;
+  TH1F *reco_pho2_pt;
+  TH1F *reco_pho1_eta;
+  TH1F *reco_pho2_eta;
+ 
   TH1F *r9_eta_1;
   TH1F *r9_eta_2;
   TH1F *r9_eta_3;
   TH1F *ES_L1_hits;
   TH1F *ES_L2_hits;
-  TH1F *ES_L1_L2_hits_En_weighed;
+  TH1F *ES_L1_hits_En_weighed;
+  TH1F *ES_L2_hits_En_weighed;
   
   TH1F *Tot_rechit_E_Ma_250;
   TH1F *Tot_unc_rechit_E_Ma_250;
@@ -272,6 +282,9 @@ public:
   TH2F *deta_dphi_gen;
   TH2F *EE_XY_occupancy;
   TH2F *EE_XY_occu_En_weighed;
+  TH2F *EE_eta_phi_occu;
+  TH2F *EE_eta_phi_occu_En_weigh;
+
   TH2F *Gen_pho_sep; 
   TH2F *Pho1_RechitE_vs_A_gen_E;
   TH2F *Pho1_UnclRechitE_vs_A_gen_E;
@@ -308,13 +321,13 @@ void AnalyzeHGCMuons::BookHistogram(const char *outFileName)
     pho1_gen_eta    =   new       TH1F    ("Photon1 gen eta"      ,     "Pho1 gen eta"        ,    1000   ,   -3.5  ,     3.5);
     pho1_gen_phi    =   new       TH1F    ("Photon1 gen phi"      ,     "Pho1 gen phi"        ,    1000   ,   -4.5  ,     4.5);
     pho1_gen_pt     =   new       TH1F    ("Photon1 gen pT"       ,     "Pho1 gen pT"         ,    1000   ,     0   ,     200);
-    pho1_gen_E      =   new       TH1F    ("Photon1 gen E","Pho1 gen E",1000,0,800);
-    pho2_gen_eta    =   new       TH1F    ("Photon2 gen eta","Pho2 gen eta",1000,-3.5,3.5);
-    pho2_gen_phi    =   new       TH1F    ("Photon2 gen phi","Pho2 gen phi",1000,-4.5,4.5);
+    pho1_gen_E      =   new       TH1F    ("Photon1 gen E"        ,     "Pho1 gen E"          ,    1000   ,     0   ,     800);
+    pho2_gen_eta    =   new       TH1F    ("Photon2 gen eta"      ,     "Pho2 gen eta"        ,    1000   ,   -3.5  ,     3.5);
+    pho2_gen_phi    =   new       TH1F    ("Photon2 gen phi"      ,     "Pho2 gen phi"        ,    1000   ,   -4.5  ,     4.5);
     pho2_gen_pt     =   new       TH1F    ("Photon2 gen pT","Pho2 gen pT",1000,0,200);
     pho2_gen_E      =   new       TH1F    ("Photon2 gen E","Pho2 gen E", 1000,0,800);
     nGen            =   new       TH1F    ("No. of gen photons","no. of gen photons",1000,0.5,5.5);
-    E_sublead_by_E_lead = new TH1F("E_sublead_by_E_lead","E_sublead/E_lead",1000,0,2);
+    E_sublead_by_E_lead = new     TH1F    ("E_sublead_by_E_lead","E_sublead/E_lead",1000,0,2);
     E_pho2_by_E_pho1 = new TH1F("E_pho2_by_E_pho1","",1000,0,50);
     
     angle_240_260= new TH1F("Angle_240<=Ma<=260","240<=Ma<=260",1000,0,0.22);
@@ -322,8 +335,14 @@ void AnalyzeHGCMuons::BookHistogram(const char *outFileName)
     angle_740_760= new TH1F("Angle_740<=Ma<=760","740<=Ma<=760",1000,0,0.22);
     angle_990_1010= new TH1F("Angle_990<=Ma<=1010","990<=Ma<=1010",1000,0,0.22);
 
-    nreco = new TH1F("No. of reco photons","no. of reco photons",1000,0,10); 
-   
+    nreco 	= 	new 	TH1F("No. of reco photons"	,	"no. of reco photons"	,	1000	,	0	,	10); 
+    reco_pho1_pt	=	new 	TH1F("Reco_pho1_pt"		,	"reco_pho1_pt"		,	1000	,	0	,	150);
+    reco_pho2_pt = new TH1F("Reco_pho2_pt", "reco_pho2_pt",1000,0,150);
+    reco_pho1_eta= new TH1F("Reco_pho1_eta","reco_pho1_eta",1000,-3,3);
+    reco_pho2_eta = new TH1F("Reco_pho2_eta","reco_pho2_eta",1000,-3,3);
+
+ 
+
     nreco_Ma_250=new TH1F("Nreco_Ma_250","no. of reco photons for 240<=Ma<=260",1000,0,10);
     n_EE_rechit_Ma_250=new TH1F("N_EE_rechits_Ma_250","no. of EE rechits for 240<=Ma<=260",1000,0,300);
     n_ES_rechit_ma_250 = new TH1F("N_ES_rechits_Ma_250","no. of ES rechits for 240<=Ma<=260",1000,0,300);
@@ -360,13 +379,29 @@ void AnalyzeHGCMuons::BookHistogram(const char *outFileName)
     r9_eta_2= new TH1F("R9 (1.57< Eta <2)","1.57< Eta <=2",1000,-0.5,1.5);
     r9_eta_3=new TH1F("R9 2< Eta <=2.5","2< Eta <=2.5",1000,-0.5,1.5);
     
-    pho1_EE_hit_eta =new TH1F("Photon1 EE rechit eta ","Pho1 EE hit eta",1000,-3,3);
-    pho2_EE_hit_eta = new TH1F("Photon2 EE rechit eta ","Pho2 EE hit eta",1000,-3,3);
-    pho1_hitX = new TH1F("Photon1 EE hits X","Phho1_hit_X",1000,-160,160);
- 
-    ES_L1_hits= new TH1F ("ES Layer 1 hits","ES_L1_hits",1000,0,300);
-    ES_L2_hits=new TH1F("ES Layer 2 hits","ES_L2_hits",1000,0,300);
-    ES_L1_L2_hits_En_weighed= new TH1F  ("ES Layers  hits weighed by rechit energy","ES_L1_L2_hits_en_weighed",1000,290,320);
+    pho1_EE_hit_eta               =   new   TH1F  ("Photon1 EE rechit eta "    , "Pho1 EE hit eta"     ,  1000    , -3    ,   3);
+    pho2_EE_hit_eta               =   new   TH1F  ("Photon2 EE rechit eta "    , "Pho2 EE hit eta"     ,  1000    , -3    ,   3);
+    pho1_hitX                     =   new   TH1F  ("Pho1_hit_X"                , "Pho1_hit_X"          ,  1000    , -160  , 160);
+    pho1_hitY                     =   new   TH1F  ("Pho1_hit_Y"                , "Pho1_hit_Y"          ,  1000    , -160  , 160);
+    pho1_hit_Z                    =   new   TH1F  ("Pho1_hit_Z"                , "Pho1_hit_Z"          ,  1000    ,   0   , 350);
+    pho1_hit_E                    =   new   TH1F  ("Pho1_hit_E"                , "Pho1_hit_E"	       ,  1000	  ,   0   , 100);
+    pho2_hitX                     =   new   TH1F  ("Pho2_hit_X"                , "Pho2_hit_X"          ,  1000    , -160  , 160);
+    pho2_hitY                     =   new   TH1F  ("Pho2_hit_Y"                , "Pho2_hit_Y"          ,  1000    , -160  , 160);
+    pho2_hit_Z                    =   new   TH1F  ("Pho2_hit_Z"                , "Pho2_hit_Z"          ,  1000    ,   0   , 350);
+    pho2_hit_E                    =   new   TH1F  ("Pho2_hit_E"                , "Pho2_hit_E"	       ,  1000	  ,   0   , 100);
+    pho1_ES_hitX                  =   new   TH1F  ("Pho1_ES_hit_X"             , "Pho1_ES_hit_X"       ,  1000    , -160  , 160);
+    pho1_ES_hitY                  =   new   TH1F  ("Pho1_ES_hit_Y"             , "Pho1_ES_hit_Y"       ,  1000    , -160  , 160);
+    pho1_ES_hit_Z                 =   new   TH1F  ("Pho1_ES_hit_Z"             , "Pho1_ES_hit_Z"       ,  1000    ,   0   , 350);
+    pho1_ES_hit_E                 =   new   TH1F  ("Pho1_ES_hit_E"             , "Pho1_ES_hit_E"       ,  1000    ,   0   , 0.2);
+    pho2_ES_hitX                  =   new   TH1F  ("Pho2_ES_hit_X"             , "Pho2_ES_hit_X"       ,  1000    , -160  , 160);
+    pho2_ES_hitY                  =   new   TH1F  ("Pho2_ES_hit_Y"             , "Pho2_ES_hit_Y"       ,  1000    , -160  , 160);
+    pho2_ES_hit_Z                 =   new   TH1F  ("Pho2_ES_hit_Z"             , "Pho2_ES_hit_Z"       ,  1000    ,   0   , 350);
+    pho2_ES_hit_E                 =   new   TH1F  ("Pho2_ES_hit_E"             , "Pho2_ES_hit_E"       ,  1000    ,   0   , 0.2);
+    
+    ES_L1_hits                    =   new   TH1F  ("ES Layer 1 hits"           , "ES_L1_hits"          ,  1000    ,   0   , 300);
+    ES_L2_hits                    =   new   TH1F  ("ES Layer 2 hits"           , "ES_L2_hits"          ,  1000    ,   0   , 300);
+    ES_L1_hits_En_weighed         =   new   TH1F  ("ES_L1_hits_En_weighed"     , "ES_L1_hits_E_weigh"  ,  1000    ,   0   , 300);
+    ES_L2_hits_En_weighed         =   new   TH1F  ("ES_L2_hits_En_weighed"     , "ES_L2_hits_E_weigh"  ,  1000    ,   0   , 300);
     
     Tot_unc_rechit_E_Ma_200_300   =   new   TH1F  ("Tot_unc_RH_E_Ma_200_300"   , "Total E in unc. RH"  ,  1000    ,   0   , 300);
     Tot_unc_rechit_E_Ma_300_400   =   new   TH1F  ("Tot_unc_RH_E_Ma_300_400"   , "Total E in unc. RH"  ,  1000    ,   0   , 300);
@@ -382,9 +417,9 @@ void AnalyzeHGCMuons::BookHistogram(const char *outFileName)
     Tot_clu_rechit_E_Ma_400_500   =   new   TH1F  ("Tot_clu_RH_E_Ma_400_500"   , "Total E in clu RH"   ,  1000    ,   0   , 800);
     Tot_clu_rechit_E_Ma_500_600   =   new   TH1F  ("Tot_clu_RH_E_Ma_500_600"   , "Total E in clu RH"   ,  1000    ,   0   , 800);
     Tot_clu_rechit_E_Ma_600_700   =   new   TH1F  ("Tot_clu_RH_E_Ma_600_700"   , "Total E in clu RH"   ,  1000    ,   0   , 800);
-    Tot_clu_rechit_E_Ma_700_800   =   new   TH1F   ("Tot_clu_RH_E_Ma_700_800"  ,  "Total E in clu RH"   , 1000    ,   0   , 800);
-    Tot_clu_rechit_E_Ma_800_900   =   new   TH1F   ("Tot_clu_RH_E_Ma_800_900"   , "Total E in clu RH"   , 1000    ,   0   , 800);
-    Tot_clu_rechit_E_Ma_900_1000  =   new   TH1F   ("Tot_clu_RH_E_Ma_900_1000"  , "Total E in clu RH"   , 1000    ,   0   , 800);
+    Tot_clu_rechit_E_Ma_700_800   =   new   TH1F  ("Tot_clu_RH_E_Ma_700_800"   , "Total E in clu RH"   , 1000     ,   0   , 800);
+    Tot_clu_rechit_E_Ma_800_900   =   new   TH1F  ("Tot_clu_RH_E_Ma_800_900"   , "Total E in clu RH"   , 1000     ,   0   , 800);
+    Tot_clu_rechit_E_Ma_900_1000  =   new   TH1F  ("Tot_clu_RH_E_Ma_900_1000"  , "Total E in clu RH"   , 1000     ,   0   , 800);
 
     Tot_ES_RH_E_Ma_200_300        =   new   TH1F   ("Tot_ES_E_Ma_200_300"      ,  "total E in ES"      ,  1000     ,  0   , 1);
     Tot_ES_RH_E_Ma_300_400        =   new   TH1F   ("Tot_ES_E_Ma_300_400"      ,  "total E in ES"      ,  1000     ,  0   , 1);
@@ -398,7 +433,7 @@ void AnalyzeHGCMuons::BookHistogram(const char *outFileName)
     a_gen_mass_vs_pt = new TH2F ("A gen mass vs pt","Gen Mass vs pT",1000,0,2.2,1000,0,120);
     a_gen_eta_vs_phi = new TH2F ("A gen eta vs phi", "Eta vs Phi",1000,1.2,2.7,1000,-4,4);
     gen_eta1_vs_eta2 = new TH2F ("Gen #eta1 vs #eta2","#eta1 vs #eta2", 1000,-3,3,1000,-3,3);
-   Gen_pho_sep= new TH2F("Separation between gen photons","Separation between gen photons",9,0,9,9,0,9);
+    Gen_pho_sep= new TH2F("Separation between gen photons","Separation between gen photons",9,0,9,9,0,9);
    
     E_pho1_vs_E_pho2 = new TH2F("E_pho1_vs_E_pho2","E_pho1 vs E_pho2",1000,0,800,1000,0,800);
 
@@ -409,6 +444,8 @@ void AnalyzeHGCMuons::BookHistogram(const char *outFileName)
 
     EE_XY_occupancy= new TH2F("EE_XY_occupancy","EE_XY_occupancy",1000,-160,160,1000,-160,160);
     EE_XY_occu_En_weighed=new TH2F("EE_XY_rechits_En_weighed","En_weighed_EE_rechits",1000,-160,160,1000,-160,160);
+    EE_eta_phi_occu= new TH2F ("EE_eta_phi_occu","EE_eta_phi_occu",1000,1,3.5,1000,-3.5,3.5);
+    EE_eta_phi_occu_En_weigh = new TH2F("EE_eta_phi_occu_En_weigh","EE_eta_phi_occu_En_weigh",1000,1,3.5,1000,-3.5,3.5);
 
     Pho1_RechitE_vs_A_gen_E= new TH2F("Total rechit energy (photon1) vs Energy of A","Rechit_E_pho1 vs A_gen_E",1000,0,800,1000,0,800);
     Pho1_UnclRechitE_vs_A_gen_E= new TH2F("Total energy in unclustered rechits (photon1) vs energy of A","Unclustered_rechit_E_pho1 vs A_gen_E",1000,0,800,1000,0,800);
@@ -431,8 +468,7 @@ AnalyzeHGCMuons::AnalyzeHGCMuons(const TString &inputFileList, const char *outFi
   }
   else
   {
-    std::cout << "Initiating analysis of dataset " << dataset << std::endl;
-  }
+    std::cout << "Initiating analysis of dataset " << dataset << std::endl;  }
 
   HGCNtupleVariables::Init(tree, tree2);
 

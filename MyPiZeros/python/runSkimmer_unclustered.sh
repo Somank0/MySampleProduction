@@ -1,4 +1,5 @@
 #!/usr/bin/bash
+
 if [ -z $1 ] ; then
   echo "Please use: ./runSkimmer [massMin(MeV)] [massMax(MeV)] [stepSize(MeV)]" && exit 1;
 fi
@@ -8,8 +9,8 @@ fi
 if [ -z $3 ] ; then
   echo "Please use: ./runSkimmer [massMin(MeV)] [massMax(MeV)] [stepSize(MeV)]" && exit 3;
 fi
-cmsenv;
 
+cmsenv;
 
 
 folder=/eos/user/s/sosaha/CMSSW_10_6_29/src/MySampleProduction/MyPiZeros/test/120.0_SinglePi0E10+SinglePi0E10+DIGI+RECO/AGun
@@ -35,9 +36,10 @@ folder=/eos/user/s/sosaha/CMSSW_10_6_29/src/MySampleProduction/MyPiZeros/test/12
 #450K sample
 #files=(4210199 4204982 4204977 4262514 4262516 4264828 4210202 4281242 4280077 4280076 4222283 4222284)
 #files=(4264829 4281243 4301209 )
-files=(4303849 4303844 4301208)
-
+#files=(4303849 4303844 4301208)
+files=(10)
 #########################################################################
+#files=(4378207)
 for i in ${files[@]};
 do
 echo "Running Skimmer on $folder/${i}_AToGG_RECO_M1000.0.root"

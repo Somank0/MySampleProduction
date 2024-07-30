@@ -16,7 +16,9 @@ Replace: double mass = (fMasterGen->particleData).m0( particleID );
 With: double mass = (massMax -massMin) * randomEngine().flat() + massMin;
 
 
-Note: To run runSampleGen_EE_plus(minus).sh file please make sure the directory structure is the same as AGun directory. You will need to run : cmsrel CMSSW_10_2_16_UL to get relavant version of cmssw and make sure CMSSW_10_2_16_UL/src has the correct files. GEN-SIM: CMSSW_10_6_29
+Note: To run runSampleGen_EE_plus(minus).sh file please make sure the directory structure is the same as AGun directory. You will need to run : cmsrel CMSSW_10_2_16_UL to get relavant version of cmssw and make sure CMSSW_10_2_16_UL/src has the correct files. GEN-SIM: CMSSW_10_6_29. Run the sample generators from a singularity container with el7 architecture.
+
+To use a el7 singularity container interactively, run the command 'cmssw-el7'.
 
 cmsRun AToGG_pythia8_cfi_GEN_SIM.py mass=1.2 ptMin=0 ptMax=50 etaMin=0 etaMax=1.4 phiMin=0 phiMax=3 maxEvents=10
 

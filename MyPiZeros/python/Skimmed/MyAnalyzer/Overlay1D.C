@@ -246,20 +246,22 @@ void Overlay1D(){
  {"Tot_unc_RH_E_Ma_250","Tot_unc_RH_E_Ma_500","Tot_unc_RH_E_Ma_750", "Tot_unc_RH_E_Ma_1000"},{"Tot_clu_RH_E_Ma_250", "Tot_clu_RH_E_Ma_500", 
  "Tot_clu_RH_E_Ma_750","Tot_clu_RH_E_Ma_1000"}, {"Tot_unc_RH_E_Ma_200_300","Tot_unc_RH_E_Ma_400_500","Tot_unc_RH_E_Ma_600_700",
  "Tot_unc_RH_E_Ma_800_900","Tot_unc_RH_E_Ma_900_1000"},{"ES Layer 1 hits","ES Layer 2 hits"},{"Tot_ES_E_Ma_200_300", "Tot_ES_E_Ma_400_500",
- "Tot_ES_E_Ma_600_700","Tot_ES_E_Ma_800_900" ,"Tot_ES_E_Ma_900_1000"}};
+ "Tot_ES_E_Ma_600_700","Tot_ES_E_Ma_800_900" ,"Tot_ES_E_Ma_900_1000"},{"ES_L1_hits_En_weighed","ES_L2_hits_En_weighed"}};
+
+ vector<string> GEN = {"Angle_240<=Ma<=260"};
 
     legend_texts ={{"240<=Ma<=260","490<=Ma<=510","740<=Ma<=760","990<=Ma<=1010"},{"240<=Ma<=260","490<=Ma<=510","740<=Ma<=760","990<=Ma<=1010"},
 {"240<=Ma<=260","490<=Ma<=510","740<=Ma<=760","990<=Ma<=1010"},{"240<=Ma<=260","490<=Ma<=510","740<=Ma<=760","990<=Ma<=1010"},{"240<=Ma<=260","490<=Ma<=510","740<=Ma<=760","990<=Ma<=1010"}
 ,{"240<=Ma<=260","490<=Ma<=510","740<=Ma<=760","990<=Ma<=1010"},{"Ma = 0.2-0.3 GeV","Ma = 0.4-0.5 GeV","Ma = 0.6-0.7 GeV","Ma = 0.8-0.9 GeV","Ma = 0.9-1.0 GeV"},
-{"ES L1 hits","ES L2 hits"},{"Ma = 0.2-0.3","Ma = 0.4-0.5","Ma = 0.6-0.7 GeV","Ma = 0.8-0.9 GeV","Ma = 0.9-1.0 GeV"}};
+{"ES L1 hits","ES L2 hits"},{"Ma = 0.2-0.3","Ma = 0.4-0.5","Ma = 0.6-0.7 GeV","Ma = 0.8-0.9 GeV","Ma = 0.9-1.0 GeV"},{"ES L1 hits","ES L2 hits"}};
 
     xLabel ={"Angle between gen photons","No. of ECAL rechits per event","No. of ES rechits per event","Total energy in rechits (in GeV)",
-    "Total energy in unclustered rechits (in GeV)","Total energy in clustered rechits (in GeV)","Total energy in unclustered rechits (GeV)","No. of ES hits per event","ES rechit energy (GeV)"};
-    vector<int> rebin={10,10,10,10,10,10,10,10,10};
-    vector<double> ymin={1,1,1,0,0,0,0,0,0};
-    vector<double> ymax={1200,100,100,200,200,200,500,200,200};
-    vector<double> xmin ={0,0,0,-10,-10,-10,-10,0,0};
-  vector<double> xmax={0.1,300,300,700,500,700,1000,300,1};
+    "Total energy in unclustered rechits (in GeV)","Total energy in clustered rechits (in GeV)","Total energy in unclustered rechits (GeV)","No. of ES hits per event","ES rechit energy (GeV)","No. of ES rechits per event (weighed by energy)"};
+    vector<int> rebin={10,10,10,10,10,10,10,10,10,10};
+    vector<double> ymin={1,1,1,0,0,0,0,0,0,0};
+    vector<double> ymax={1200,100,100,200,200,200,500,200,200,300};
+    vector<double> xmin ={0,0,0,-10,-10,-10,-10,0,0,0};
+  vector<double> xmax={0.1,300,300,700,500,700,1000,300,1,300};
     loghist={{"Angle_240<=Ma<=260","Angle_490<=Ma<=510","Angle_740<=Ma<=760","Angle_990<=Ma<=1010"} ,{"N_ES_rechits_Ma_250","N_ES_rechits_Ma_500","N_ES_rechits_Ma_750","N_ES_rechits_Ma_1000"},{"Tot_RH_E_Ma_250","Tot_RH_E_Ma_500","Tot_RH_E_Ma_750",
     "Tot_RH_E_Ma_1000" } ,{"Tot_unc_RH_E_Ma_250","Tot_unc_RH_E_Ma_500","Tot_unc_RH_E_Ma_750", "Tot_unc_RH_E_Ma_1000"}, {"Tot_clu_RH_E_Ma_250", "Tot_clu_RH_E_Ma_500", 
     "Tot_clu_RH_E_Ma_750","Tot_clu_RH_E_Ma_1000"},{"Tot_unc_RH_E_Ma_200_300","Tot_unc_RH_E_Ma_400_500","Tot_unc_RH_E_Ma_600_700",
@@ -299,23 +301,26 @@ void Overlay1D(){
 	  hist_list.push_back(h_resp2); 
         }
       string  Savename;
+    int gen = count(GEN.begin(),GEN.end(),varName[i][0]);
     int LOG = count(loghist.begin(), loghist.end(),varName[i]);
     int NORM= count(norm.begin(), norm.end(),varName[i]);
+    if(gen){Savename = "GEN_";}
+    else {Savename = "RECO_";}
 if(LOG && NORM){
-         Savename=to_string(3000 + i) +xLabel[i] + "_overlay_logy_norm";
+         Savename=Savename+to_string(1000 + i) +"_"+xLabel[i] + "_overlay_logy_norm";
 generate_1Dplot(hist_list,Savename.c_str(),xLabel[i].c_str(),"Entries",rebin[i],ymin[i],ymax[i],xmin[i],xmax[i],leg_head,true,true,false,true,filetag[i_file].c_str(),legend_texts[i]);
 }
 
 	  else if(LOG && !NORM){
-          Savename=to_string(3000 + i) +xLabel[i] + "_overlay_logy";
+          Savename=Savename+to_string(1000 + i)+"_" +xLabel[i] + "_overlay_logy";
 generate_1Dplot(hist_list,Savename.c_str(),xLabel[i].c_str(),"Entries",rebin[i],ymin[i],ymax[i],xmin[i],xmax[i],leg_head,false,true,false,true,filetag[i_file].c_str(),legend_texts[i]);
 	  }
           else if(!LOG && NORM){
-          Savename=to_string(3000 + i) +xLabel[i] + "_overlay_norm"; 
+          Savename=Savename+to_string(1000 + i)+"_" +xLabel[i] + "_overlay_norm"; 
 generate_1Dplot(hist_list,Savename.c_str(),xLabel[i].c_str(),"Entries",rebin[i],ymin[i],ymax[i],xmin[i],xmax[i],leg_head,true,false,false,true,filetag[i_file].c_str(),legend_texts[i]);
 }
 	 else{ 
-          Savename=to_string(3000 + i) +xLabel[i] + "_overlay";
+          Savename=Savename+to_string(1000 + i)+"_" +xLabel[i] + "_overlay";
 generate_1Dplot(hist_list,Savename.c_str(),xLabel[i].c_str(),"Entries",rebin[i],ymin[i],ymax[i],xmin[i],xmax[i],leg_head,false,false,false,true,filetag[i_file].c_str(),legend_texts[i]);
          } 
         

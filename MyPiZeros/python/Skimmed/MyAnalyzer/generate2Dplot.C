@@ -171,21 +171,26 @@ void generate2Dplot()
   vector<string> varName;
  
    varName = {"A gen mass vs pt","A gen eta vs phi","Gen #eta1 vs #eta2","E_pho1_vs_E_pho2","Angle vs gamma (240<= Ma <=260)","Angle vs gamma (490<= Ma <=510)",
-   "Angle vs gamma (740<= Ma <=760)","Angle vs gamma (990<= Ma <=1010)","EE_XY_occupancy","EE_XY_rechits_En_weighed" };                        
+   "Angle vs gamma (740<= Ma <=760)","Angle vs gamma (990<= Ma <=1010)","EE_XY_occupancy","EE_XY_rechits_En_weighed","EE_eta_phi_occu","EE_eta_phi_occu_En_weigh" };    
+
+   vector<string> GEN ={"A gen mass vs pt","A gen eta vs phi","Gen #eta1 vs #eta2","E_pho1_vs_E_pho2","Angle vs gamma (240<= Ma <=260)","Angle vs gamma (490<= Ma <=510)",
+   "Angle vs gamma (740<= Ma <=760)","Angle vs gamma (990<= Ma <=1010)"} ;                 
    vector <string>  xLabel;
 
-  xLabel={"Mass (GeV)","|#eta|","#eta1","Energy (GeV)","Lorentz boost (#gamma)","Lorentz boost (#gamma)","Lorentz boost (#gamma)","Lorentz boost (#gamma)","X (in cm)","X (in cm)" };  
+  xLabel={"Mass (GeV)","|#eta|","#eta1","Energy (GeV)","Lorentz boost (#gamma)","Lorentz boost (#gamma)","Lorentz boost (#gamma)","Lorentz boost (#gamma)","X (in cm)","X (in cm)","|#eta|","|#eta|" };  
   vector<string> yLabel;
-  yLabel={"pT (GeV)","#phi","#eta2","Energy","Angle","Angle","Angle","Angle","Y (in cm)","Y (in cm)"};
+  yLabel={"pT (GeV)","#phi","#eta2","Energy","Angle","Angle","Angle","Angle","Y (in cm)","Y (in cm)","#phi", "#phi"};
    vector<string> Title;
-   Title = {"Mass vs pT of A","#eta vs #phi of A","#eta1 vs #eta2","E_pho1 vs E_pho2","Ma = 0.24-0.26 GeV","Ma = 0.49-0.51 GeV","Ma = 0.74-0.76 GeV","Ma = 0.99-1.01 GeV","EE XY occupancy","EE XY rechits weighed by energy"}; 
+   Title = {"Mass vs pT of A","#eta vs #phi of A","#eta1 vs #eta2","E_pho1 vs E_pho2","Ma = 0.24-0.26 GeV","Ma = 0.49-0.51 GeV","Ma = 0.74-0.76 GeV",
+   "Ma = 0.99-1.01 GeV","EE XY occupancy","EE XY rechits weighed by energy","EE rechits (#eta-#phi)","EE rechits(#eta-#phi) weighed by energy"}; 
   vector<string> loghist  ={""} ;                                                                                                              
   vector <int> rebin;
-  rebin={10,10,10,5,5,5,5,10,9,9};
-  vector<double> ymin ={0,  -4,   -3,       0,   0,    0,    0,       0,    -160,   -160};
-  vector<double> ymax={120  ,4,    3,     800,   0.2,  0.2,  0.2,     0.2,   160,    160};
-  vector<double> xmin ={0,  1.1,  -3,       0,   0,    0,    0,       0,     -160,   -160};
-  vector<double> xmax={3,   3,     3,     800,   2500, 2500, 2500,    2500,   160,    160};
+  rebin={10,10,10,5,5,5,5,10,9,9,10,10};
+
+  vector<double> ymin ={0,  -4,   -3,       0,   0,    0,    0,       0,    -160,   -160,   -3.5 ,  3.5};
+  vector<double> ymax={120  ,4,    3,     800,   0.2,  0.2,  0.2,     0.2,   160,    160,    3.5 ,  3.5};
+  vector<double> xmin ={0,  1.1,  -3,       0,   0,    0,    0,       0,     -160,   -160,     1 ,  1};
+  vector<double> xmax={3,   3,     3,     800,   2500, 2500, 2500,    2500,   160,    160,    4,  4};
 
   cout<<"different vector sizes "<<endl;
   cout<<varName.size()<<"\t"<<xLabel.size()<<"\t"<<rebin.size()<<"\t"<<xmax.size()<<"\t"<<xmin.size()<<endl;
@@ -226,8 +231,12 @@ void generate2Dplot()
 	  cout<<" hist_list.size() "<<hist_list.size()<<"\t "<<endl;
  
 string hname = hist_name;
+         
+    int gen = count(GEN.begin(),GEN.end(),varName[i_cut]);
 	  int LOG = count(loghist.begin(), loghist.end(),varName[i_cut]);
-    string hst_name = to_string(2000 + i_cut) + hname;
+    string hst_name = to_string(2000 + i_cut) +"_" + hname;
+    if(gen){hst_name = "GEN_"+ hst_name;}
+    else{hst_name= "RECO_"+hst_name;}
 	  if(LOG){
 	  generate_2Dplot(hist_list,hst_name.c_str(),xLabel[i_cut].c_str(),yLabel[i_cut].c_str(),rebin[i_cut],ymin[i_cut],ymax[i_cut],xmin[i_cut],xmax[i_cut],false,true,false,false,true,Title[i_cut].c_str());
 	  }

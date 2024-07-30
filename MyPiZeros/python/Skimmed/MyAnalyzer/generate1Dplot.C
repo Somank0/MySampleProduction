@@ -307,10 +307,10 @@ char const *leg_head="",bool normalize=false, bool log_flag=false, bool DoRebin=
   if(ymin<0.0) ymin = 1e-4;
   //  if(ymax<=10) ymax=10;
   for(int i = 0;i<(int)hist.size(); i++) {
-    if(!normalize) {hist.at(i)->GetYaxis()->SetRangeUser(0.0001,1.1*ymax);hist.at(i)->GetXaxis()->SetRangeUser(xmin,1.05*xmax);}
+    if(!normalize) {hist.at(i)->GetYaxis()->SetRangeUser(0.0001,1.1*ymax);hist.at(i)->GetXaxis()->SetRangeUser(xmin,xmax);}
     else
       {  hist.at(i)->GetZaxis()->SetRangeUser(0.00001,1.1);
-       hist.at(i)->GetYaxis()->SetRangeUser(0.0001,1.1*ymax);hist.at(i)->GetXaxis()->SetRangeUser(xmin,1.05*xmax);
+       hist.at(i)->GetYaxis()->SetRangeUser(0.0001,1.1*ymax);hist.at(i)->GetXaxis()->SetRangeUser(xmin,xmax);
       }
     cout<<"i"<<i<<endl;
     if(Text){
@@ -370,29 +370,34 @@ void generate1Dplot()
     vector<string> filetag=  {"Sample size:112K"};
    vector<vector<string>> legend_texts;  
     legend_texts ={{"Mass of A"},{"Gen pT of A"},{"Gen #eta of A"},{"Gen #phi of A"},{"Gen energy of A"},{"Lorentz boost of A"},{"No. of gen photons"},{"Pho1 gen #eta"},{"Pho1 gen #phi"},{"Pho1 gen pT"},
-    {"Pho1 gen energy"},{"Pho2 gen #eta"},{"Pho2 gen #phi"},{"Pho2 gen pT"},{"Pho2 gen energy"},{"E_sublead/E_lead"},{"E_pho2/E_pho1"},{"No. of reco photons"},{"Pho1 EE rechit #eta"},{"pho2 EE rechit eta"},{"ES L1 hits"},{"ES L2 hits"}};
+    {"Pho1 gen energy"},{"Pho2 gen #eta"},{"Pho2 gen #phi"},{"Pho2 gen pT"},{"Pho2 gen energy"},{"E_sublead/E_lead"},{"E_pho2/E_pho1"},
+    {"No. of reco photons"},{"Pho1 EE rechit #eta"},{"pho2 EE rechit eta"},{"ES L1 hits"},{"ES L2 hits"},{"Reco photon1 pT"},{"Reco photon2 pT"},
+    {"Reco photon1 #eta"},{"Reco photon2 #eta"},{"Pho1 Rechit X"},{"Pho2 Rechit X"},{"Pho1 Rechit Y"},{"Pho2 Rechit Y"},{"Pho1 Rechit Z"},{"Pho2 Rechit Z"}};
 
   vector<string>varName;
  
    varName ={"M_gen","A_gen_pT","A_gen_eta","A_gen_phi","A_gen_energy","Lorentz boost of A","No. of gen photons","Photon1 gen eta","Photon1 gen phi","Photon1 gen pT","Photon1 gen E",
    "Photon2 gen eta","Photon2 gen phi","Photon2 gen pT","Photon2 gen E","E_sublead_by_E_lead","E_pho2_by_E_pho1","No. of reco photons",
-   "Photon1 EE rechit eta","Photon2 EE rechit eta","ES Layer 1 hits","ES Layer 2 hits"};                        
+   "Photon1 EE rechit eta","Photon2 EE rechit eta","ES Layer 1 hits","ES Layer 2 hits","Reco_pho1_pt","Reco_pho2_pt","Reco_pho1_eta","Reco_pho2_eta","Pho1_hit_x","Pho2_hit_x","Pho1_hit_y","Pho2_hit_y","Pho1_hit_z","Pho2_hit_z"};   
+
+vector<string>GEN ={"M_gen","A_gen_pT","A_gen_eta","A_gen_phi","A_gen_energy","Lorentz boost of A","No. of gen photons","Photon1 gen eta","Photon1 gen phi","Photon1 gen pT","Photon1 gen E",
+   "Photon2 gen eta","Photon2 gen phi","Photon2 gen pT","Photon2 gen E","E_sublead_by_E_lead","E_pho2_by_E_pho1"}  ; 
+                  
    vector <string>  xLabel;
 
   xLabel={"Mass (GeV)","Gen pT (in GeV)","#eta","#phi","Energy (GeV)","Lorentz boost", "No. of gen photons","#eta","#phi","pT (GeV)","Energy (GeV)","#eta","#phi","pT (GeV)","Energy (GeV)",
-  "Energy ratio","Energy ratio","No. of reco photons","#eta","#eta","No. of ES L1 hits per event","No. of ES L2 hits per event"};  
+  "Energy ratio","Energy ratio","No. of reco photons","#eta","#eta","No. of ES L1 hits per event","No. of ES L2 hits per event","pT (in GeV)","pT (in GeV)","#eta","#eta","X (in cm)","X (in cm)","Y (in cm)","Y (in cm)","Z (in cm)","Z (in cm)"};  
    
   vector<string> loghist  ={"Lorentz boost of A","E_pho2_by_E_pho1"} ;                                                                                                              
   vector <int> rebin;
-  rebin={10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10};
-  vector<double> ymin ={1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1};
-  vector<double> ymax={2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,20,20,200,200};
-  vector<double> xmin ={0,  0,  -3, -4, 0,    0,    0,  -3,   -4,  0,   0,    -3,   -4,   0,    0,    0,  0,   0,     -3, -3,   0,    300};
-  vector<double> xmax={2.1, 120, 3,  4, 1000, 7000, 3,  3,    4,  800, 1000,  3,    4,   800,  1000, 4,  100,  10,      3,  3,   0,    300};
+  rebin={10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,12,12,12,12,10,10};
+  vector<double> ymin ={1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1};
+  vector<double> ymax={2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,20,20,200,200,200,200,200,200,200,200,200,200,200};
+  vector<double> xmin ={0,  0,  -3, -4, 0,    0,    0,  -3,   -4,  0,   0,    -3,   -4,   0,    0,    0,  0,   0,     -3, -3,   0,    0,	  0,	    0, -3,  -3,-160,-160,-160,-160,0,0};
+  vector<double> xmax={2.1, 120, 3,  4, 1000, 7000, 3,  3,    4,  800, 1000,  3,    4,   800,  1000, 4,  100,  10,      3,  3,  300,  300,	150,	150,  3,   3, 160,160,160,160,350,350};
 
   cout<<"different vector sizes "<<endl;
-  cout<<varName.size()<<"\t"<<xLabel.size()<<"\t"<<rebin.size()<<"\t"<<xmax.size()<<"\t"<<xmin.size()<<endl;
-  cout <<xLabel[0]<<endl;
+  cout<<varName.size()<<"\t"<<xLabel.size()<<"\t"<<rebin.size()<<"\t"<<xmax.size()<<"\t"<<xmin.size()<<"\t"<<legend_texts.size()<<endl;
   bool flag=false;
  
   sprintf(hname,"temp.root");
@@ -426,8 +431,14 @@ void generate1Dplot()
 	  	 
 	  cout<<h_resp2->Integral()<<"\t"<<f[i_file]->GetName()<<endl;	 
 	  cout<<" hist_list.size() "<<hist_list.size()<<"\t "<<endl;
-    string hst_name= to_string(1000 + i_cut) + hist_name;
+          std::ostringstream oss;
+          oss << std::setw(4) << std::setfill('0') << i_cut <<hist_name;
+          string hst_name = oss.str();
+
+          int gen = count(GEN.begin(),GEN.end(),varName[i_cut]);
 	  int LOG = count(loghist.begin(), loghist.end(),varName[i_cut]);
+          if(gen){hst_name = "GEN_"+hst_name;}
+          else {hst_name = "RECO_" + hst_name;}
 	  if(LOG){generate_1Dplot(hist_list,hst_name.c_str(),xLabel[i_cut].c_str(),"Entries",rebin[i_cut],ymin[i_cut],ymax[i_cut],xmin[i_cut],xmax[i_cut],leg_head,false,true,false,true,filetag[i_file].c_str(),legend_texts[i_cut]);
 	  }
 	  else {

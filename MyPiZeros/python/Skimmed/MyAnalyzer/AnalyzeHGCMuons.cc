@@ -175,9 +175,17 @@ float P2TotalRecE=0;
 float P2TotalUncRecE=0;
 float P2TotalCluRecE=0;
 
-
+if(pt->size()>0){
+reco_pho1_pt->Fill(pt->at(0)); reco_pho1_eta->Fill(eta->at(0));
+if(pt->size()>1){ reco_pho2_pt->Fill(pt->at(1)); reco_pho2_eta->Fill(eta->at(1)); }
+}
 
 for(int i =0;i<Hit_X_Pho1->size();i++){
+pho1_hitX->Fill(Hit_X_Pho1->at(i));
+pho1_hitY->Fill(Hit_Y_Pho1->at(i));
+pho1_hit_Z->Fill(abs(Hit_Z_Pho1->at(i)));
+pho1_hit_E->Fill(RecHitEnPho1->at(i));
+
 EE_XY_occupancy->Fill(Hit_X_Pho1->at(i),Hit_Y_Pho1->at(i));
 EE_XY_occu_En_weighed->Fill(Hit_X_Pho1->at(i),Hit_Y_Pho1->at(i),RecHitEnPho1->at(i));
 P1TotalRecE= P1TotalRecE +RecHitEnPho1->at(i);
@@ -189,11 +197,25 @@ Pho1_UnclRechitE_vs_A_gen_E->Fill(genEnergy,P1TotalUncRecE);
 Pho1_ClusRechitE_vs_A_gen_E->Fill(genEnergy,P1TotalCluRecE);
 
 for(int i =0;i<Hit_X_Pho2->size();i++){
+pho2_hitX->Fill(Hit_X_Pho2->at(i));
+pho2_hitY->Fill(Hit_Y_Pho2->at(i));
+pho2_hit_Z->Fill(abs(Hit_Z_Pho2->at(i)));
+pho2_hit_E->Fill(RecHitEnPho2->at(i));
+
 EE_XY_occupancy->Fill(Hit_X_Pho2->at(i),Hit_Y_Pho2->at(i));
 EE_XY_occu_En_weighed->Fill(Hit_X_Pho2->at(i),Hit_Y_Pho2->at(i),RecHitEnPho2->at(i));
 P2TotalRecE = P2TotalRecE + RecHitEnPho2->at(i);
 if(RecHitFracPho2->at(i) <0){P2TotalUncRecE = P2TotalUncRecE + RecHitEnPho2->at(i) ;}
 else {P2TotalCluRecE = P2TotalCluRecE + RecHitEnPho2->at(i);}
+}
+
+for(int i=0; i<Hit_Eta_Pho1->size(); i++){
+EE_eta_phi_occu->Fill(abs(Hit_Eta_Pho1->at(i)),Hit_Phi_Pho1->at(i));
+EE_eta_phi_occu_En_weigh->Fill(abs(Hit_Eta_Pho1->at(i)),Hit_Phi_Pho1->at(i),RecHitEnPho1->at(i));
+}
+for(int i=0; i<Hit_Eta_Pho2->size();i++){
+EE_eta_phi_occu->Fill(abs(Hit_Eta_Pho2->at(i)),Hit_Phi_Pho2->at(i));
+EE_eta_phi_occu_En_weigh->Fill(abs(Hit_Eta_Pho2->at(i)),Hit_Phi_Pho2->at(i),RecHitEnPho2->at(i));
 }
 
 Pho2_RechitE_vs_A_gen_E->Fill(genEnergy,P2TotalRecE);
@@ -211,9 +233,18 @@ float ES_pho1_en = 0;
 float ES_pho2_en =0;
 
 for(int i=0; i<Hit_ES_X_Pho1->size();i++){
+pho1_ES_hitX->Fill(Hit_ES_X_Pho1->at(i));
+pho1_ES_hitY->Fill(Hit_ES_Y_Pho1->at(i));
+pho1_ES_hit_Z->Fill(abs(Hit_ES_Z_Pho1->at(i)));
+pho1_ES_hit_E->Fill(ES_RecHitEnPho1->at(i));
   ES_pho1_en = ES_pho1_en +ES_RecHitEnPho1->at(i);
 }
 for(int i=0; i<Hit_ES_X_Pho2->size();i++){
+pho2_ES_hitX->Fill(Hit_ES_X_Pho2->at(i));
+pho2_ES_hitY->Fill(Hit_ES_Y_Pho2->at(i));
+pho2_ES_hit_Z->Fill(abs(Hit_ES_Z_Pho2->at(i)));
+pho2_ES_hit_E->Fill(ES_RecHitEnPho2->at(i));
+
   ES_pho2_en = ES_pho2_en +ES_RecHitEnPho2->at(i);
 }
 float Tot_ES_en = ES_pho1_en + ES_pho2_en;
@@ -266,20 +297,24 @@ for (int i=0; i<Hit_Eta_Pho2->size();i++){pho2_EE_hit_eta->Fill(Hit_Eta_Pho2->at
 
 int n_es_l1_hits =0;
 int n_es_l2_hits =0;
+float es_l1_e =0;
+float es_l2_e =0;
 if(Hit_ES_X_Pho1->size()>0){ 
   for(int i =0; i<Hit_ES_X_Pho1->size(); i++){
-  if(abs(Hit_ES_Z_Pho1->at(i))>302 && abs(Hit_ES_Z_Pho1->at(i)<305)){n_es_l1_hits = n_es_l1_hits + 1;}
-  if(abs(Hit_ES_Z_Pho1->at(i))>=308 && abs(Hit_ES_Z_Pho1->at(i))<310){n_es_l2_hits = n_es_l2_hits + 1;}
+  if(abs(Hit_ES_Z_Pho1->at(i))>302 && abs(Hit_ES_Z_Pho1->at(i)<305)){n_es_l1_hits = n_es_l1_hits + 1; es_l1_e= es_l1_e + ES_RecHitEnPho1->at(i);}
+  if(abs(Hit_ES_Z_Pho1->at(i))>=308 && abs(Hit_ES_Z_Pho1->at(i))<310){n_es_l2_hits = n_es_l2_hits + 1;es_l2_e = es_l2_e + ES_RecHitEnPho1->at(i);}
 }
 }
 if(Hit_ES_X_Pho2->size()>0){ 
   for(int i =0; i<Hit_ES_X_Pho2->size(); i++){
-  if(abs(Hit_ES_Z_Pho2->at(i))>303 && abs(Hit_ES_Z_Pho2->at(i)<305)){ n_es_l1_hits = n_es_l1_hits + 1;}
-  if(abs(Hit_ES_Z_Pho2->at(i))>=308 && abs(Hit_ES_Z_Pho2->at(i))<310){ n_es_l2_hits = n_es_l2_hits + 1;}
+  if(abs(Hit_ES_Z_Pho2->at(i))>303 && abs(Hit_ES_Z_Pho2->at(i)<305)){ n_es_l1_hits = n_es_l1_hits + 1; es_l1_e = es_l1_e + ES_RecHitEnPho2->at(i);}
+  if(abs(Hit_ES_Z_Pho2->at(i))>=308 && abs(Hit_ES_Z_Pho2->at(i))<310){ n_es_l2_hits = n_es_l2_hits + 1;es_l2_e = es_l2_e + ES_RecHitEnPho2->at(i);}
 }
 }
 ES_L1_hits->Fill(n_es_l1_hits);
 ES_L2_hits->Fill(n_es_l2_hits);
+ES_L1_hits_En_weighed->Fill(n_es_l1_hits,es_l1_e);
+ES_L2_hits_En_weighed->Fill(n_es_l2_hits, es_l2_e);
  }
  
 }
