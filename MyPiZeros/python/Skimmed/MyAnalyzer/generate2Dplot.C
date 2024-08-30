@@ -149,6 +149,19 @@ gPad->Update();
 const int nfiles=100;                                                                                                                                                             
 TFile *f[nfiles];
 
+struct MixedData {
+     string str1;
+     string str2;
+     string str3;
+     string str4;
+     int intData;
+     double double1;
+     double double2;
+     double double3;
+     double double4;
+ };
+
+
 void generate2Dplot()
 {
   char* hname = new char[200];
@@ -168,23 +181,37 @@ void generate2Dplot()
    //vector<vector<string>> legend_texts;  
     //legend_texts ={{"EE_XY_occupancy"}};
 
-  vector<string> varName;
+MixedData varName[] = {
+{"A gen mass vs pt","A gen m vs pt","mass (GeV)", "pT (GeV)",10,0,120,0,2.1},
+{"Gen_eta1_vs_eta2","Gen #eta1 vs #eta2", "#eta1", "#eta2",10,-3,3,-3,3},
+{"E_pho1_vs_E_pho2"," Energy of photons" ,"E_pho1 (GeV)", "E_pho2 (GeV)",10,0,800,0,800},
+{"Angle vs gamma (240<= Ma <=260)","Angle vs Lorentz boost (240<= Ma <=260 MeV)" , "Lorentz boost (#gamma)","Angle",10,0,0.22,1,3000},
+{"Angle vs gamma (490<= Ma <=510)","Angle vs Lorentz boost (490<= Ma <=510 MeV)","Lorentz boost (#gamma)","Angle",10,0,0.22,1,3000},
+{"Angle vs gamma (740<= Ma <=760)","Angle vs Lorentz boost (740<= Ma <=760 MeV)","Lorentz boost (#gamma)","Angle",10,0,0.22,1,3000},
+{"Angle vs gamma (990<= Ma <=1010)","Angle vs Lorentz boost (990<= Ma <=1010 MeV)","Lorentz boost (#gamma)","Angle",10,0,0.22,1,3000},
+{"EE_XY_occupancy","ECAL Rechits (X-Y plane)", "X (in cm)", "Y (in cm)",10,-160,160,-160,160},
+{"EE_XY_rechits_En_weighed", "ECAL rechits (X-Y plane) weighed by energy","X (in cm)", "Y (in cm)",10,-160,160,-160,160},
+{"EE_eta_phi_occu","ECAL rechits (#eta-#phi plane)","|#eta|","#phi",10,-3.5,3.5,1,3.5},
+{"EE_eta_phi_occu_En_weigh","ECAL rechits (#eta-#phi plane) weighed by energy","|#eta|","#phi",10,-3.5,3.5,1,3.5},
+
+
+};
+/*  vector<string> varName;
  
    varName = {"A gen mass vs pt","A gen eta vs phi","Gen #eta1 vs #eta2","E_pho1_vs_E_pho2","Angle vs gamma (240<= Ma <=260)","Angle vs gamma (490<= Ma <=510)",
    "Angle vs gamma (740<= Ma <=760)","Angle vs gamma (990<= Ma <=1010)","EE_XY_occupancy","EE_XY_rechits_En_weighed","EE_eta_phi_occu","EE_eta_phi_occu_En_weigh" };    
-
+*/
    vector<string> GEN ={"A gen mass vs pt","A gen eta vs phi","Gen #eta1 vs #eta2","E_pho1_vs_E_pho2","Angle vs gamma (240<= Ma <=260)","Angle vs gamma (490<= Ma <=510)",
    "Angle vs gamma (740<= Ma <=760)","Angle vs gamma (990<= Ma <=1010)"} ;                 
-   vector <string>  xLabel;
+  /* vector <string>  xLabel;
 
   xLabel={"Mass (GeV)","|#eta|","#eta1","Energy (GeV)","Lorentz boost (#gamma)","Lorentz boost (#gamma)","Lorentz boost (#gamma)","Lorentz boost (#gamma)","X (in cm)","X (in cm)","|#eta|","|#eta|" };  
   vector<string> yLabel;
   yLabel={"pT (GeV)","#phi","#eta2","Energy","Angle","Angle","Angle","Angle","Y (in cm)","Y (in cm)","#phi", "#phi"};
    vector<string> Title;
    Title = {"Mass vs pT of A","#eta vs #phi of A","#eta1 vs #eta2","E_pho1 vs E_pho2","Ma = 0.24-0.26 GeV","Ma = 0.49-0.51 GeV","Ma = 0.74-0.76 GeV",
-   "Ma = 0.99-1.01 GeV","EE XY occupancy","EE XY rechits weighed by energy","EE rechits (#eta-#phi)","EE rechits(#eta-#phi) weighed by energy"}; 
-  vector<string> loghist  ={""} ;                                                                                                              
-  vector <int> rebin;
+   "Ma = 0.99-1.01 GeV","EE XY occupancy","EE XY rechits weighed by energy","EE rechits (#eta-#phi)","EE rechits(#eta-#phi) weighed by energy"}; */
+  /*vector <int> rebin;
   rebin={10,10,10,5,5,5,5,10,9,9,10,10};
 
   vector<double> ymin ={0,  -4,   -3,       0,   0,    0,    0,       0,    -160,   -160,   -3.5 ,  3.5};
@@ -194,7 +221,9 @@ void generate2Dplot()
 
   cout<<"different vector sizes "<<endl;
   cout<<varName.size()<<"\t"<<xLabel.size()<<"\t"<<rebin.size()<<"\t"<<xmax.size()<<"\t"<<xmin.size()<<endl;
-  cout <<xLabel[0]<<endl;
+  cout <<xLabel[0]<<endl;*/
+  vector<string> loghist  ={""} ;                                                                                                              
+
   bool flag=false;
  
   sprintf(hname,"temp.root");
@@ -205,20 +234,28 @@ void generate2Dplot()
   for(int i_file=0; i_file<n_files;i_file++)
     {      
      
-      for(int i_cut=0; i_cut<varName.size();i_cut++)
+      for(int i_cut=0; i_cut<size(varName);i_cut++)
 	{
 	  vector<TH2F*> hist_list;
-	  
-	  sprintf(hist_name,"%s",varName[i_cut].c_str());
+          string Title = varName[i_cut].str2;
+          string xLabel = varName[i_cut].str3;
+          string yLabel = varName[i_cut].str4;
+	  int rebin = varName[i_cut].intData;
+          double ymin = varName[i_cut].double1;
+          double ymax = varName[i_cut].double2;
+          double xmin = varName[i_cut].double3;
+          double xmax = varName[i_cut].double4;
+
+	  sprintf(hist_name,"%s",varName[i_cut].str1.c_str());
 	  cout<<hist_name<<"\t"<<i_cut<<"\t"<<i_file<<"\t"<<f[i_file]->GetName()<<endl;
           
 	  TH2F* h_resp2 = (TH2F*)f[i_file]->Get(hist_name); // SR
-	  h_resp2->GetXaxis()->SetTitle(xLabel[i_cut].c_str());
-	  h_resp2->GetYaxis()->SetTitle(yLabel[i_cut].c_str());
+	  h_resp2->GetXaxis()->SetTitle(xLabel.c_str());
+	  h_resp2->GetYaxis()->SetTitle(yLabel.c_str());
 	  //cout<<"resp2 "<<h_resp2->Integral()<<"\t"<<rebin[i_cut]<<"\t"<<xmin[i_cut]<<"\t"<<xmax[i_cut]<<endl;
 	  cout<<"I_cut"<<"\t"<<i_cut<<endl;
-	  h_resp2->RebinX(rebin[i_cut]);
-	  h_resp2->RebinY(rebin[i_cut]);
+	  h_resp2->RebinX(rebin);
+	  h_resp2->RebinY(rebin);
 	 
 	  
 	  //h_resp2= setMyRange(h_resp2,xmin[i_cut],xmax[i_cut]+0.01*xmax[i_cut]);
@@ -232,16 +269,16 @@ void generate2Dplot()
  
 string hname = hist_name;
          
-    int gen = count(GEN.begin(),GEN.end(),varName[i_cut]);
-	  int LOG = count(loghist.begin(), loghist.end(),varName[i_cut]);
+    int gen = count(GEN.begin(),GEN.end(),varName[i_cut].str1);
+	  int LOG = count(loghist.begin(), loghist.end(),varName[i_cut].str1);
     string hst_name = to_string(2000 + i_cut) +"_" + hname;
     if(gen){hst_name = "GEN_"+ hst_name;}
     else{hst_name= "RECO_"+hst_name;}
 	  if(LOG){
-	  generate_2Dplot(hist_list,hst_name.c_str(),xLabel[i_cut].c_str(),yLabel[i_cut].c_str(),rebin[i_cut],ymin[i_cut],ymax[i_cut],xmin[i_cut],xmax[i_cut],false,true,false,false,true,Title[i_cut].c_str());
+	  generate_2Dplot(hist_list,hst_name.c_str(),xLabel.c_str(),yLabel.c_str(),rebin,ymin,ymax,xmin,xmax,false,true,false,false,true,Title.c_str());
 	  }
 	  else {
-generate_2Dplot(hist_list,hst_name.c_str(),xLabel[i_cut].c_str(),yLabel[i_cut].c_str(),rebin[i_cut],ymin[i_cut],ymax[i_cut],xmin[i_cut],xmax[i_cut],false,false,false,false,true,Title[i_cut].c_str());
+generate_2Dplot(hist_list,hst_name.c_str(),xLabel.c_str(),yLabel.c_str(),rebin,ymin,ymax,xmin,xmax,false,false,false,false,true,Title.c_str());
           }
 	}
       //fout->Close();

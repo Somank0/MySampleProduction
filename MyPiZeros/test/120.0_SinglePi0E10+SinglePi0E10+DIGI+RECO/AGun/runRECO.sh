@@ -28,7 +28,7 @@ do
 	echo "------------------------------Using CMSSW_10_2_16_UL------------------------------"
 #	cmsRun hlt_SS.py mass=$i clusterID=$4;
 	echo "==============================HLT step complete! Starting RECO-AOD step=============================="
-	cd ../../;
+#	cd ../../;
 	cmsenv;
 	echo "------------------------------Using CMSSW_10_6_29------------------------------"
 	cmsRun recoStepUL2018_SS.py mass=$i clusterID=$4;

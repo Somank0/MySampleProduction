@@ -185,6 +185,11 @@ pho1_hitX->Fill(Hit_X_Pho1->at(i));
 pho1_hitY->Fill(Hit_Y_Pho1->at(i));
 pho1_hit_Z->Fill(abs(Hit_Z_Pho1->at(i)));
 pho1_hit_E->Fill(RecHitEnPho1->at(i));
+pho1_EE_hit_eta->Fill(Hit_Eta_Pho1->at(i));
+pho1_EE_hit_phi->Fill(Hit_Phi_Pho1->at(i));
+
+EE_eta_phi_occu->Fill(abs(Hit_Eta_Pho1->at(i)),Hit_Phi_Pho1->at(i));
+EE_eta_phi_occu_En_weigh->Fill(abs(Hit_Eta_Pho1->at(i)),Hit_Phi_Pho1->at(i),RecHitEnPho1->at(i));
 
 EE_XY_occupancy->Fill(Hit_X_Pho1->at(i),Hit_Y_Pho1->at(i));
 EE_XY_occu_En_weighed->Fill(Hit_X_Pho1->at(i),Hit_Y_Pho1->at(i),RecHitEnPho1->at(i));
@@ -201,6 +206,11 @@ pho2_hitX->Fill(Hit_X_Pho2->at(i));
 pho2_hitY->Fill(Hit_Y_Pho2->at(i));
 pho2_hit_Z->Fill(abs(Hit_Z_Pho2->at(i)));
 pho2_hit_E->Fill(RecHitEnPho2->at(i));
+pho2_EE_hit_eta->Fill(Hit_Eta_Pho2->at(i));
+pho2_EE_hit_phi->Fill(Hit_Phi_Pho2->at(i));
+
+EE_eta_phi_occu->Fill(abs(Hit_Eta_Pho2->at(i)),Hit_Phi_Pho2->at(i));
+EE_eta_phi_occu_En_weigh->Fill(abs(Hit_Eta_Pho2->at(i)),Hit_Phi_Pho2->at(i),RecHitEnPho2->at(i));
 
 EE_XY_occupancy->Fill(Hit_X_Pho2->at(i),Hit_Y_Pho2->at(i));
 EE_XY_occu_En_weighed->Fill(Hit_X_Pho2->at(i),Hit_Y_Pho2->at(i),RecHitEnPho2->at(i));
@@ -209,14 +219,18 @@ if(RecHitFracPho2->at(i) <0){P2TotalUncRecE = P2TotalUncRecE + RecHitEnPho2->at(
 else {P2TotalCluRecE = P2TotalCluRecE + RecHitEnPho2->at(i);}
 }
 
-for(int i=0; i<Hit_Eta_Pho1->size(); i++){
+/*for(int i=0; i<Hit_Eta_Pho1->size(); i++){
+pho1_EE_hit_eta->Fill(Hit_Eta_Pho1->at(i));
+pho1_EE_hit_phi->Fill(Hit_Phi_Pho1->at(i));
 EE_eta_phi_occu->Fill(abs(Hit_Eta_Pho1->at(i)),Hit_Phi_Pho1->at(i));
 EE_eta_phi_occu_En_weigh->Fill(abs(Hit_Eta_Pho1->at(i)),Hit_Phi_Pho1->at(i),RecHitEnPho1->at(i));
 }
 for(int i=0; i<Hit_Eta_Pho2->size();i++){
+pho2_EE_hit_eta->Fill(Hit_Eta_Pho2->at(i));
+pho2_EE_hit_phi->Fill(Hit_Phi_Pho2->at(i));
 EE_eta_phi_occu->Fill(abs(Hit_Eta_Pho2->at(i)),Hit_Phi_Pho2->at(i));
 EE_eta_phi_occu_En_weigh->Fill(abs(Hit_Eta_Pho2->at(i)),Hit_Phi_Pho2->at(i),RecHitEnPho2->at(i));
-}
+}*/
 
 Pho2_RechitE_vs_A_gen_E->Fill(genEnergy,P2TotalRecE);
 Pho2_UnclRechitE_vs_A_gen_E->Fill(genEnergy,P2TotalUncRecE);
@@ -233,6 +247,8 @@ float ES_pho1_en = 0;
 float ES_pho2_en =0;
 
 for(int i=0; i<Hit_ES_X_Pho1->size();i++){
+pho1_ES_hit_eta->Fill(Hit_ES_Eta_Pho1->at(i));
+pho1_ES_hit_phi->Fill(Hit_ES_Phi_Pho1->at(i));
 pho1_ES_hitX->Fill(Hit_ES_X_Pho1->at(i));
 pho1_ES_hitY->Fill(Hit_ES_Y_Pho1->at(i));
 pho1_ES_hit_Z->Fill(abs(Hit_ES_Z_Pho1->at(i)));
@@ -240,6 +256,8 @@ pho1_ES_hit_E->Fill(ES_RecHitEnPho1->at(i));
   ES_pho1_en = ES_pho1_en +ES_RecHitEnPho1->at(i);
 }
 for(int i=0; i<Hit_ES_X_Pho2->size();i++){
+pho2_ES_hit_eta->Fill(Hit_ES_Eta_Pho2->at(i));
+pho2_ES_hit_phi->Fill(Hit_ES_Phi_Pho2->at(i));
 pho2_ES_hitX->Fill(Hit_ES_X_Pho2->at(i));
 pho2_ES_hitY->Fill(Hit_ES_Y_Pho2->at(i));
 pho2_ES_hit_Z->Fill(abs(Hit_ES_Z_Pho2->at(i)));
@@ -292,9 +310,6 @@ if(genMass>=0.9 && genMass<1.0){Tot_unc_rechit_E_Ma_900_1000->Fill(TotUncRecE);T
 Tot_ES_RH_E_Ma_900_1000->Fill(Tot_ES_en);
 }
 
-for (int i=0; i<Hit_Eta_Pho1->size();i++){pho1_EE_hit_eta->Fill(Hit_Eta_Pho1->at(i));}
-for (int i=0; i<Hit_Eta_Pho2->size();i++){pho2_EE_hit_eta->Fill(Hit_Eta_Pho2->at(i));}
-
 int n_es_l1_hits =0;
 int n_es_l2_hits =0;
 float es_l1_e =0;
@@ -315,6 +330,37 @@ ES_L1_hits->Fill(n_es_l1_hits);
 ES_L2_hits->Fill(n_es_l2_hits);
 ES_L1_hits_En_weighed->Fill(n_es_l1_hits,es_l1_e);
 ES_L2_hits_En_weighed->Fill(n_es_l2_hits, es_l2_e);
+
+for (int i=0; i<Pho_SigIEIE->size();i++){
+float pho_sigiEiE = Pho_SigIEIE->at(i);
+float pho_sigiPhiiPhi = Pho_SigIPhiIPhi->at(i);
+Pho_sig_iEiE->Fill(pho_sigiEiE);
+Pho_sig_iPhiiPhi->Fill(pho_sigiPhiiPhi);
+	if(genMass >=0.2 && genMass <0.3){
+Pho_sig_iEiE_Ma_200_300->Fill(pho_sigiEiE); Pho_sig_iPhiiPhi_Ma_200_300->Fill(pho_sigiPhiiPhi);}
+
+if(genMass >=0.3 && genMass <0.4){
+Pho_sig_iEiE_Ma_300_400->Fill(pho_sigiEiE); Pho_sig_iPhiiPhi_Ma_300_400->Fill(pho_sigiPhiiPhi);}
+
+if(genMass >=0.4 && genMass <0.5){
+Pho_sig_iEiE_Ma_400_500->Fill(pho_sigiEiE); Pho_sig_iPhiiPhi_Ma_400_500->Fill(pho_sigiPhiiPhi);}
+
+if(genMass >=0.5 && genMass <0.6){
+Pho_sig_iEiE_Ma_500_600->Fill(pho_sigiEiE); Pho_sig_iPhiiPhi_Ma_500_600->Fill(pho_sigiPhiiPhi);}
+
+if(genMass >=0.6 && genMass <0.7){
+Pho_sig_iEiE_Ma_600_700->Fill(pho_sigiEiE); Pho_sig_iPhiiPhi_Ma_600_700->Fill(pho_sigiPhiiPhi);}
+
+if(genMass >=0.7 && genMass <0.8){
+Pho_sig_iEiE_Ma_700_800->Fill(pho_sigiEiE); Pho_sig_iPhiiPhi_Ma_700_800->Fill(pho_sigiPhiiPhi);}
+
+if(genMass >=0.8 && genMass <0.9){
+Pho_sig_iEiE_Ma_800_900->Fill(pho_sigiEiE); Pho_sig_iPhiiPhi_Ma_800_900->Fill(pho_sigiPhiiPhi);}
+
+if(genMass >=0.9 && genMass <1.0){
+Pho_sig_iEiE_Ma_900_1000->Fill(pho_sigiEiE); Pho_sig_iPhiiPhi_Ma_900_1000->Fill(pho_sigiPhiiPhi);}
+
+}
  }
  
 }
