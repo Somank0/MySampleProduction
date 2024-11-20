@@ -1,9 +1,9 @@
 int line_width[12] = {2,2,2,2,2,2,2,2,2,2,2,2};
 int line_style[12] = {1,1,1,1,1,1,1,1,1,1,1,1};                                                                              
-int line_color[9] = {kBlue,kRed,kGreen+2,kViolet+2,kGreen-2,kYellow+1,kGray+2,kMagenta,kBlue+2};
+int line_color[9] = {kBlue,kRed,kGreen+2,kViolet+2,kYellow,kGreen-3,kGray+2,kMagenta,kBlue+2};
 int line_color1[9]= {kBlue,kGreen+2,kGray+1,kViolet+2,kGreen-2,kYellow+1,kGray+2,kMagenta,kBlue+2};
 int line_color2[9] = {kGreen+2,kBlue,kViolet,kGray,kViolet+2,kGreen-2,kYellow+1,kGray+2,kMagenta};
-vector<int> col={kGreen+2,kBlue,kViolet,kGray,kViolet+2,kGreen-2,kYellow+1,kGray+2,kMagenta,kBlue+2,kMagenta,kCyan};
+vector<int> col={kGreen+2,kBlue,kViolet,kGray,kViolet+2,kGreen-2,kYellow+1,kGray+2,kMagenta,kBlue+2,kMagenta,kYellow};
 vector<int> Style={3008,1001,3008,1001};
 void decorate(TH1F*,int);
 void decorate(TH1F* hist,int i){
@@ -174,7 +174,7 @@ void generate_1Dplot(vector<TH1F*> hist,char const *tag_name="",char const *xlab
   //  if(ymax<=10) ymax=10;
   for(int i = 0;i<(int)hist.size(); i++) {
     if(!normalize) {
-    if (log_flag){ hist.at(i)->GetYaxis()->SetRangeUser(0.1,10*ymax);}
+    if (log_flag){ hist.at(i)->GetYaxis()->SetRangeUser(0.1,50*ymax);}
     else {
     hist.at(i)->GetYaxis()->SetRangeUser(0.0001,1.2*ymax);hist.at(i)->GetXaxis()->SetRangeUser(xmin,1.05*xmax);}
     }
@@ -244,22 +244,27 @@ void generate1Dplot()
   int n_files=1;
  
     f[0] = new TFile("plot.root");
+    //f[0] = new TFile("EB_plot.root");
     
-    vector<string> filetag=  {"Sample size:112K"};
+   vector<string> filetag=  {"Sample:5M (in EE)"};
+   //vector<string> filetag=  {"Sample:4.3M (in EB)"};
+
+   // vector<string> filetag ={""};
 MixedData varName[] = { // { Name of the plot , xLabel , rebin , ymin , ymax , xmin , xmax , Legend label }
-{"M_gen","Mass (GeV)",10,0,2000,0,2.1,"mass of A"},  
-{"A_gen_pT","pT (GeV)",10,1,2000,0,120,"Gen pT of A"},
-{"A_gen_eta","#eta",10,0,2000,-3,3,"Gen #eta of A"},  
-{"A_gen_phi","#phi",10,0,2000,-4,4,"Gen #phi of A"},
-{"A_gen_energy","Energy (GeV)",10,0,200,0,1000,"Gen energy of A"},
+{"M_gen","Mass (GeV)",10,0,20,0,2.1,"mass of A"},  
+{"A_gen_pT","pT (GeV)",10,1,20,0,120,"Gen pT of A"},
+{"A_gen_eta","#eta",10,0,20,-3,3,"Gen #eta of A"},  
+{"A_gen_phi","#phi",10,0,20,-4,4,"Gen #phi of A"},
+{"A_gen_energy","Energy (GeV)",10,0,20,0,1000,"Gen energy of A"},
 {"Lorentz boost of A","Lorentz boost (#gamma)",10,0,200,1,7000,"Lorentz boost of A"},
 {"No. of gen photons","No. of photons",10,0,200,0,4,"No. of gen photons"},
-{"Photon1 gen eta","#eta",10,0,200,-3,3,"Pho1 gen #eta"},
-{"Photon1 gen phi","#phi",10,0,200,-4,4,"Pho1 gen #phi"},
-{"Photon1 gen pT","pT (GeV)",10,0,200,0,150,"Pho1 gen pT"},
-{"Photon1 gen E","Energy (GeV)", 10,0,200,0,1000,"Pho1 gen energy"},
+{"Photon1 gen eta","#eta",10,0,20,-3,3,"Pho1 gen #eta"},
+{"Photon1 gen phi","#phi",10,0,20,-4,4,"Pho1 gen #phi"},
+{"Photon1 gen pT","pT (GeV)",10,0,20,0,150,"Pho1 gen pT"},
+{"Photon1 gen E","Energy (GeV)", 10,0,20,0,1000,"Pho1 gen energy"},
 {"Photon2 gen eta","#eta",10,0,200,-3,3,"Pho2 gen #eta"},
 {"Photon2 gen phi","#phi",10,0,200,-4,4,"Pho2 gen #phi"},
+{"Photon2 gen pT","pT (GeV)",10,0,20,0,150,"Pho2 gen pT"},
 {"Photon2 gen E","energy (GeV)",10,0,200,0,1000,"Pho2 gen energy"},
 {"E_sublead_by_E_lead","ratio",10,0,200,0,1.2,"E_sublead/E_lead"},
 {"No. of reco photons","No. of photons",10,0,200,0,4,"No. of reco photons"},
@@ -270,11 +275,11 @@ MixedData varName[] = { // { Name of the plot , xLabel , rebin , ymin , ymax , x
 {"Pho1_hit_X","ECAL X (in cm)",10,0,200,-160,160,"Pho1 EE rechit x"},
 {"Pho1_hit_Y","ECAL Y (in cm)",10,0,200,-160,160,"Pho1 EE rechit y"},
 {"Pho1_hit_Z","ECAL Z (in cm)",10,0,200,250,350,"Pho1 EE rechit z"},
-{"Pho1_hit_E","Energy (GeV)",10,0,200,0,50,"Pho1 EE rechit enrgy"},
+{"Pho1_hit_E","Energy (GeV)",10,0,200,0,100,"Pho1 EE rechit energy"},
 {"Pho2_hit_X","ECAL X (in cm)", 10,0,200,-160,160,"Pho2 EE rechit x"},
 {"Pho2_hit_Y","ECAL Y (in cm)",10,0,200,-160,160,"Pho2 EE rechit y"},
 {"Pho2_hit_Z","ECAL Z (in cm)",10,0,200,250,350,"Pho2 EE rechit z"},
-{"Pho2_hit_E","Energy (GeV)",10,0,200,0,50,"Pho2 EE rechit enrgy"},
+{"Pho2_hit_E","Energy (GeV)",10,0,200,0,100,"Pho2 EE rechit energy"},
 
 {"Pho1_ES_hit_eta","#eta",10,0,200,-3,3,"Pho1 ES rechit #eta"},
 {"Pho1_ES_hit_phi","#phi",10,0,200,-4,4,"Pho1 ES rechit #phi"},
@@ -291,7 +296,43 @@ MixedData varName[] = { // { Name of the plot , xLabel , rebin , ymin , ymax , x
 
 {"Pho_sig_iEiE_Ma_200_300","#sigmai_{i#eta i#eta}",10,0,200,0,0.1,"#sigmai_{i#eta i#eta}"},
 {"Pho_sig_iPhiiPhi" ,"#sigma_{i#phi i#phi}",10,0,200,0,0.1,"#sigma_{i#phi i#phi}"},
+{"Unc_RH_E_ma_100","Unclustered rechit energy (GeV)",10,0,200,-2,5,"0.08 < M_{a} < 0.12 GeV"},
+{"Unc_RH_E_ma_200","Unclustered rechit energy (GeV)",10,0,200,-2,5,"0.18 < M_{a} < 0.22 GeV"},
+{"Unc_RH_E_ma_400","Unclustered rechit energy (GeV)",10,0,200,-2,5,"0.38 < M_{a} < 0.42 GeV"},
+{"Unc_RH_E_ma_800","Unclustered rechit energy (GeV)",10,0,200,-2,5,"0.78 < M_{a} < 0.82 GeV"},
+{"Unc_RH_E_ma_1800","Unclustered rechit energy (GeV)",10,0,200,-2,5,"1.78 < M_{a} < 1.82 GeV"},
+{"Clu_rec_E_ma_100","Clustered rechit energy (GeV)",10,0,200,-2,5,"0.08 < M_{a} < 0.12 GeV"},
+{"Clu_rec_E_ma_200","Clustered rechit energy (GeV)",10,0,200,-2,5,"0.18 < M_{a} < 0.22 GeV"},
+{"Clu_rec_E_ma_400","Clustered rechit energy (GeV)",10,0,200,-2,5,"0.38 < M_{a} < 0.42 GeV"},
+{"Clu_rec_E_ma_800","Clustered rechit energy (GeV)",10,0,200,-2,5,"0.78 < M_{a} < 0.82 GeV"},
+{"Clu_rec_E_ma_1800","Clustered rechit energy (GeV)",10,0,200,-2,5,"1.78 < M_{a} < 1.82 GeV"},
 
+{"Unc_rec_E_ma_400_500","Unclustered rechit energy (GeV)",10,0,200,-2,5,"0.4 < M_{a} < 0.5 GeV"},
+{"Unc_rec_E_ma_1700_1800","Unclustered rechit energy (GeV)",10,0,200,-2,5,"1.7 < M_{a} < 1.8 GeV"},
+{"Unc_rec_E_ma_400_500","Unclustered rechit energy (GeV)",2,0,200,-2,2,"0.4 < M_{a} < 0.5 GeV"},
+{"Unc_rec_E_ma_1700_1800","Unclustered rechit energy (GeV)",2,0,200,-2,2,"1.7 < M_{a} < 1.8 GeV"},
+{"Unc_RH_E_ma_400","Unclustered rechit energy (GeV)",2,0,200,-2,2,"0.38 < M_{a} < 0.42 GeV"},
+{"Unc_RH_E_ma_1800","Unclustered rechit energy (GeV)",2,0,200,-2,2,"1.78 < M_{a} < 1.82 GeV"},
+{"Unc_RH_E_ma_400","Unclustered rechit energy (GeV)",1,0,200,-0.2,0.2,"0.38 < M_{a} < 0.42 GeV"},
+{"Unc_RH_E_ma_1800","Unclustered rechit energy (GeV)",1,0,200,-0.2,0.2,"1.78 < M_{a} < 1.82 GeV"},
+{"Hit_noise_ma_100","Rechit Noise (GeV)",10,0,200,-2,5,"0.08 < M_{a} < 0.12 GeV"},
+{"Hit_noise_ma_200","Rechit Noise (GeV)",10,0,200,-2,5,"0.08 < M_{a} < 0.12 GeV"},
+{"Hit_noise_ma_400","Rechit Noise (GeV)",10,0,200,-2,5,"0.08 < M_{a} < 0.12 GeV"} ,
+{"Hit_noise_ma_800","Rechit Noise (GeV)",10,0,200,-2,5,"0.08 < M_{a} < 0.12 GeV"} ,
+{"Hit_noise_ma_1600","Rechit Noise (GeV)",10,0,200,-2,5,"0.08 < M_{a} < 0.12 GeV"} ,
+{"Hit_noise_ma_1800","Rechit Noise (GeV)",10,0,200,-2,5,"0.08 < M_{a} < 0.12 GeV"} ,
+{"Clu_Hit_noise_ma_100","Clustered Rechit Noise (GeV)",10,0,200,-2,5,"0.08 < M_{a} < 0.12 GeV"} ,
+{"Clu_Hit_noise_ma_200","Clustered Rechit Noise (GeV)",10,0,200,-2,5,"0.18 < M_{a} < 0.22 GeV"} ,
+{"Clu_Hit_noise_ma_400","Clustered Rechit Noise (GeV)",10,0,200,-2,5,"0.38 < M_{a} < 0.42 GeV"} ,
+{"Clu_Hit_noise_ma_800","Clustered Rechit Noise (GeV)",10,0,200,-2,5,"0.78 < M_{a} < 0.82 GeV"} ,
+{"Clu_Hit_noise_ma_1600","Clustered Rechit Noise (GeV)",10,0,200,-2,5,"1.58 < M_{a} < 1.62 GeV"} ,
+{"Clu_Hit_noise_ma_1800","Clustered Rechit Noise (GeV)",10,0,200,-2,5,"1.78 < M_{a} < 1.82 GeV"} ,
+{"Unc_Hit_noise_ma_100","Unclustered Rechit Noise (GeV)",10,0,200,-2,5,"0.08 < M_{a} < 0.12 GeV"} ,
+{"Unc_Hit_noise_ma_200","Unclustered Rechit Noise (GeV)",10,0,200,-2,5,"0.18 < M_{a} < 0.22 GeV"} ,
+{"Unc_Hit_noise_ma_400","Unclustered Rechit Noise (GeV)",10,0,200,-2,5,"0.38 < M_{a} < 0.42 GeV"} ,
+{"Unc_Hit_noise_ma_800","Unclustered Rechit Noise (GeV)",10,0,200,-2,5,"0.78 < M_{a} < 0.82 GeV"} ,
+{"Unc_Hit_noise_ma_1600","Unclustered Rechit Noise (GeV)",10,0,200,-2,5,"1.58 < M_{a} < 1.62 GeV"} ,
+{"Unc_Hit_noise_ma_1800","Unclustered Rechit Noise (GeV)",10,0,200,-2,5,"1.78 < M_{a} < 1.82 GeV"} ,
 
 };
 
@@ -299,7 +340,7 @@ MixedData varName[] = { // { Name of the plot , xLabel , rebin , ymin , ymax , x
   vector<string>GEN ={"M_gen","A_gen_pT","A_gen_eta","A_gen_phi","A_gen_energy","Lorentz boost of A","No. of gen photons","Photon1 gen eta","Photon1 gen phi","Photon1 gen pT","Photon1 gen E",
    "Photon2 gen eta","Photon2 gen phi","Photon2 gen pT","Photon2 gen E","E_sublead_by_E_lead","E_pho2_by_E_pho1"}  ; 
                   
-  vector<string> loghist  ={"Lorentz boost of A","E_pho2_by_E_pho1","Pho1_hit_E","Pho2_hit_E","Pho1_ES_hit_E","Pho2_ES_hit_E"} ;                                                                                                              
+  vector<string> loghist  ={"Lorentz boost of A","E_pho2_by_E_pho1","Pho1_hit_E","Pho2_hit_E","Pho1_ES_hit_E","Pho2_ES_hit_E","Unc_rec_E_ma_400_500","Unc_rec_E_ma_1700_1800","Unc_RH_E_ma_100","Unc_RH_E_ma_200","Unc_RH_E_ma_800","Unc_RH_E_ma_400","Unc_RH_E_ma_1800","Clu_rec_E_ma_100","Clu_rec_E_ma_200","Clu_rec_E_ma_400","Clu_rec_E_ma_800","Clu_rec_E_ma_1800","Hit_noise_ma_100","Hit_noise_ma_200","Hit_noise_ma_400","Hit_noise_ma_800","Hit_noise_ma_1600","Hit_noise_ma_1800"} ;                                     
 
 
   bool flag=false;

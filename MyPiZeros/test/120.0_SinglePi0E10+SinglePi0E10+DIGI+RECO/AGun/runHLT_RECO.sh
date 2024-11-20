@@ -33,4 +33,6 @@ do
 	echo "------------------------------Using CMSSW_10_6_29------------------------------"
 	cmsRun recoStepUL2018_SS.py mass=$i clusterID=$4;
 	echo "==============================RECO-AOD step complete! Sample generation complete !=============================="
+        rm "$4_SS_AToGG_DIGI_M1000.root"
+        rm "$4_SS_AToGG_HLT_M1000.root"
 done

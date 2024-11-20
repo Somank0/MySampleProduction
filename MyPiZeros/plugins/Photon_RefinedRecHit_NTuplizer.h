@@ -175,9 +175,9 @@ class Photon_RefinedRecHit_NTuplizer : public edm::one::EDAnalyzer<edm::one::Sha
       std::vector<float> dRHit_Y[2];
       std::vector<float> dRHit_Z[2];
 
-      std::vector<float> RawHit_Eta[1];
-      std::vector<float> RawHit_Phi[1];
-      std::vector<float> RawRecHitEn[1];
+      //std::vector<float> RawHit_Eta[1];
+      //std::vector<float> RawHit_Phi[1];
+      //std::vector<float> RawRecHitEn[1];
 
       std::vector<float> RecHitFrac[2];
       std::vector<float> RecHitEn[2];
@@ -186,7 +186,14 @@ class Photon_RefinedRecHit_NTuplizer : public edm::one::EDAnalyzer<edm::one::Sha
       std::vector<int>   RecHitGain[2];
       std::vector<bool>  RecHitQuality[2];
       std::vector<float> HitNoise[2];
-
+//==================================================================
+      std::vector<float> RawHit_Eta[2];
+      std::vector<float> RawHit_Phi[2];
+      std::vector<float> RawRecHitEn[2];
+      std::vector<float> RawRecHitX[2];
+      std::vector<float> RawRecHitY[2];
+      std::vector<float> RawRecHitZ[2];
+//==================================================================
       // individual flags
       std::vector<bool> RecHitFlag_kGood[2];                   // channel ok, the energy and time measurement are reliable
       std::vector<bool> RecHitFlag_kPoorReco[2];                 // the energy is available from the UncalibRecHit, but approximate (bad shape, large chi2)

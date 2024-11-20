@@ -1,6 +1,6 @@
 int line_width[12] = {2,2,2,2,2,2,2,2,2,2,2,2};
 int line_style[12] = {1,1,1,1,1,1,1,1,1,1,1,1};                                                                              
-int line_color[9] = {kBlue,kRed,kGreen+2,kViolet+2,kCyan+2,kYellow+1,kGray+2,kMagenta,kBlue+2};
+int line_color[9] = {kBlue,kRed,kGreen+2,kViolet+2,kYellow+2,kGreen -3,kGray+2,kMagenta,kBlue+2};
 int line_color1[9]= {kBlue,kGreen+2,kGray+1,kViolet+2,kGreen-2,kYellow+1,kGray+2,kMagenta,kBlue+2};
 int line_color2[9] = {kGreen+2,kBlue,kViolet,kGray,kViolet+2,kGreen-2,kYellow+1,kGray+2,kMagenta};
 vector<int> col={kGreen+2,kBlue,kViolet,kGray,kViolet+2,kGreen-2,kYellow+1,kGray+2,kMagenta,kBlue+2,kMagenta,kCyan};
@@ -114,6 +114,7 @@ void generate_1Dplot(vector<TH1F*> hist,char const *tag_name="",char const *xlab
   legend->SetLineColor(kWhite);
   legend->SetNColumns(2);
   legend->SetColumnSeparation(0.7);
+  legend->SetEntrySeparation(0.1);
   char* lhead = new char[100];
 
   sprintf(lhead,"#bf{%s} ",title);
@@ -244,9 +245,11 @@ void Overlay1D(){
   int n=0;
   int n_files=1;
  
-    f[0] = new TFile("plot.root");
+    //f[0] = new TFile("plot.root");
+    f[0] = new TFile("EB_plot.root");
     
-    vector<string> filetag=  {"Sample size:112K"};
+    //vector<string> filetag=  {"Sample size:112K"};
+    vector<string> filetag={""};
     //vector<vector<string>> varName;
     //vector<vector<string>> legend_texts;
     //vector<string> xLabel;
@@ -258,10 +261,10 @@ MixedData varName[]= {  // {{Array of names of plots},Title of plot, xlabel, reb
 
 {{"N_EE_rechits_Ma_250","N_EE_rechits_Ma_500","N_EE_rechits_Ma_750","N_EE_rechits_Ma_1000"},"No. of ECAL rechits","No. of rechits",10,0,20,0,300,{"240<=Ma<=260","490<=Ma<=510","740<=Ma<=760","990<=Ma<=1010"}},
 
-{{"Tot_clu_RH_E_Ma_200_300","Tot_clu_RH_E_Ma_400_500","Tot_clu_RH_E_Ma_600_700","Tot_clu_RH_E_Ma_800_900","Tot_clu_RH_E_Ma_900_1000"},"Total clustered rechits energy","Energy (GeV)",10,0,20,0,1000,{"Ma = 0.2-0.3 GeV","Ma = 0.4-0.5 GeV","Ma = 0.6-0.7 GeV","Ma = 0.8-0.9 GeV","Ma = 0.9-1.0     GeV"} },
+{{"Tot_clu_RH_E_Ma_200_300","Tot_clu_RH_E_Ma_400_500","Tot_clu_RH_E_Ma_600_700","Tot_clu_RH_E_Ma_800_900","Tot_clu_RH_E_Ma_1000_1100","Tot_clu_RH_E_Ma_1400_1500","Tot_clu_RH_E_Ma_1800_1900"},"Total clustered rechits energy","Total clustered energy (GeV)",10,0,20,0,1000,{"M_{a} = 0.2-0.3 GeV","M_{a} = 0.4-0.5 GeV","M_{a} = 0.6-0.7 GeV","M_{a} = 0.8-0.9 GeV","M_{a} = 1.0-1.1 GeV","M_{a} = 1.4-1.5 GeV","M_{a} = 1.8-1.9 GeV"} },
 
-{{"Tot_unc_RH_E_Ma_200_300","Tot_unc_RH_E_Ma_400_500","Tot_unc_RH_E_Ma_600_700","Tot_unc_RH_E_Ma_800_900","Tot_unc_RH_E_Ma_900_1000"},"Total unclustered rechit enrergy", "Energy (GeV)",10,0,20,0,1000,{"Ma = 0.2-0.3 GeV","Ma = 0.4-0.5 GeV","Ma = 0.6-0.7 GeV","Ma = 0.8-0.9 GeV","Ma = 0.9-1.0 GeV"}},
-
+{{"Tot_unc_RH_E_Ma_200_300","Tot_unc_RH_E_Ma_400_500","Tot_unc_RH_E_Ma_600_700","Tot_unc_RH_E_Ma_800_900","Tot_unc_RH_E_Ma_1000_1100","Tot_unc_RH_E_Ma_1400_1500", "Tot_unc_RH_E_Ma_1800_1900"},"Total unclustered rechit energy", "Total unclustered energy (GeV)",10,0,20,0,1000,{"M_{a} = 0.2-0.3 GeV","M_{a} = 0.4-0.5 GeV","M_{a} = 0.6-0.7 GeV","M_{a} = 0.8-0.9 GeV","M_{a} = 1.0-1.1 GeV","M_{a} = 1.4-1.5 GeV","M_{a} = 1.8-1.9 GeV"}},
+{{"Tot_unc_RH_E_0p2_Ma_200_300","Tot_unc_RH_E_0p2_Ma_400_500","Tot_unc_RH_E_0p2_Ma_600_700","Tot_unc_RH_E_0p2_Ma_800_900","Tot_unc_RH_E_0p2_Ma_1000_1100","Tot_unc_RH_E_0p2_Ma_1400_1500","Tot_unc_RH_E_0p2_Ma_1800_1900"},"Total unclustered rechit energy","Total unclustered energy (GeV) (E_{rechit} > 0.2 GeV)",10,0,20,0,1000,{"M_{a} = 0.2-0.3 GeV","M_{a} = 0.4-0.5 GeV","M_{a} = 0.6-0.7 GeV","M_{a} = 0.8-0.9 GeV","M_{a} = 1.0-1.1 GeV","M_{a} = 1.4-1.5 GeV","M_{a} = 1.8-1.9 GeV"}},
 {{"Tot_clu_RH_E_Ma_250","Tot_clu_RH_E_Ma_500","Tot_clu_RH_E_Ma_750","Tot_clu_RH_E_Ma_1000" },"Total energy of clustered rechits","Energy (GeV)",10,0,20,0,1000,{"Ma = 0.24-0.26 GeV","Ma = 0.49-0.51 GeV", "Ma = 0.74-0.76 GeV" , "Ma = 0.99-1.01 GeV"}},
 
 {{"Tot_unc_RH_E_Ma_250","Tot_unc_RH_E_Ma_500","Tot_unc_RH_E_Ma_750", "Tot_unc_RH_E_Ma_1000"},"Total energy of unclustered rechits","Energy (GeV)",10,0,20,0,300,{"Ma = 0.24-0.26 GeV","Ma = 0.49-0.51 GeV", "Ma     = 0.74-0.76 GeV" , "Ma = 0.99-1.01 GeV"}},
@@ -270,12 +273,16 @@ MixedData varName[]= {  // {{Array of names of plots},Title of plot, xlabel, reb
 
 {{"Pho_sig_iEiE_Ma_200_300","Pho_sig_iEiE_Ma_400_500","Pho_sig_iEiE_Ma_600_700","Pho_sig_iEiE_Ma_800_900","Pho_sig_iEiE_Ma_900_1000"},"sigma_iE_iE","#sigma_{i#eta i#eta}",10,0,200,0,0.1,{"Ma = 0.2-0.3 GeV","Ma = 0.4-0.5 GeV","Ma = 0.6-0.7 GeV","Ma = 0.8-0.9 GeV","Ma = 0.9-1.0 GeV"}},
 
-{{"Pho_sig_iPhiiPhi_Ma_200_300","Pho_sig_iPhiiPhi_Ma_400_500","Pho_sig_iPhiiPhi_Ma_600_700","Pho_sig_iPhiiPhi_Ma_800_900","Pho_sig_iPhiiPhi_Ma_900_1000"},"sigma_iphi_iphi","#sigma_{i#phi_i#phi}",10,0,200,0,0.1,{"Ma = 0.2-0.3     GeV","Ma = 0.4-0.5 GeV","Ma = 0.6-0.7 GeV","Ma = 0.8-0.9 GeV","Ma = 0.9-1.0 GeV"}},
+{{"Pho_sig_iPhiiPhi_Ma_200_300","Pho_sig_iPhiiPhi_Ma_400_500","Pho_sig_iPhiiPhi_Ma_600_700","Pho_sig_iPhiiPhi_Ma_800_900","Pho_sig_iPhiiPhi_Ma_900_1000"},"sigma_iphi_iphi","#sigma_{i#phi_i#phi}",10,0,200,0,0.1,{"Ma = 0.2-0.3 GeV","Ma = 0.4-0.5 GeV","Ma = 0.6-0.7 GeV","Ma = 0.8-0.9 GeV","Ma = 0.9-1.0 GeV"}},
+{{"Unc_RH_E_ma_400","Unc_RH_E_ma_1800"},"Unc_RH_E_ma_400","Unclustered rechit energy (GeV)",2,0,200,-2,2,{"M_{a} = 0.38-0.42 GeV","Ma = 1.78-1.82 GeV"}},
+{{"Unc_rec_E_ma_400_500","Unc_rec_E_ma_1700_1800"},"Unc_rec_E_ma","Unclustered rechit energy (GeV)",2,0,200,-2,2,{"M_{a} = 0.4-0.5 GeV","M_{a} = 1.7-1.8 GeV"}},
+
+{{"Tot_unc_RH_E_noise_Ma_200_300","Tot_unc_RH_E_noise_Ma_400_500","Tot_unc_RH_E_noise_Ma_600_700","Tot_unc_RH_E_noise_Ma_800_900","Tot_unc_RH_E_noise_Ma_1000_1100","Tot_unc_RH_E_noise_Ma_1400_1500","Tot_unc_RH_E_noise_Ma_1800_1900"},"Tot_unc_rec_E-noise","Total unclustered energy (GeV) (E_{rechit} - E_{noise})",10,0,20,0,300,{"M_{a} = 0.2-0.3 GeV","M_{a} = 0.4-0.5 GeV","M_{a} = 0.6-0.7 GeV","M_{a} = 0.8-0.9 GeV","M_{a} = 1.0-1.1 GeV","M_{a} = 1.4-1.5 GeV","M_{a} = 1.8-1.9 GeV"}},
 };
  vector<string> GEN = {"Angle between gen photons"};
 
-loghist = {"Angle between gen photons","Total clustered rechits energy","Total unclustered rechit enrergy","Total energy of clustered rechits","Total energy of unclustered rechits","sigma_iE_iE","sigma_iphi_iphi"};
-norm ={"Angle between gen photons","Total clustered rechits energy","Total unclustered rechit enrergy","Total energy of clustered rechits" , "Total energy of unclustered rechits","sigma_iE_iE","sigma_iphi_iphi"};
+loghist = {"Angle between gen photons","Total clustered rechits energy","Total unclustered rechit energy","Total energy of clustered rechits","Total energy of unclustered rechits","sigma_iE_iE","sigma_iphi_iphi","Tot_unc_rec_E-noise","Unc_rec_E_ma"};
+norm ={"Angle between gen photons",/*"Total clustered rechits energy",*/"Total unclustered rechit enrergy","Total energy of clustered rechits" , "Total energy of unclustered rechits","sigma_iE_iE","sigma_iphi_iphi"};
   sprintf(hname,"temp.root");
   TFile* fout = new TFile(hname,"RECREATE");
  

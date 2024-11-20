@@ -28,8 +28,8 @@ cmsenv;
 #done
 
 #Trache2
-folder=/eos/cms/store/group/dpg_ecal/alca_ecalcalib/ecalelf/ntuples/rchatter/Particle_Gun/Tranche2/;
-files=(9029460 9029469 9080449 9108981 9029462 9080445 9080450 9108983 9029463 9080446 9080451 9108987 9029464 9080447 9080452 9108988 9029466 9080448 9108980 9108989 )
+#folder=/eos/cms/store/group/dpg_ecal/alca_ecalcalib/ecalelf/ntuples/rchatter/Particle_Gun/Tranche2/;
+#files=(9029460 9029469 9080449 9108981 9029462 9080445 9080450 9108983 9029463 9080446 9080451 9108987 9029464 9080447 9080452 9108988 9029466 9080448 9108980 9108989 )
 #files=(9029460)
 #for i in ${files[@]};
 #do
@@ -40,18 +40,22 @@ files=(9029460 9029469 9080449 9108981 9029462 9080445 9080450 9108983 9029463 9
 
 #Trache3
 #folder=/eos/cms/store/group/dpg_ecal/alca_ecalcalib/ecalelf/ntuples/rchatter/Particle_Gun/Tranche3/;
-#files=( 9120502 9120508 9131188 9131195 9120503 9120509 9131191 9131196 9120504 9120510 9131192 9131197 9120505 9120511 9131193 9139968 9120506 )
+#files=( 9120512 9131194 9139969 9120502 9120508 9131188 9131195 9120503 9120509 9131191 9131196 9120504 9120510 9131192 9131197 9120505 9120511 9131193 9139968 9120506 )
 #files=( 9120512 ) 
 #files=( 9131194 9139969 )
 
 #Trache4
-#folder=/eos/cms/store/group/dpg_ecal/alca_ecalcalib/ecalelf/ntuples/rchatter/Particle_Gun/Tranche4/;
+folder=/eos/cms/store/group/dpg_ecal/alca_ecalcalib/ecalelf/ntuples/rchatter/Particle_Gun/Tranche4/;
 #files=( 9155515 9155523 9164382 9164387 9155516 9155524 9164383 9164388 9155519 9164378 9164384 9201337 9155520 9164380 9164385 9201338 9155522 9164381 9164386 9201342 )
-#files=(9201342)
-
+files=(9201342)
+#=========================================================
+#Extended_samples
+#set1
+#folder=/eos/user/s/sosaha/CMSSW_10_6_29/src/MySampleProduction/MyPiZeros/test/120.0_SinglePi0E10+SinglePi0E10+DIGI+RECO/AGun/Barrel_extended_samples//EB_extended_sample_set1
+#files=(5743380.0 5745568.3 5743380.2 5745568.4 5743380.3 5745569.0 5743380.4 5745569.1 5743380.5 5745569.2 5743380.6 5745569.3 5743380.7 5745570.0 5743380.8 5745570.1 5743380.9 5748019.0 5743414.0 5748019.1 5743414.1 5749332.1 5743414.2 5749405.0 5743414.3 5749405.1 5743414.4 5749587.0 5743502.1 5749587.1 5743502.2 5749588.0 5743502.3 5749588.1 5745568.0 5749588.2 5745568.1 5749588.3)
 for i in ${files[@]};
 do
-echo "Running Skimmer on $folder/${i}_AToGG_RECO_M2000.0.root"
+echo "Running Skimmer on $folder/${i}_AToGG_RECO_M1000.0.root"
 cmsRun Photons_rajdeep_dr_cfg.py inputFile=$folder/${i}_AToGG_RECO_M2000.0.root
-echo "Trache2 done"
+echo "set1 done"
 done

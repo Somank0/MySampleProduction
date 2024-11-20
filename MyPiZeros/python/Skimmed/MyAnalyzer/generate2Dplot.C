@@ -10,7 +10,7 @@ void decorate(TH2F* hist,int i){
   hist->SetLineWidth(3);                                                                                                                        
 }
 
-void generate_2Dplot(vector<TH2F*> hist,char const *tag_name="",char const *xlabel="",char const *ylabel="",  int rebin=-1,double ymin=0,double ymax=0,int xmin=-1,int xmax=-1,
+void generate_2Dplot(vector<TH2F*> hist,char const *tag_name="",char const *xlabel="",char const *ylabel="",  int rebin=-1,double ymin=0,double ymax=0,double xmin=-1,double xmax=-1,
 bool normalize=false, bool log_flag=false, bool DoRebin=false, bool Text =false, bool save_canvas=true, char const *title=""/*, vector<string> legend_texts={"nil"}*/)
 {  
      TCanvas *canvas_n1 = new TCanvas(tag_name, tag_name,950,850);
@@ -32,6 +32,7 @@ bool normalize=false, bool log_flag=false, bool DoRebin=false, bool Text =false,
   //double pvt_dely = 0.18;
   double pvt_dely = 0.15;
   gStyle->SetOptStat(0);
+  gStyle->SetPaintTextFormat("4.3f");
   gROOT->ForceStyle();
   //gStyle->SetOptFit(0);
   vector<TString> legName;
@@ -81,18 +82,22 @@ bool normalize=false, bool log_flag=false, bool DoRebin=false, bool Text =false,
     hist.at(i)->GetYaxis()->SetLabelSize(0.040);
     hist.at(i)->GetYaxis()->SetTitleOffset(1);
    //  decorate(hist.at(i),i);
-    hist.at(i)->SetMarkerSize(0.8);
+    hist.at(i)->SetMarkerSize(1.5);
     hist.at(i)->SetMarkerStyle(20);
     hist.at(i)->SetMarkerColor(line_color[i]);
     hist.at(i)->GetYaxis()->SetTitleOffset(1.5);
     hist.at(i)->GetXaxis()->SetLabelSize(0.04);
+    hist.at(i)->GetXaxis()->SetLabelOffset(0.02);
+    hist.at(i)->GetXaxis()->SetTitleOffset(1.2);
 
     legName.push_back(hist.at(i)->GetName());
     //leg_entry[i] = legend->AddEntry(hist.at(i),legend_texts[i].c_str(),"e2p");
     //leg_entry[i]->SetTextColor(hist.at(i)->GetLineColor());
     
-     hist.at(i)->GetXaxis()->SetRangeUser(xmin,xmax);
-    hist.at(i)->GetYaxis()->SetRangeUser(ymin,ymax); 
+    hist.at(i)->GetXaxis()->SetRangeUser(xmin,xmax);
+    hist.at(i)->GetYaxis()->SetRangeUser(ymin,ymax);
+    cout<< xmin <<"\t"<<xmax<<endl;
+    cout <<ymin << "\t" <<ymax<<endl; 
     //if(hist.at(i)->GetMaximum() > ymax) ymax = hist.at(i)->GetMaximum();
     //if(hist.at(i)->GetMinimum() < ymin) ymin = hist.at(i)->GetMinimum();
 
@@ -103,16 +108,47 @@ bool normalize=false, bool log_flag=false, bool DoRebin=false, bool Text =false,
   //if(ymin<0.0) ymin = 1e-4;
   //  if(ymax<=10) ymax=10;
   for(int i = 0;i<(int)hist.size(); i++) {
-    if(!normalize) {int zmax=hist.at(i)->GetMaximum();
-    hist.at(i)->GetZaxis()->SetRangeUser(0.0001,1.1*zmax);hist.at(i)->GetXaxis()->SetRangeUser(xmin,xmax);hist.at(i)->GetYaxis()->SetRangeUser(ymin,ymax);}
+    if(!normalize & !log_flag) {int zmax=hist.at(i)->GetMaximum();
+    hist.at(i)->GetZaxis()->SetRangeUser(0.0001,1.1*zmax);hist.at(i)->GetXaxis()->SetRangeUser(xmin,xmax);hist.at(i)->GetYaxis()->SetRangeUser(ymin,ymax);
+//===================================
+/*if(Text){
+int nbinsX = hist.at(i)->GetNbinsX();
+int nbinsY = hist.at(i)->GetNbinsY();
+double totalEntries = hist.at(i)->GetEntries();
+for (int k = 1; k <= nbinsX; ++k) {
+        for (int j = 1; j <= nbinsY; ++j) {
+            double binContent = hist.at(i)->GetBinContent(k, j);
+            if (binContent != 0) {
+                // Calculate the fraction
+                double fraction = binContent / totalEntries;
+
+                // Round to 2 decimal places
+                double roundedFraction = std::round(fraction * 100.0) / 100.0;  // Round to 2 decimal places
+
+                // Set the rounded value back to the bin content
+                hist.at(i)->SetBinContent(k, j, roundedFraction);
+            }
+        }
+    }
+}*/
+//=======================================
+}
+    else if (!normalize && log_flag) {int zmax=hist.at(i)->GetMaximum();
+    hist.at(i)->GetZaxis()->SetRangeUser(1,10*zmax);hist.at(i)->GetXaxis()->SetRangeUser(xmin,xmax);hist.at(i)->GetYaxis()->SetRangeUser(ymin,ymax);}
     else
-      {  hist.at(i)->GetZaxis()->SetRangeUser(0.00001,1.1);
+      {  
+hist.at(i)->Scale(1.0 / hist.at(i)->Integral());
+double zmax = hist.at(i)->GetMaximum();
+hist.at(i)->GetZaxis()->SetRangeUser(0.00001,zmax);
        hist.at(i)->GetYaxis()->SetRangeUser(ymin,ymax);hist.at(i)->GetXaxis()->SetRangeUser(xmin,xmax);
       }
     cout<<"i"<<i<<endl;
     if(Text){
-    if(i==0) hist.at(i)->Draw("colz+text ");
-    else hist.at(i)->Draw("colz+text sames");
+    hist.at(i)->SetMarkerColor(kBlack); 
+    if(i==0) {hist.at(i)->SetMinimum(0.001);
+hist.at(i)->Draw("TEXT colz");}
+
+    else hist.at(i)->Draw("colz+text same0");
     }	
     else {
       if(i==0) hist.at(i)->Draw("colz ");
@@ -175,14 +211,17 @@ void generate2Dplot()
   int n=0;
   int n_files=1;
  
-    f[0] = new TFile("plot.root");
+    //f[0] = new TFile("plot.root");
+    f[0] = new TFile("EB_plot.root");
     
-   vector<string> filetag=  {"Sample size = 112K"};
+  // vector<string> filetag=  {"Sample size = 112K"};
    //vector<vector<string>> legend_texts;  
     //legend_texts ={{"EE_XY_occupancy"}};
+   vector<string> filetag=  {""};
 
 MixedData varName[] = {
-{"A gen mass vs pt","A gen m vs pt","mass (GeV)", "pT (GeV)",10,0,120,0,2.1},
+{"A gen mass vs pt","M_{a} vs p_{Ta}","M_{a} (GeV)", "p_{Ta} (GeV)",10,0,120,-0.5,2.5},
+{"A gen eta vs phi", "#eta_{a} vs #phi_{a}", "|#eta_{a}|","#phi_{a}", 10, -4,4, 1.4,2.6},
 {"Gen_eta1_vs_eta2","Gen #eta1 vs #eta2", "#eta1", "#eta2",10,-3,3,-3,3},
 {"E_pho1_vs_E_pho2"," Energy of photons" ,"E_pho1 (GeV)", "E_pho2 (GeV)",10,0,800,0,800},
 {"Angle vs gamma (240<= Ma <=260)","Angle vs Lorentz boost (240<= Ma <=260 MeV)" , "Lorentz boost (#gamma)","Angle",10,0,0.22,1,3000},
@@ -193,36 +232,38 @@ MixedData varName[] = {
 {"EE_XY_rechits_En_weighed", "ECAL rechits (X-Y plane) weighed by energy","X (in cm)", "Y (in cm)",10,-160,160,-160,160},
 {"EE_eta_phi_occu","ECAL rechits (#eta-#phi plane)","|#eta|","#phi",10,-3.5,3.5,1,3.5},
 {"EE_eta_phi_occu_En_weigh","ECAL rechits (#eta-#phi plane) weighed by energy","|#eta|","#phi",10,-3.5,3.5,1,3.5},
-
-
+{"gen_dR", "Gen #Delta R between photons","#Delta #eta", "#Delta #phi", 200, 0,5,0,5},
+{"gen_dr_pt_20_50","20 GeV <= p_{Ta} < 50 GeV","#Delta #eta_{#gamma1 #gamma2}","#Delta #phi_{#gamma1 #gamma2}",1,0,6,0,6},
+{"gen_dr_pt_50_80","50 GeV <= p_{Ta} < 80 GeV","#Delta #eta_{#gamma1 #gamma2}","#Delta #phi_{#gamma1 #gamma2}",1,0,6,0,6},
+{"gen_dr_pt_80_100","80 GeV <= p_{Ta} <= 100 GeV","#Delta #eta_{#gamma1 #gamma2}","#Delta #phi_{#gamma1 #gamma2}",1,0,6,0,6},
+{"gen_dR_ma_100","0.08 GeV < M_{a} < 0.12 GeV","#Delta #eta_{#gamma1 #gamma2}","#Delta #phi_{#gamma1 #gamma2}",1,0,6,0,6},
+{"gen_dR_ma_200","0.18 GeV < M_{a} < 0.22 GeV", "#Delta #eta_{#gamma1 #gamma2}","#Delta #phi_{#gamma1 #gamma2}",1,0,6,0,6},
+{"gen_dR_ma_400","0.38 GeV < M_{a} < 0.42 GeV","#Delta #eta_{#gamma1 #gamma2}","#Delta #phi_{#gamma1 #gamma2}",1,0,6,0,6},
+{"gen_dR_ma_800","0.78 GeV < M_{a} < 0.82 GeV","#Delta #eta_{#gamma1 #gamma2}","#Delta #phi_{#gamma1 #gamma2}",1,0,6,0,6},
+{"gen_dR_ma_1000","0.98 GeV < M_{a} < 1.02 GeV","#Delta #eta_{#gamma1 #gamma2}","#Delta #phi_{#gamma1 #gamma2}",1,0,6,0,6},
+{"gen_dR_ma_1600","1.58 GeV < M_{a} < 1.62 GeV","#Delta #eta_{#gamma1 #gamma2}","#Delta #phi_{#gamma1 #gamma2}",1,0,6,0,6},
+{"gen_dR_ma_1800","1.78 GeV < M_{a} < 1.82 GeV","#Delta #eta_{#gamma1 #gamma2}","#Delta #phi_{#gamma1 #gamma2}",1,0,6,0,6},
+{"Hit_noise_vs_Eta_Ma_100","0.08 GeV < M_{a} < 0.12 GeV","|#eta_{rechit}|","Rechit noise (GeV)",10,0,3,-2,5},
+{"Hit_noise_vs_Eta_Ma_200","0.18 GeV < M_{a} < 0.22 GeV","|#eta_{rechit}|","Rechit noise (GeV)",10,0,3,-2,5},
+{"Hit_noise_vs_Eta_Ma_400","0.38 GeV < M_{a} < 0.42 GeV","|#eta_{rechit}|","Rechit noise (GeV)",10,0,3,-2,5},
+{"Hit_noise_vs_Eta_Ma_800","0.78 GeV < M_{a} < 0.82 GeV","|#eta_{rechit}|","Rechit noise (GeV)",10,0,3,-2,5},
+{"Hit_noise_vs_Eta_Ma_1600","1.58 GeV < M_{a} < 1.62 GeV","|#eta_{rechit}|","Rechit noise (GeV)",10,0,3,-2,5},
+{"Hit_noise_vs_Eta_Ma_1800","1.78 GeV < M_{a} < 1.82 GeV","|#eta_{rechit}|","Rechit noise (GeV)",10,0,3,-2,5},
 };
 /*  vector<string> varName;
  
-   varName = {"A gen mass vs pt","A gen eta vs phi","Gen #eta1 vs #eta2","E_pho1_vs_E_pho2","Angle vs gamma (240<= Ma <=260)","Angle vs gamma (490<= Ma <=510)",
-   "Angle vs gamma (740<= Ma <=760)","Angle vs gamma (990<= Ma <=1010)","EE_XY_occupancy","EE_XY_rechits_En_weighed","EE_eta_phi_occu","EE_eta_phi_occu_En_weigh" };    
 */
-   vector<string> GEN ={"A gen mass vs pt","A gen eta vs phi","Gen #eta1 vs #eta2","E_pho1_vs_E_pho2","Angle vs gamma (240<= Ma <=260)","Angle vs gamma (490<= Ma <=510)",
-   "Angle vs gamma (740<= Ma <=760)","Angle vs gamma (990<= Ma <=1010)"} ;                 
+   vector<string> GEN ={"A gen mass vs pt","A gen eta vs phi","Gen #eta1 vs #eta2","E_pho1_vs_E_pho2","Angle vs gamma (240<= Ma <=260)","Angle vs gamma (490<= Ma <=510)","Gen_eta1_vs_eta2",
+   "Angle vs gamma (740<= Ma <=760)","Angle vs gamma (990<= Ma <=1010)","gen_dR","gen_dr_pt_20_50","gen_dr_pt_50_80",
+"gen_dr_pt_80_100","gen_dR_ma_100","gen_dR_ma_200", "gen_dR_ma_400","gen_dR_ma_800","gen_dR_ma_1000","gen_dR_ma_1600","gen_dR_ma_1800",} ;                 
   /* vector <string>  xLabel;
 
-  xLabel={"Mass (GeV)","|#eta|","#eta1","Energy (GeV)","Lorentz boost (#gamma)","Lorentz boost (#gamma)","Lorentz boost (#gamma)","Lorentz boost (#gamma)","X (in cm)","X (in cm)","|#eta|","|#eta|" };  
-  vector<string> yLabel;
-  yLabel={"pT (GeV)","#phi","#eta2","Energy","Angle","Angle","Angle","Angle","Y (in cm)","Y (in cm)","#phi", "#phi"};
-   vector<string> Title;
-   Title = {"Mass vs pT of A","#eta vs #phi of A","#eta1 vs #eta2","E_pho1 vs E_pho2","Ma = 0.24-0.26 GeV","Ma = 0.49-0.51 GeV","Ma = 0.74-0.76 GeV",
    "Ma = 0.99-1.01 GeV","EE XY occupancy","EE XY rechits weighed by energy","EE rechits (#eta-#phi)","EE rechits(#eta-#phi) weighed by energy"}; */
   /*vector <int> rebin;
-  rebin={10,10,10,5,5,5,5,10,9,9,10,10};
-
-  vector<double> ymin ={0,  -4,   -3,       0,   0,    0,    0,       0,    -160,   -160,   -3.5 ,  3.5};
-  vector<double> ymax={120  ,4,    3,     800,   0.2,  0.2,  0.2,     0.2,   160,    160,    3.5 ,  3.5};
-  vector<double> xmin ={0,  1.1,  -3,       0,   0,    0,    0,       0,     -160,   -160,     1 ,  1};
-  vector<double> xmax={3,   3,     3,     800,   2500, 2500, 2500,    2500,   160,    160,    4,  4};
-
-  cout<<"different vector sizes "<<endl;
-  cout<<varName.size()<<"\t"<<xLabel.size()<<"\t"<<rebin.size()<<"\t"<<xmax.size()<<"\t"<<xmin.size()<<endl;
   cout <<xLabel[0]<<endl;*/
-  vector<string> loghist  ={""} ;                                                                                                              
+vector<string> loghist={""};
+ // vector<string> loghist  ={"Hit_noise_vs_Eta_Ma_100","Hit_noise_vs_Eta_Ma_200","Hit_noise_vs_Eta_Ma_400","Hit_noise_vs_Eta_Ma_800","Hit_noise_vs_Eta_Ma_1600","Hit_noise_vs_Eta_Ma_1800"} ;        
+  vector<string> text = {"gen_dR","gen_dr_pt_20_50","gen_dr_pt_50_80","gen_dr_pt_80_100","gen_dR_ma_100","gen_dR_ma_200", "gen_dR_ma_400","gen_dR_ma_800","gen_dR_ma_1000","gen_dR_ma_1600","gen_dR_ma_1800"};                                                                                                     
 
   bool flag=false;
  
@@ -271,13 +312,16 @@ string hname = hist_name;
          
     int gen = count(GEN.begin(),GEN.end(),varName[i_cut].str1);
 	  int LOG = count(loghist.begin(), loghist.end(),varName[i_cut].str1);
+    int text_ = count(text.begin(),text.end(), varName[i_cut].str1);
     string hst_name = to_string(2000 + i_cut) +"_" + hname;
     if(gen){hst_name = "GEN_"+ hst_name;}
     else{hst_name= "RECO_"+hst_name;}
-	  if(LOG){
-	  generate_2Dplot(hist_list,hst_name.c_str(),xLabel.c_str(),yLabel.c_str(),rebin,ymin,ymax,xmin,xmax,false,true,false,false,true,Title.c_str());
+	  if(LOG){ 
+	  generate_2Dplot(hist_list,(hst_name + "_log").c_str(),xLabel.c_str(),yLabel.c_str(),rebin,ymin,ymax,xmin,xmax,false,true,false,false,true,Title.c_str());
 	  }
 	  else {
+          if(text_){string hst_name1 = hst_name + "_txt";
+generate_2Dplot(hist_list,hst_name1.c_str(),xLabel.c_str(),yLabel.c_str(),rebin,ymin,ymax,xmin,xmax,true,false,false,true,true,Title.c_str());} else 
 generate_2Dplot(hist_list,hst_name.c_str(),xLabel.c_str(),yLabel.c_str(),rebin,ymin,ymax,xmin,xmax,false,false,false,false,true,Title.c_str());
           }
 	}
