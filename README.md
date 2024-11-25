@@ -2,10 +2,15 @@ How to run:
 cmsrel CMSSW_10_6_29
 cd CMSSW_10_6_29/src
 git clone https://github.com/Somank0/MySampleProduction
+
 cd MySampleProduction
+
 cmsenv
+
 scram b
+
 cd MyPiZeros/test/120.0_SinglePi0E10+SinglePi0E10+DIGI+RECO
+
 # for generating HToGG
 cmsRun HToGG_pythia8_cfi_GEN_SIM.py
 cp step1HToGGUncompressed.root ../../python/
