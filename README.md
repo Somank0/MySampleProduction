@@ -1,6 +1,9 @@
 How to run:
+
 cmsrel CMSSW_10_6_29
+
 cd CMSSW_10_6_29/src
+
 git clone https://github.com/Somank0/MySampleProduction
 
 cd MySampleProduction
