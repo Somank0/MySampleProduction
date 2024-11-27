@@ -282,7 +282,6 @@ public:
   TH1F *reco_pho2_pt;
   TH1F *reco_pho1_eta;
   TH1F *reco_pho2_eta;
-  TH1F *max_dR;
  
   TH1F *r9_eta_1;
   TH1F *r9_eta_2;
@@ -531,7 +530,11 @@ public:
   TH1F *Unc_Hit_noise_ma_1800;
   TH1F *Unc_Hit_noise_ma_1900;
   TH1F *Unc_Hit_noise_ma_2000;
-
+  vector<TH1F*> N_hits_supcl;
+  vector<TH1F*> N_hits_supcl_dr;
+  vector<TH1F*> N_hits_raw;
+  vector<TH1F*> Tot_raw_energy;
+  vector<TH1F*> raw_E_dist;
   /*TH1F *Unc_Hit_noise_ma_0_100;
   TH1F *Unc_Hit_noise_ma_100_200;
   TH1F *Unc_Hit_noise_ma_200_300;
@@ -913,7 +916,7 @@ E_sublead_by_E_lead =   new       TH1F    ("E_sublead_by_E_lead","E_sublead/E_le
     dX              =   new       TH1F    ("dX"			  ,     "dX"                  ,  1000     ,  0   , 15      );
     dY              =   new       TH1F    ("dY"                   ,     "dY"                  ,  1000     ,  0   , 15	   );
 
-    max_dR	= new TH1F ("max_dR_clu","",1000,0,1);
+
     angle_240_260= new TH1F("Angle_240<=Ma<=260","240<=Ma<=260",1000,0,0.22);
     angle_490_510= new TH1F("Angle_490<=Ma<=510","490<=Ma<=510",1000,0,0.22);
     angle_740_760= new TH1F("Angle_740<=Ma<=760","740<=Ma<=760",1000,0,0.22);
@@ -1105,6 +1108,23 @@ E_sublead_by_E_lead =   new       TH1F    ("E_sublead_by_E_lead","E_sublead/E_le
     Hit_noise_vs_Eta_Ma_1700_1800 =   new TH2F("Hit_noise_vs_Eta_Ma_1700_1800","",1000,0,3,10000,-2,5);
     Hit_noise_vs_Eta_Ma_1800_1900 =   new TH2F("Hit_noise_vs_Eta_Ma_1800_1900","",1000,0,3,10000,-2,5);
     Hit_noise_vs_Eta_Ma_1900_2000 =   new TH2F("Hit_noise_vs_Eta_Ma_1900_2000","",1000,0,3,10000,-2,5);
+   for(int i =0; i<20;i++){
+string h_name="N_supcl_hits"+to_string(i*100)+"_"+to_string((i+1)*100);
+TH1F * N_supcl_hits = new TH1F(h_name.c_str(),"",1000,0,300);
+N_hits_supcl.push_back(N_supcl_hits);
+h_name="N_supclu_dRhits_"+to_string(i*100)+"_"+to_string((i+1)*100);
+TH1F *N_supclu_dr_hits = new TH1F(h_name.c_str(),"",1000,0,300);
+N_hits_supcl_dr.push_back(N_supclu_dr_hits);
+h_name="N_raw_hits_"+to_string(i*100)+"_"+to_string((i+1)*100);
+TH1F *N_raw_hits = new TH1F(h_name.c_str(),"",1000,0,300);
+N_hits_raw.push_back(N_raw_hits);
+h_name="Tot_raw_Energy_"+to_string(i*100)+"_"+to_string((i+1)*100);
+TH1F *Tot_raw_E = new TH1F(h_name.c_str(),"",1000,0,1000);
+Tot_raw_energy.push_back(Tot_raw_E);
+h_name="Raw_E_dist_"+to_string(i*100)+"_"+to_string((i+1)*100);
+TH1F *Raw_E_dist=new TH1F(h_name.c_str(),"",10000,-2,100);
+raw_E_dist.push_back(Raw_E_dist);
+ }
 
     Tot_unc_rechit_E_0p2_Ma_100   =   new   TH1F  ("Tot_unc_RH_E_0p2_Ma_100"   , "Total E in unc. RH"  ,  1000    ,   0   , 300);
     Tot_unc_rechit_E_0p2_Ma_200   =   new   TH1F  ("Tot_unc_RH_E_0p2_Ma_200"   , "Total E in unc. RH"  ,  1000    ,   0   , 300);

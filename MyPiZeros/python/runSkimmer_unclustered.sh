@@ -75,7 +75,7 @@ folder=/eos/user/s/sosaha/CMSSW_10_6_29/src/MySampleProduction/MyPiZeros/test/12
 #files=(5736502.0 5738529.1 5736504.1 5738529.0 5736502.2 5736502.1 5738528.0 573332 5738535.0 5738534.1 5738535.1 573333)
 #files=( 5736504.0  5738534.0)
 #================== New skim test ===================================================
-files=(5925578.0)
+files=(5925578.0 5925593.1)
 for i in ${files[@]};
 do
 echo "Running Skimmer on $folder/${i}_AToGG_RECO_M1000.0.root"

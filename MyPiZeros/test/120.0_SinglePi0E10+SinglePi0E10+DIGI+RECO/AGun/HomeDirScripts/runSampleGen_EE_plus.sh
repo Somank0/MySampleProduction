@@ -1,6 +1,7 @@
 #!/usr/bin/bash
 cd /eos/user/s/sosaha/CMSSW_10_6_29/src/MySampleProduction/MyPiZeros/test/120.0_SinglePi0E10+SinglePi0E10+DIGI+RECO/AGun/;
 export HOME=/afs/cern.ch/user/s/sosaha
+source /cvmfs/cms.cern.ch/cmsset_default.sh
 if [ -z $1 ] ; then
   echo "Please use: ./runSampleGen [massMin(MeV)] [massMax(MeV)] [stepSize(MeV)] [UniqueID]" && exit 1;
 fi

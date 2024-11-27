@@ -1,6 +1,6 @@
 int line_width[12] = {2,2,2,2,2,2,2,2,2,2,2,2};
 int line_style[12] = {1,1,1,1,1,1,1,1,1,1,1,1};                                                                              
-int line_color[9] = {kBlue,kRed,kGreen+2,kViolet+2,kYellow+2,kGreen -3,kGray+2,kMagenta,kBlue+2};
+int line_color[9] = {kBlue,kRed,kGreen+2,kViolet+2,kYellow+2,kBlue+2,kGreen -3,kGray+2,kMagenta};
 int line_color1[9]= {kBlue,kGreen+2,kGray+1,kViolet+2,kGreen-2,kYellow+1,kGray+2,kMagenta,kBlue+2};
 int line_color2[9] = {kGreen+2,kBlue,kViolet,kGray,kViolet+2,kGreen-2,kYellow+1,kGray+2,kMagenta};
 vector<int> col={kGreen+2,kBlue,kViolet,kGray,kViolet+2,kGreen-2,kYellow+1,kGray+2,kMagenta,kBlue+2,kMagenta,kCyan};
@@ -246,8 +246,9 @@ void Overlay1D(){
   int n_files=1;
  
     //f[0] = new TFile("plot.root");
-    f[0] = new TFile("EB_plot.root");
-    
+    //f[0] = new TFile("EB_plot.root");
+    f[0] = new TFile("testplot.root");
+
     //vector<string> filetag=  {"Sample size:112K"};
     vector<string> filetag={""};
     //vector<vector<string>> varName;
@@ -278,10 +279,23 @@ MixedData varName[]= {  // {{Array of names of plots},Title of plot, xlabel, reb
 {{"Unc_rec_E_ma_400_500","Unc_rec_E_ma_1700_1800"},"Unc_rec_E_ma","Unclustered rechit energy (GeV)",2,0,200,-2,2,{"M_{a} = 0.4-0.5 GeV","M_{a} = 1.7-1.8 GeV"}},
 
 {{"Tot_unc_RH_E_noise_Ma_200_300","Tot_unc_RH_E_noise_Ma_400_500","Tot_unc_RH_E_noise_Ma_600_700","Tot_unc_RH_E_noise_Ma_800_900","Tot_unc_RH_E_noise_Ma_1000_1100","Tot_unc_RH_E_noise_Ma_1400_1500","Tot_unc_RH_E_noise_Ma_1800_1900"},"Tot_unc_rec_E-noise","Total unclustered energy (GeV) (E_{rechit} - E_{noise})",10,0,20,0,300,{"M_{a} = 0.2-0.3 GeV","M_{a} = 0.4-0.5 GeV","M_{a} = 0.6-0.7 GeV","M_{a} = 0.8-0.9 GeV","M_{a} = 1.0-1.1 GeV","M_{a} = 1.4-1.5 GeV","M_{a} = 1.8-1.9 GeV"}},
+
+{{"N_supcl_hits0_100","N_supclu_dRhits_0_100","N_raw_hits_0_100"},"N_rechit_Ma_0_100","No. of rechits (0 < M_{a} < 0.1 GeV)",10,0,20,0,300,{"Sup.Clu hits","Sup.Clu. + dR(0.3) hits","Raw rechtis (dR=0.3)" }},
+
+{{"N_supcl_hits400_500","N_supclu_dRhits_400_500","N_raw_hits_400_500"},"N_rechit_Ma_400_500","No. of rechits (0.4 < M_{a} < 0.5 GeV)",10,0,20,0,300,{"Sup.Clu hits","Sup.Clu. + dR(0.3) hits","Raw rechtis (dR=0.3)" }},
+
+{{"N_supcl_hits1700_1800","N_supclu_dRhits_1700_1800","N_raw_hits_1700_1800"},"N_rechit_Ma_1700_1800","No. of rechits (1.7 < M_{a} < 1.8 GeV)",10,0,20,0,300,{"Sup.Clu hits","Sup.Clu. + dR(0.3) hits","Raw rechtis (dR=0.3)" }},
+
+{{"Tot_clu_RH_E_Ma_400_500","Tot_unc_RH_E_Ma_400_500","Tot_raw_Energy_400_500"},"E_rechits_Ma_400_500","Rechit energy (GeV)",10,0,20,0,1000,{"Supercluster energy", "Total unclustered energy","Total energy in raw rechits"}},
+
+{{"Tot_clu_RH_E_Ma_1700_1800","Tot_unc_RH_E_Ma_1700_1800","Tot_raw_Energy_1700_1800"},"E_rechits_Ma_1700_1800","Rechit energy (GeV)",10,0,20,0,1000,{"Supercluster energy", "Total unclustered energy","Total energy in raw rechits"}},
+{{"Tot_raw_Energy_200_300","Tot_raw_Energy_400_500","Tot_raw_Energy_600_700","Tot_raw_Energy_800_900","Tot_raw_Energy_1000_1100","Tot_raw_Energy_1400_1500","Tot_raw_Energy_1800_1900"},"Total_raw_energy","Energy (GeV)",10,0,20,0,1000,{"M_{a} = 0.2-0.3 GeV","M_{a} = 0.4-0.5 GeV","M_{a} = 0.6-0.7 GeV","M_{a} = 0.8-0.9 GeV","M_{a} = 1.0-1.1 GeV","M_{a} = 1.4-1.5 GeV","M_{a} = 1.8-1.9 GeV"}},
+{{"Tot_raw_Energy_200_300","Tot_raw_Energy_600_700","Tot_raw_Energy_1000_1100","Tot_raw_Energy_1400_1500","Tot_raw_Energy_1800_1900"},"Total_raw_energy","Energy (GeV)",10,0,20,0,1000,{"M_{a} = 0.2-0.3 GeV","M_{a} = 0.6-0.7 GeV","M_{a} = 1.0-1.1 GeV","M_{a} = 1.4-1.5 GeV","M_{a} = 1.8-1.9 GeV"}},
+{{"Tot_raw_Energy_200_300","Tot_raw_Energy_600_700"},"Total_raw_energy","Energy (GeV)",10,0,20,0,1000,{"M_{a} = 0.2-0.3 GeV","M_{a} = 0.6-0.7 GeV"}},
 };
  vector<string> GEN = {"Angle between gen photons"};
 
-loghist = {"Angle between gen photons","Total clustered rechits energy","Total unclustered rechit energy","Total energy of clustered rechits","Total energy of unclustered rechits","sigma_iE_iE","sigma_iphi_iphi","Tot_unc_rec_E-noise","Unc_rec_E_ma"};
+loghist = {"Angle between gen photons","Total clustered rechits energy","Total unclustered rechit energy","Total energy of clustered rechits","Total energy of unclustered rechits","sigma_iE_iE","sigma_iphi_iphi","Tot_unc_rec_E-noise","Unc_rec_E_ma","N_rechit_Ma_1700_1800","N_rechit_Ma_400_500","E_rechits_Ma_1700_1800","Total_raw_energy",};
 norm ={"Angle between gen photons",/*"Total clustered rechits energy",*/"Total unclustered rechit enrergy","Total energy of clustered rechits" , "Total energy of unclustered rechits","sigma_iE_iE","sigma_iphi_iphi"};
   sprintf(hname,"temp.root");
   TFile* fout = new TFile(hname,"RECREATE");
@@ -307,8 +321,10 @@ norm ={"Angle between gen photons",/*"Total clustered rechits energy",*/"Total u
            
 	  sprintf(hist_name,"%s",VarName[j].c_str());
 	  cout<<hist_name<<"\t"<<i<<"\t"<<i_file<<"\t"<<f[i_file]->GetName()<<endl;
-          
-	  TH1F* h_resp2 = (TH1F*)f[i_file]->Get(hist_name); // SR
+	  
+          TH1F* h_orig = (TH1F*)f[i_file]->Get(hist_name); // SR
+          string hist_name_ = VarName[j] + "_";
+	  TH1F* h_resp2 = (TH1F*)h_orig->Clone(hist_name_.c_str()); // SR
 	  h_resp2->GetXaxis()->SetTitle(xLabel.c_str());
 	  cout<<"resp2 "<<h_resp2->Integral()<<"\t"<<rebin<<"\t"<<xmin<<"\t"<<xmax<<endl;
 	  

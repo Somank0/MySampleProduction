@@ -18,8 +18,8 @@ cmsenv;
 #files=( 9120502 )
 
 #Trache1
-#folder=/eos/cms/store/group/dpg_ecal/alca_ecalcalib/ecalelf/ntuples/rchatter/Particle_Gun/;
-#files=( 9007189 9007195 9025723 9029467 9007190 9007196 9025724 9029468 9007191 9007197 9025725 9007192 9007198 9025726 9007193 9025721 9025729 9007194 9025722 9029461 )
+folder=/eos/cms/store/group/dpg_ecal/alca_ecalcalib/ecalelf/ntuples/rchatter/Particle_Gun/;
+files=( 9007189 9007195 9025723 9029467 9007190 9007196 9025724 9029468 9007191 9007197 9025725 9007192 9007198 9025726 9007193 9025721 9025729 9007194 9025722 9029461 )
 #for i in ${files[@]};
 #do
 #echo "Running Skimmer on $folder/${i}_AToGG_RECO_M2000.0.root"
@@ -45,9 +45,9 @@ cmsenv;
 #files=( 9131194 9139969 )
 
 #Trache4
-folder=/eos/cms/store/group/dpg_ecal/alca_ecalcalib/ecalelf/ntuples/rchatter/Particle_Gun/Tranche4/;
+#folder=/eos/cms/store/group/dpg_ecal/alca_ecalcalib/ecalelf/ntuples/rchatter/Particle_Gun/Tranche4/;
 #files=( 9155515 9155523 9164382 9164387 9155516 9155524 9164383 9164388 9155519 9164378 9164384 9201337 9155520 9164380 9164385 9201338 9155522 9164381 9164386 9201342 )
-files=(9201342)
+#files=(9201342)
 #=========================================================
 #Extended_samples
 #set1

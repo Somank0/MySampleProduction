@@ -11,6 +11,7 @@ int ctr = 0;
 float genMass;
 float genAngle;
 int main(int argc, char *argv[]) {
+
   if (argc < 2) {
     cerr << "Please give 3 arguments "
          << "runList "
@@ -121,7 +122,6 @@ void AnalyzeHGCMuons::EventLoop(const char *data) {
         float dphi= DeltaPhi(Pho_Gen_Phi->at(1),Pho_Gen_Phi->at(0));
         float dx = DeltaEta(p1gen.X(),p2gen.X());
         float dy = DeltaEta(p1gen.Y(),p2gen.Y());
-        float  maximum_dR;
         
 	a_gen_gamma->Fill(gamma);
 	nGen->Fill(Pho_Gen_Pt->size());
@@ -207,6 +207,7 @@ int clu_hit_pho1=0;
 int unc_hit_pho1=0;
 int clu_hit_pho2=0;
 int unc_hit_pho2=0;
+
 N_supcl_dr_hits->Fill(Hit_X_Pho1->size()+Hit_X_Pho2->size());
 for(int i =0;i<Hit_X_Pho1->size();i++){
 pho1_hitX->Fill(Hit_X_Pho1->at(i));
@@ -1381,24 +1382,33 @@ if(genMass >=0.9 && genMass <1.0){
 Pho_sig_iEiE_Ma_900_1000->Fill(pho_sigiEiE); Pho_sig_iPhiiPhi_Ma_900_1000->Fill(pho_sigiPhiiPhi);}
 
 }
-if(eta->size()==0) continue;
+float tot_raw_e=0;
+for(int k=0;k<RawRecHitEnPho1->size();k++){
+tot_raw_e=tot_raw_e+RawRecHitEnPho1->at(k);
+	for(float a=0;a<20;a++){
+        if(genMass>a/10 && genMass<(a+1)/10){raw_E_dist[a]->Fill(RawRecHitEnPho1->at(k));}
+				}
+} 
+for(int k=0;k<RawRecHitEnPho2->size();k++){
+tot_raw_e=tot_raw_e+RawRecHitEnPho2->at(k);
+for(float a=0;a<20;a++){
+        if(genMass>a/10 && genMass<(a+1)/10){raw_E_dist[a]->Fill(RawRecHitEnPho2->at(k));}
+                                }
+}
 
-float sc_eta=eta->at(0);
-//cout <<"Here"<<endl;
-float sc_phi=phi->at(0);
-float DR_max=-1;
-for(int i=0; i<Hit_Eta_Pho1->size();i++){
-if(RecHitFracPho1->at(i)>=0){
-maximum_dR=DeltaR(Hit_Eta_Pho1->at(i),Hit_Phi_Pho1->at(i),sc_eta,sc_phi);
-if (maximum_dR > DR_max) {DR_max=maximum_dR;}
-	}
-}
-for(int i=0; i<Hit_Eta_Pho2->size();i++){
-if(RecHitFracPho2->at(i)>=0){
-maximum_dR=DeltaR(Hit_Eta_Pho2->at(i),Hit_Phi_Pho2->at(i),sc_eta,sc_phi);
-if (maximum_dR > DR_max) {DR_max=maximum_dR;}
-        }
-}
- max_dR->Fill(DR_max);
+for(float i=0;i<20;i++){
+float m_min=i/10;
+float m_max=(i+1)/10;
+//cout <<m_min<<endl;
+if(genMass > m_min && genMass< m_max){
+N_hits_supcl[i]->Fill(Hit_X_Pho1->size() + Hit_X_Pho2->size() - dRHit_X_Pho1->size() - dRHit_X_Pho2->size());
+N_hits_supcl_dr[i]->Fill(Hit_X_Pho1->size() + Hit_X_Pho2->size());
+//cout<<Hit_X_Pho1->size() + Hit_X_Pho2->size() <<endl;
+N_hits_raw[i]->Fill(RawRecHitEnPho1->size() + RawRecHitEnPho2->size());
+Tot_raw_energy[i]->Fill(tot_raw_e);
+//cout<<N_hits_supcl[i] <<endl;
+					}
+			}
  }
+
 }

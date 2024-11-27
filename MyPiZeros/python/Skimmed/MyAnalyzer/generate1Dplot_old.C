@@ -1,9 +1,9 @@
 int line_width[12] = {2,2,2,2,2,2,2,2,2,2,2,2};
 int line_style[12] = {1,1,1,1,1,1,1,1,1,1,1,1};                                                                              
-int line_color[9] = {kBlue,kRed,kGreen+2,kViolet+2,kGreen-2,kYellow+1,kGray+2,kMagenta,kBlue+2};
-int line_color1[9]= {kBlue,kGreen+2,kGray+1,kRed+2,kGreen-2,kYellow+1,kGray+2,kMagenta,kBlue+2};
+int line_color[9] = {kBlue,kRed,kGreen+2,kViolet+2,kYellow,kGreen-3,kGray+2,kMagenta,kBlue+2};
+int line_color1[9]= {kBlue,kGreen+2,kGray+1,kViolet+2,kGreen-2,kYellow+1,kGray+2,kMagenta,kBlue+2};
 int line_color2[9] = {kGreen+2,kBlue,kViolet,kGray,kViolet+2,kGreen-2,kYellow+1,kGray+2,kMagenta};
-vector<int> col={kGreen+2,kBlue,kViolet,kGray,kViolet+2,kGreen-2,kYellow+1,kGray+2,kMagenta,kBlue+2,kMagenta,kCyan};
+vector<int> col={kGreen+2,kBlue,kViolet,kGray,kViolet+2,kGreen-2,kYellow+1,kGray+2,kMagenta,kBlue+2,kMagenta,kYellow};
 vector<int> Style={3008,1001,3008,1001};
 void decorate(TH1F*,int);
 void decorate(TH1F* hist,int i){
@@ -76,7 +76,7 @@ void setLastBinAsOverFlow(TH1F* h_hist){
   cout<<lastBinCt<<"\t"<<"Last bin values"<<endl;
 
 }
-void generate_1Dplot(vector<TH1F*> hist,char const *tag_name="",char const *xlabel="",char const *ylabel="",  int rebin=-1,double ymin=0,double ymax=0,double xmin=-1,double xmax=-1,char const *leg_head="",bool normalize=false, bool log_flag=false, bool DoRebin=false, bool save_canvas=true, char const *title="", vector<string> legend_texts={"nil"},bool stat=false)
+void generate_1Dplot(vector<TH1F*> hist,char const *tag_name="",char const *xlabel="",char const *ylabel="",  int rebin=-1,double ymin=0,double ymax=0,int xmin=-1,int xmax=-1,char const *leg_head="",bool normalize=false, bool log_flag=false, bool DoRebin=false, bool save_canvas=true, char const *title="", vector<string> legend_texts={"nil"})
 {  
      TCanvas *canvas_n1 = new TCanvas(tag_name, tag_name,950,850);
        canvas_n1->Range(-60.25,-0.625,562.25,0.625);
@@ -96,16 +96,8 @@ void generate_1Dplot(vector<TH1F*> hist,char const *tag_name="",char const *xlab
   double pvt_y_min = 0.9;
   //double pvt_dely = 0.18;
   double pvt_dely = 0.15;
-  //gStyle->SetOptStat(0);
-  /*if(stat){gStyle->SetOptStat(1);
-	   gStyle->SetStatX(0.95);
+  gStyle->SetOptStat(0);
   gROOT->ForceStyle();
-	}
-  else {gStyle->SetOptStat(0);
-  gROOT->ForceStyle();
-	}
-  gPad->Modified();
-  gPad->Update();*/
   //gStyle->SetOptFit(0);
   vector<TString> legName;
   //TLegend *legend = new TLegend(0.65,0.95,0.99,0.75);
@@ -173,7 +165,6 @@ void generate_1Dplot(vector<TH1F*> hist,char const *tag_name="",char const *xlab
     
     if(hist.at(i)->GetMaximum() > ymax) ymax = hist.at(i)->GetMaximum();
     if(hist.at(i)->GetMinimum() < ymin) ymin = hist.at(i)->GetMinimum();
-     TPaveStats *ps = (TPaveStats*)hist.at(i)->GetListOfFunctions()->FindObject("stats");
 
     
 
@@ -181,31 +172,26 @@ void generate_1Dplot(vector<TH1F*> hist,char const *tag_name="",char const *xlab
   if(ymin == 0.0) ymin = 1e-3;
   if(ymin<0.0) ymin = 1e-4;
   //  if(ymax<=10) ymax=10;
-  cout << "XMIN" <<"\t"<<xmin <<"\t" << "XMAX"<<"\t"<<xmax<<endl;
   for(int i = 0;i<(int)hist.size(); i++) {
     if(!normalize) {
-    if (log_flag){ hist.at(i)->GetYaxis()->SetRangeUser(0.1,10*ymax);//hist.at(i)->GetXaxis()->SetRangeUser(xmin,xmax);
-}
+    if (log_flag){ hist.at(i)->GetYaxis()->SetRangeUser(0.1,50*ymax);}
     else {
-    hist.at(i)->GetYaxis()->SetRangeUser(0.0001,1.2*ymax);//hist.at(i)->GetXaxis()->SetRangeUser(xmin,xmax);
-	}    
-}
+    hist.at(i)->GetYaxis()->SetRangeUser(0.0001,1.2*ymax);hist.at(i)->GetXaxis()->SetRangeUser(xmin,1.05*xmax);}
+    }
     
     else
-      {  hist.at(i)->GetYaxis()->SetRangeUser(0.0001,2.0); //hist.at(i)->GetXaxis()->SetRangeUser(xmin,xmax);
+      {  hist.at(i)->GetYaxis()->SetRangeUser(0.0001,2.0);
 
       }
     cout<<"i"<<i<<endl;
     if(i==0) hist.at(i)->Draw("hist ");
     else hist.at(i)->Draw("hist sames");
+	
   }
   legend->Draw();
   if(log_flag) {
       gPad->SetLogy();
     }
-  if(!stat){gStyle->SetOptStat(0);}
-  else {gStyle->SetOptStat(1); gStyle->SetStatX(0.95);}
-gPad->Modified();
 gPad->Update(); 
   TLatex* textOnTop = new TLatex();
   //new
@@ -216,7 +202,7 @@ gPad->Update();
   //textOnTop->DrawLatexNDC(0.72,0.925,en_lat);
 
 
-  //gPad->Modified();
+  gPad->Modified();
                                                                                        
     
  char* canvas_name = new char[1000];
@@ -229,7 +215,6 @@ gPad->Update();
     canvas_n1->SaveAs(canvas_name);  
   } 
 }
-
 
 struct MixedData {
     std::string str1;
@@ -258,13 +243,13 @@ void generate1Dplot()
   int n=0;
   int n_files=1;
  
-    f[0] = new TFile("EB_plot.root");
-    //f[0] = new TFile("plot.root");
-    //f[0] = new TFile("testplot.root");
+    f[0] = new TFile("plot.root");
+    //f[0] = new TFile("EB_plot.root");
     
-    //vector<string> filetag=  {"M_a = 1GeV"};
-    vector<string> filetag=  {"Sample size: 4.3M (EB)"};
-    //vector<string> filetag=  {"Sample size: 5M (EE)"};
+   vector<string> filetag=  {"Sample:5M (in EE)"};
+   //vector<string> filetag=  {"Sample:4.3M (in EB)"};
+
+   // vector<string> filetag ={""};
 MixedData varName[] = { // { Name of the plot , xLabel , rebin , ymin , ymax , xmin , xmax , Legend label }
 {"M_gen","Mass (GeV)",10,0,20,0,2.1,"mass of A"},  
 {"A_gen_pT","pT (GeV)",10,1,20,0,120,"Gen pT of A"},
@@ -308,9 +293,9 @@ MixedData varName[] = { // { Name of the plot , xLabel , rebin , ymin , ymax , x
 {"Pho2_ES_hit_Y", "Y (in cm)",10,0,200,-160  , 160, "Pho2 ES rechit Y"},
 {"Pho2_ES_hit_Z", "Z (in cm)",10,0,200,250,350,"Pho2 ES rechit Z"},
 {"Pho2_ES_hit_E","Energy (GeV)",10,0,200,0,0.2,"Pho2 ES rechit energy"},
+
 {"Pho_sig_iEiE_Ma_200_300","#sigmai_{i#eta i#eta}",10,0,200,0,0.1,"#sigmai_{i#eta i#eta}"},
 {"Pho_sig_iPhiiPhi" ,"#sigma_{i#phi i#phi}",10,0,200,0,0.1,"#sigma_{i#phi i#phi}"},
-
 {"Unc_RH_E_ma_100","Unclustered rechit energy (GeV)",10,0,200,-2,5,"0.08 < M_{a} < 0.12 GeV"},
 {"Unc_RH_E_ma_200","Unclustered rechit energy (GeV)",10,0,200,-2,5,"0.18 < M_{a} < 0.22 GeV"},
 {"Unc_RH_E_ma_400","Unclustered rechit energy (GeV)",10,0,200,-2,5,"0.38 < M_{a} < 0.42 GeV"},
@@ -321,8 +306,6 @@ MixedData varName[] = { // { Name of the plot , xLabel , rebin , ymin , ymax , x
 {"Clu_rec_E_ma_400","Clustered rechit energy (GeV)",10,0,200,-2,5,"0.38 < M_{a} < 0.42 GeV"},
 {"Clu_rec_E_ma_800","Clustered rechit energy (GeV)",10,0,200,-2,5,"0.78 < M_{a} < 0.82 GeV"},
 {"Clu_rec_E_ma_1800","Clustered rechit energy (GeV)",10,0,200,-2,5,"1.78 < M_{a} < 1.82 GeV"},
-{"Clu_rec_E_ma_400","Clustered rechit energy (GeV)",2,0,200,0,0.3,"0.38 < M_{a} < 0.42 GeV"},
-{"Clu_rec_E_ma_1800","Clustered rechit energy (GeV)",2,0,200,0,0.3,"1.78 < M_{a} < 1.82 GeV"},
 
 {"Unc_rec_E_ma_400_500","Unclustered rechit energy (GeV)",10,0,200,-2,5,"0.4 < M_{a} < 0.5 GeV"},
 {"Unc_rec_E_ma_1700_1800","Unclustered rechit energy (GeV)",10,0,200,-2,5,"1.7 < M_{a} < 1.8 GeV"},
@@ -333,11 +316,11 @@ MixedData varName[] = { // { Name of the plot , xLabel , rebin , ymin , ymax , x
 {"Unc_RH_E_ma_400","Unclustered rechit energy (GeV)",1,0,200,-0.2,0.2,"0.38 < M_{a} < 0.42 GeV"},
 {"Unc_RH_E_ma_1800","Unclustered rechit energy (GeV)",1,0,200,-0.2,0.2,"1.78 < M_{a} < 1.82 GeV"},
 {"Hit_noise_ma_100","Rechit Noise (GeV)",10,0,200,-2,5,"0.08 < M_{a} < 0.12 GeV"},
-{"Hit_noise_ma_200","Rechit Noise (GeV)",10,0,200,-2,5,"0.18 < M_{a} < 0.22 GeV"},
-{"Hit_noise_ma_400","Rechit Noise (GeV)",10,0,200,-2,5,"0.38 < M_{a} < 0.42 GeV"} ,
-{"Hit_noise_ma_800","Rechit Noise (GeV)",10,0,200,-2,5,"0.78 < M_{a} < 0.82 GeV"} ,
-{"Hit_noise_ma_1600","Rechit Noise (GeV)",10,0,200,-2,5,"1.58 < M_{a} < 1.62 GeV"} ,
-{"Hit_noise_ma_1800","Rechit Noise (GeV)",10,0,200,-2,5,"1.78 < M_{a} < 1.82 GeV"} ,
+{"Hit_noise_ma_200","Rechit Noise (GeV)",10,0,200,-2,5,"0.08 < M_{a} < 0.12 GeV"},
+{"Hit_noise_ma_400","Rechit Noise (GeV)",10,0,200,-2,5,"0.08 < M_{a} < 0.12 GeV"} ,
+{"Hit_noise_ma_800","Rechit Noise (GeV)",10,0,200,-2,5,"0.08 < M_{a} < 0.12 GeV"} ,
+{"Hit_noise_ma_1600","Rechit Noise (GeV)",10,0,200,-2,5,"0.08 < M_{a} < 0.12 GeV"} ,
+{"Hit_noise_ma_1800","Rechit Noise (GeV)",10,0,200,-2,5,"0.08 < M_{a} < 0.12 GeV"} ,
 {"Clu_Hit_noise_ma_100","Clustered Rechit Noise (GeV)",10,0,200,-2,5,"0.08 < M_{a} < 0.12 GeV"} ,
 {"Clu_Hit_noise_ma_200","Clustered Rechit Noise (GeV)",10,0,200,-2,5,"0.18 < M_{a} < 0.22 GeV"} ,
 {"Clu_Hit_noise_ma_400","Clustered Rechit Noise (GeV)",10,0,200,-2,5,"0.38 < M_{a} < 0.42 GeV"} ,
@@ -350,118 +333,16 @@ MixedData varName[] = { // { Name of the plot , xLabel , rebin , ymin , ymax , x
 {"Unc_Hit_noise_ma_800","Unclustered Rechit Noise (GeV)",10,0,200,-2,5,"0.78 < M_{a} < 0.82 GeV"} ,
 {"Unc_Hit_noise_ma_1600","Unclustered Rechit Noise (GeV)",10,0,200,-2,5,"1.58 < M_{a} < 1.62 GeV"} ,
 {"Unc_Hit_noise_ma_1800","Unclustered Rechit Noise (GeV)",10,0,200,-2,5,"1.78 < M_{a} < 1.82 GeV"} ,
-//========================= new skim plots ========================================
-/* 
-{"N_supcl_hits0_100","No. of supercluster rechits",10,0,200,0,300,"0 < M_{a} < 0.1 GeV"},
-{"N_supcl_hits100_200","No. of supercluster rechits",10,0,200,0,300,"0.1 < M_{a} < 0.2 GeV"},
-{"N_supcl_hits200_300","No. of supercluster rechits",10,0,200,0,300,"0.2 < M_{a} < 0.3 GeV"},
-{"N_supcl_hits300_400","No. of supercluster rechits",10,0,200,0,300,"0.3 < M_{a} < 0.4 GeV"},
-{"N_supcl_hits400_500","No. of supercluster rechits",10,0,200,0,300,"0.4 < M_{a} < 0.5 GeV"},
-{"N_supcl_hits500_600","No. of supercluster rechits",10,0,200,0,300,"0.5 < M_{a} < 0.6 GeV"},
-{"N_supcl_hits600_700","No. of supercluster rechits",10,0,200,0,300,"0.6 < M_{a} < 0.7 GeV"},
-{"N_supcl_hits700_800","No. of supercluster rechits",10,0,200,0,300,"0.7 < M_{a} < 0.8 GeV"},
-{"N_supcl_hits800_900","No. of supercluster rechits",10,0,200,0,300,"0.8 < M_{a} < 0.9 GeV"},
-{"N_supcl_hits900_1000","No. of supercluster rechits",10,0,200,0,300,"0.9 < M_{a} < 1.0 GeV"},
-{"N_supcl_hits1000_1100","No. of supercluster rechits",10,0,200,0,300,"1.0 < M_{a} < 1.1 GeV"},
-{"N_supcl_hits1100_1200","No. of supercluster rechits",10,0,200,0,300,"1.1 < M_{a} < 1.2 GeV"},
-{"N_supcl_hits1200_1300","No. of supercluster rechits",10,0,200,0,300,"1.2 < M_{a} < 1.3 GeV"},
-{"N_supcl_hits1300_1400","No. of supercluster rechits",10,0,200,0,300,"1.3 < M_{a} < 1.4 GeV"},
-{"N_supcl_hits1400_1500","No. of supercluster rechits",10,0,200,0,300,"1.4 < M_{a} < 1.5GeV"},
-{"N_supcl_hits1500_1600","No. of supercluster rechits",10,0,200,0,300,"1.5 < M_{a} < 1.6 GeV"},
-{"N_supcl_hits1600_1700","No. of supercluster rechits",10,0,200,0,300,"1.6 < M_{a} < 1.7 GeV"},
-{"N_supcl_hits1700_1800","No. of supercluster rechits",10,0,200,0,300,"1.7 < M_{a} < 1.8 GeV"},
-{"N_supcl_hits1800_1900","No. of supercluster rechits",10,0,200,0,300,"1.8 < M_{a} < 1.9 GeV"},
-{"N_supclu_dRhits_0_100","No. of supercluster + dR rechits",10,0,200,0,300,"0 < M_{a} < 0.1 GeV"},
-{"N_supclu_dRhits_100_200","No. of supercluster + dR rechits",10,0,200,0,300,"0.1 < M_{a} < 0.2 GeV"},
-{"N_supclu_dRhits_200_300","No. of supercluster + dR rechits",10,0,200,0,300,"0.2 < M_{a} < 0.3 GeV"},
-{"N_supclu_dRhits_300_400","No. of supercluster + dR rechits",10,0,200,0,300,"0.3 < M_{a} < 0.4 GeV"},
-{"N_supclu_dRhits_400_500","No. of supercluster + dR rechits",10,0,200,0,300,"0.4 < M_{a} < 0.5 GeV"},
-{"N_supclu_dRhits_500_600","No. of supercluster + dR rechits",10,0,200,0,300,"0.5 < M_{a} < 0.6 GeV"},
-{"N_supclu_dRhits_600_700","No. of supercluster + dR rechits",10,0,200,0,300,"0.6 < M_{a} < 0.7 GeV"},
-{"N_supclu_dRhits_700_800","No. of supercluster + dR rechits",10,0,200,0,300,"0.7 < M_{a} < 0.8 GeV"},
-{"N_supclu_dRhits_800_900","No. of supercluster + dR rechits",10,0,200,0,300,"0.8 < M_{a} < 0.9 GeV"},
-{"N_supclu_dRhits_900_1000","No. of supercluster + dR rechits",10,0,200,0,300,"0.9 < M_{a} < 1.0 GeV"},
-{"N_supclu_dRhits_1000_1100","No. of supercluster + dR rechits",10,0,200,0,300,"1.0 < M_{a} < 1.1 GeV"},
-{"N_supclu_dRhits_1100_1200","No. of supercluster + dR rechits",10,0,200,0,300,"1.1 < M_{a} < 1.2 GeV"},
-{"N_supclu_dRhits_1200_1300","No. of supercluster + dR rechits",10,0,200,0,300,"1.2 < M_{a} < 1.3 GeV"},
-{"N_supclu_dRhits_1300_1400","No. of supercluster + dR rechits",10,0,200,0,300,"1.3 < M_{a} < 1.4 GeV"},
-{"N_supclu_dRhits_1400_1500","No. of supercluster + dR rechits",10,0,200,0,300,"1.4 < M_{a} < 1.5 GeV"},
-{"N_supclu_dRhits_1500_1600","No. of supercluster + dR rechits",10,0,200,0,300,"1.5 < M_{a} < 1.6 GeV"},
-{"N_supclu_dRhits_1600_1700","No. of supercluster + dR rechits",10,0,200,0,300,"1.6 < M_{a} < 1.7 GeV"},
-{"N_supclu_dRhits_1700_1800","No. of supercluster + dR rechits",10,0,200,0,300,"1.7 < M_{a} < 1.8 GeV"},
-{"N_supclu_dRhits_1800_1900","No. of supercluster + dR rechits",10,0,200,0,300,"1.8 < M_{a} < 1.9 GeV"},
 
-{"N_raw_hits_0_100","No. of raw rechits",10,0,200,0,300,"0 < M_{a} < 0.1 GeV"},
-{"N_raw_hits_100_200","No. of raw rechits",10,0,200,0,300,"0.1 < M_{a} < 0.2 GeV"},
-{"N_raw_hits_200_300","No. of raw rechits",10,0,200,0,300,"0.2 < M_{a} < 0.3 GeV"},
-{"N_raw_hits_300_400","No. of raw rechits",10,0,200,0,300,"0.3 < M_{a} < 0.4 GeV"},
-{"N_raw_hits_400_500","No. of raw rechits",10,0,200,0,300,"0.4 < M_{a} < 0.5 GeV"},
-{"N_raw_hits_500_600","No. of raw rechits",10,0,200,0,300,"0.5 < M_{a} < 0.6 GeV"},
-{"N_raw_hits_600_700","No. of raw rechits",10,0,200,0,300,"0.6 < M_{a} < 0.7 GeV"},
-{"N_raw_hits_700_800","No. of raw rechits",10,0,200,0,300,"0.7 < M_{a} < 0.8 GeV"},
-{"N_raw_hits_800_900","No. of raw rechits",10,0,200,0,300,"0.8 < M_{a} < 0.9 GeV"},
-{"N_raw_hits_900_1000","No. of raw rechits",10,0,200,0,300,"0.9 < M_{a} < 1.0 GeV"},
-{"N_raw_hits_1000_1100","No. of raw rechits",10,0,200,0,300,"1.0 < M_{a} < 1.1 GeV"},
-{"N_raw_hits_1100_1200","No. of raw rechits",10,0,200,0,300,"1.1 < M_{a} < 1.2 GeV"},
-{"N_raw_hits_1200_1300","No. of raw rechits",10,0,200,0,300,"1.2 < M_{a} < 1.3 GeV"},
-{"N_raw_hits_1300_1400","No. of raw rechits",10,0,200,0,300,"1.3 < M_{a} < 1.4 GeV"},
-{"N_raw_hits_1400_1500","No. of raw rechits",10,0,200,0,300,"1.4 < M_{a} < 1.5 GeV"},
-{"N_raw_hits_1500_1600","No. of raw rechits",10,0,200,0,300,"1.5 < M_{a} < 1.6 GeV"},
-{"N_raw_hits_1600_1700","No. of raw rechits",10,0,200,0,300,"1.6 < M_{a} < 1.7 GeV"},
-{"N_raw_hits_1700_1800","No. of raw rechits",10,0,200,0,300,"1.7 < M_{a} < 1.8 GeV"},
-{"N_raw_hits_1800_1900","No. of raw rechits",10,0,200,0,300,"1.8 < M_{a} < 1.9 GeV"},
-
-{"Raw_E_dist_0_100","Energy of raw rechits (GeV)", 10,0,200,0,100,"0 < M_{a} < 0.1 GeV"},
-{"Raw_E_dist_100_200","Energy of raw rechits (GeV)", 10,0,200,0,100,"0.1 < M_{a} < 0.2 GeV"},
-{"Raw_E_dist_200_300","Energy of raw rechits (GeV)", 10,0,200,0,100,"0.2 < M_{a} < 0.3 GeV"},
-{"Raw_E_dist_300_400","Energy of raw rechits (GeV)", 10,0,200,0,100,"0.3 < M_{a} < 0.4 GeV"},
-{"Raw_E_dist_400_500","Energy of raw rechits (GeV)", 10,0,200,0,100,"0.4 < M_{a} < 0.5 GeV"},
-{"Raw_E_dist_500_600","Energy of raw rechits (GeV)", 10,0,200,0,100,"0.5 < M_{a} < 0.6 GeV"},
-{"Raw_E_dist_600_700","Energy of raw rechits (GeV)", 10,0,200,0,100,"0.6 < M_{a} < 0.7 GeV"},
-{"Raw_E_dist_700_800","Energy of raw rechits (GeV)", 10,0,200,0,100,"0.7 < M_{a} < 0.8 GeV"},
-{"Raw_E_dist_800_900","Energy of raw rechits (GeV)", 10,0,200,0,100,"0.8 < M_{a} < 0.9 GeV"},
-{"Raw_E_dist_900_1000","Energy of raw rechits (GeV)", 10,0,200,0,100,"0.9 < M_{a} < 1.0 GeV"},
-{"Raw_E_dist_1000_1100","Energy of raw rechits (GeV)", 10,0,200,0,100,"1.0 < M_{a} < 1.1 GeV"},
-{"Raw_E_dist_1100_1200","Energy of raw rechits (GeV)", 10,0,200,0,100,"1.1 < M_{a} < 1.2 GeV"},
-{"Raw_E_dist_1200_1300","Energy of raw rechits (GeV)", 10,0,200,0,100,"1.2 < M_{a} < 1.3 GeV"},
-{"Raw_E_dist_1300_1400","Energy of raw rechits (GeV)", 10,0,200,0,100,"1.3 < M_{a} < 1.4 GeV"},
-{"Raw_E_dist_1400_1500","Energy of raw rechits (GeV)", 10,0,200,0,100,"1.4 < M_{a} < 1.5 GeV"},
-{"Raw_E_dist_1500_1600","Energy of raw rechits (GeV)", 10,0,200,0,100,"1.5 < M_{a} < 1.6 GeV"},
-{"Raw_E_dist_1600_1700","Energy of raw rechits (GeV)", 10,0,200,0,100,"1.6 < M_{a} < 1.7 GeV"},
-{"Raw_E_dist_1700_1800","Energy of raw rechits (GeV)", 10,0,200,0,100,"1.7 < M_{a} < 1.8 GeV"},
-{"Raw_E_dist_1800_1900","Energy of raw rechits (GeV)", 10,0,200,0,100,"1.8 < M_{a} < 1.9 GeV"},
-
-{"Tot_raw_Energy_0_100","Total energy of raw rechits (GeV)",10,0,200,0,1000,"0 < M_{a} < 0.1 GeV"},
-{"Tot_raw_Energy_100_200","Total energy of raw rechits (GeV)",10,0,200,0,1000,"0.1 < M_{a} < 0.2 GeV"},
-{"Tot_raw_Energy_200_300","Total energy of raw rechits (GeV)",10,0,200,0,1000,"0.2 < M_{a} < 0.3 GeV"},
-{"Tot_raw_Energy_300_400","Total energy of raw rechits (GeV)",10,0,200,0,1000,"0.3 < M_{a} < 0.4 GeV"},
-{"Tot_raw_Energy_400_500","Total energy of raw rechits (GeV)",10,0,200,0,1000,"0.4 < M_{a} < 0.5 GeV"},
-{"Tot_raw_Energy_500_600","Total energy of raw rechits (GeV)",10,0,200,0,1000,"0.5 < M_{a} < 0.6 GeV"},
-{"Tot_raw_Energy_600_700","Total energy of raw rechits (GeV)",10,0,200,0,1000,"0.6 < M_{a} < 0.7 GeV"},
-{"Tot_raw_Energy_700_800","Total energy of raw rechits (GeV)",10,0,200,0,1000,"0.7 < M_{a} < 0.8 GeV"},
-{"Tot_raw_Energy_800_900","Total energy of raw rechits (GeV)",10,0,200,0,1000,"0.8 < M_{a} < 0.9 GeV"},
-{"Tot_raw_Energy_900_1000","Total energy of raw rechits (GeV)",10,0,200,0,1000,"0.9 < M_{a} < 1.0 GeV"},
-{"Tot_raw_Energy_1000_1100","Total energy of raw rechits (GeV)",10,0,200,0,1000,"1.0 < M_{a} < 1.1 GeV"},
-{"Tot_raw_Energy_1100_1200","Total energy of raw rechits (GeV)",10,0,200,0,1000,"1.1 < M_{a} < 1.2 GeV"},
-{"Tot_raw_Energy_1200_1300","Total energy of raw rechits (GeV)",10,0,200,0,1000,"1.2 < M_{a} < 1.3 GeV"},
-{"Tot_raw_Energy_1300_1400","Total energy of raw rechits (GeV)",10,0,200,0,1000,"1.3 < M_{a} < 1.4 GeV"},
-{"Tot_raw_Energy_1400_1500","Total energy of raw rechits (GeV)",10,0,200,0,1000,"1.4 < M_{a} < 1.5 GeV"},
-{"Tot_raw_Energy_1500_1600","Total energy of raw rechits (GeV)",10,0,200,0,1000,"1.5 < M_{a} < 1.6 GeV"},
-{"Tot_raw_Energy_1600_1700","Total energy of raw rechits (GeV)",10,0,200,0,1000,"1.6 < M_{a} < 1.7 GeV"},
-{"Tot_raw_Energy_1700_1800","Total energy of raw rechits (GeV)",10,0,200,0,1000,"1.7 < M_{a} < 1.8 GeV"},
-{"Tot_raw_Energy_1800_1900","Total energy of raw rechits (GeV)",10,0,200,0,1000,"1.8 < M_{a} < 1.9 GeV"},
-*/
 };
 
 
- vector<string>GEN ={"M_gen","A_gen_pT","A_gen_eta","A_gen_phi","A_gen_energy","Lorentz boost of A","No. of gen photons","Photon1 gen eta","Photon1 gen phi","Photon1 gen pT","Photon1 gen E",
-   "Photon2 gen eta","Photon2 gen phi","Photon2 gen pT","Photon2 gen E","E_sublead_by_E_lead","E_pho2_by_E_pho1"}  ;
+  vector<string>GEN ={"M_gen","A_gen_pT","A_gen_eta","A_gen_phi","A_gen_energy","Lorentz boost of A","No. of gen photons","Photon1 gen eta","Photon1 gen phi","Photon1 gen pT","Photon1 gen E",
+   "Photon2 gen eta","Photon2 gen phi","Photon2 gen pT","Photon2 gen E","E_sublead_by_E_lead","E_pho2_by_E_pho1"}  ; 
+                  
+  vector<string> loghist  ={"Lorentz boost of A","E_pho2_by_E_pho1","Pho1_hit_E","Pho2_hit_E","Pho1_ES_hit_E","Pho2_ES_hit_E","Unc_rec_E_ma_400_500","Unc_rec_E_ma_1700_1800","Unc_RH_E_ma_100","Unc_RH_E_ma_200","Unc_RH_E_ma_800","Unc_RH_E_ma_400","Unc_RH_E_ma_1800","Clu_rec_E_ma_100","Clu_rec_E_ma_200","Clu_rec_E_ma_400","Clu_rec_E_ma_800","Clu_rec_E_ma_1800","Hit_noise_ma_100","Hit_noise_ma_200","Hit_noise_ma_400","Hit_noise_ma_800","Hit_noise_ma_1600","Hit_noise_ma_1800"} ;                                     
 
-  vector<string> loghist  ={"Lorentz boost of A","E_pho2_by_E_pho1","Pho1_hit_E","Pho2_hit_E","Pho1_ES_hit_E","Pho2_ES_hit_E","Unc_rec_E_ma_400_500","Unc_rec_E_ma_1700_1800","Unc_RH_E_ma_100","Unc_RH_E_ma_200","Unc_RH_E_ma_800","Unc_RH_E_ma_400","Unc_RH_E_ma_1800","Clu_rec_E_ma_100","Clu_rec_E_ma_200","Clu_rec_E_ma_400","Clu_rec_E_ma_800","Clu_rec_E_ma_1800","Hit_noise_ma_100","Hit_noise_ma_200","Hit_noise_ma_400","Hit_noise_ma_800","Hit_noise_ma_1600","Hit_noise_ma_1800"} ;
 
-                
-
-vector<string> with_stat ={"AA_angle_EBEE","AA_angle_EEEE","AA_angle_EBEB"};
   bool flag=false;
  
   sprintf(hname,"temp.root");
@@ -486,18 +367,15 @@ vector<string> with_stat ={"AA_angle_EBEE","AA_angle_EEEE","AA_angle_EBEB"};
 	  sprintf(hist_name,"%s",varName[i_cut].str1.c_str());
 
 	  cout<<hist_name<<"\t"<<i_cut<<"\t"<<i_file<<"\t"<<f[i_file]->GetName()<<endl;
-	  TH1F* h_orig = (TH1F*)f[i_file]->Get(hist_name); // SR
-          string hist_name_ = varName[i_cut].str1 + "_";
-
-	  TH1F* h_resp2 = (TH1F*)h_orig->Clone(hist_name_.c_str());; // SR
+          
+	  TH1F* h_resp2 = (TH1F*)f[i_file]->Get(hist_name); // SR
 	  h_resp2->GetXaxis()->SetTitle(xLabel.c_str());
 	  cout<<"resp2 "<<h_resp2->Integral()<<"\t"<<rebin<<"\t"<<xmin<<"\t"<<xmax<<endl;
 	  
 	  h_resp2->Rebin(rebin);
 	 
 	  
-	  //h_resp2= setMyRange(h_resp2,xmin,xmax+0.01*xmax);
-	  h_resp2= setMyRange(h_resp2,xmin,xmax);
+	  h_resp2= setMyRange(h_resp2,xmin,xmax+0.01*xmax);
 	  setLastBinAsOverFlow(h_resp2);
 	  
 	  
@@ -511,23 +389,16 @@ vector<string> with_stat ={"AA_angle_EBEE","AA_angle_EEEE","AA_angle_EBEB"};
           string hst_name = oss.str();
 
           int gen = count(GEN.begin(),GEN.end(),varName[i_cut].str1);
-          //int reco = count(Reco.begin(),Reco.end(),varName[i_cut].str1);
 	  int LOG = count(loghist.begin(), loghist.end(),varName[i_cut].str1);
-	  int Stat = count(with_stat.begin(),with_stat.end(),varName[i_cut].str1);
-
           if(gen){hst_name = "GEN_"+hst_name;}
-          //if(!reco){hst_name = "GEN_"+hst_name;}
-	  else {hst_name = "RECO_" + hst_name;}
-	 cout << "xMAX	" << xmax <<endl; 
+          else {hst_name = "RECO_" + hst_name;}
+	  if(LOG){generate_1Dplot(hist_list,hst_name.c_str(),xLabel.c_str(),"Entries",rebin,ymin,ymax,xmin,xmax,leg_head,false,true,false,true,filetag[i_file].c_str(),legend_texts);
+	  }
+	  else {
 generate_1Dplot(hist_list,hst_name.c_str(),xLabel.c_str(),"Entries",rebin,ymin,ymax,xmin,xmax,leg_head,false,false,false,true,filetag[i_file].c_str(),legend_texts);
-	  if(Stat){string hst_name3=hst_name +  "_stat";
- generate_1Dplot(hist_list,hst_name3.c_str(),xLabel.c_str(),"Entries",rebin,ymin,ymax,xmin,xmax,leg_head,false,false,false,true,filetag[i_file].c_str(),legend_texts,true);}
-	  if(LOG && Stat){string hst_name1=hst_name + "_logY" + "_stat";
-generate_1Dplot(hist_list,hst_name1.c_str(),xLabel.c_str(),"Entries",rebin,ymin,ymax,xmin,xmax,leg_head,false,true,false,true,filetag[i_file].c_str(),legend_texts,true);}
-	  else if(LOG && !Stat){string hst_name2=hst_name + "_logY";
- generate_1Dplot(hist_list,hst_name2.c_str(),xLabel.c_str(),"Entries",rebin,ymin,ymax,xmin,xmax,leg_head,false,true,false,true,filetag[i_file].c_str(),legend_texts);}
-	  	  }
-	        //fout->Close();
+          }
+	}
+      //fout->Close();
       
     }
     }
