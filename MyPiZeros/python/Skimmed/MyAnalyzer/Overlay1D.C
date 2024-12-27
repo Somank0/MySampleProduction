@@ -324,6 +324,7 @@ norm ={"Angle between gen photons",/*"Total clustered rechits energy",*/"Total u
 	  
           TH1F* h_orig = (TH1F*)f[i_file]->Get(hist_name); // SR
           string hist_name_ = VarName[j] + "_";
+           
 	  TH1F* h_resp2 = (TH1F*)h_orig->Clone(hist_name_.c_str()); // SR
 	  h_resp2->GetXaxis()->SetTitle(xLabel.c_str());
 	  cout<<"resp2 "<<h_resp2->Integral()<<"\t"<<rebin<<"\t"<<xmin<<"\t"<<xmax<<endl;

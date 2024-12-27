@@ -892,7 +892,7 @@ void AnalyzeHGCMuons::BookHistogram(const char *outFileName)
   { //Define histograms
     a_gen_mass      =   new       TH1F    ("M_gen"                ,     "Mass of gen A"       ,    1000   ,   0     ,      2.5);
     a_gen_pt        =   new       TH1F    ("A_gen_pT"             ,     "A_gen_pT"            ,    1000   ,   0     ,      120);
-    a_gen_eta       =   new       TH1F    ("A_gen_eta"            ,     "A_gen_eta"           ,    1000   ,  -3.7   ,       3.7);
+    a_gen_eta       =   new       TH1F    ("A_gen_eta"            ,     "A_gen_eta"           ,    1000   ,  -3   ,       3);
     a_gen_phi       =   new       TH1F    ("A_gen_phi"            ,     "A_gen_phi"           ,    1000   ,  -4.5   ,       4.5);
     a_gen_E         =   new       TH1F    ( "A_gen_energy"        ,     "A_gen_E"             ,    1000   ,    0    ,       1000);
     a_gen_gamma     =   new       TH1F    ("Lorentz boost of A"   ,     "Lorentz boost of A"  ,    1000   ,    0    ,       7000);
@@ -913,7 +913,7 @@ E_sublead_by_E_lead =   new       TH1F    ("E_sublead_by_E_lead","E_sublead/E_le
     dX              =   new       TH1F    ("dX"			  ,     "dX"                  ,  1000     ,  0   , 15      );
     dY              =   new       TH1F    ("dY"                   ,     "dY"                  ,  1000     ,  0   , 15	   );
 
-    max_dR	= new TH1F ("max_dR_clu","",1000,0,1);
+    max_dR	= new TH1F ("max_dR_clu","",1000,0,2.5);
     angle_240_260= new TH1F("Angle_240<=Ma<=260","240<=Ma<=260",1000,0,0.22);
     angle_490_510= new TH1F("Angle_490<=Ma<=510","490<=Ma<=510",1000,0,0.22);
     angle_740_760= new TH1F("Angle_740<=Ma<=760","740<=Ma<=760",1000,0,0.22);
@@ -1372,7 +1372,8 @@ E_sublead_by_E_lead =   new       TH1F    ("E_sublead_by_E_lead","E_sublead/E_le
 
 // 2D Histograms
     a_gen_mass_vs_pt = new TH2F ("A gen mass vs pt","Gen Mass vs pT",1000,-0.5,2.5,1000,0,120);
-    a_gen_eta_vs_phi = new TH2F ("A gen eta vs phi", "Eta vs Phi",1000,1.4,2.6,1000,-4,4);
+    //a_gen_eta_vs_phi = new TH2F ("A gen eta vs phi", "Eta vs Phi",1000,1.4,2.6,1000,-4,4); //For EE
+    a_gen_eta_vs_phi = new TH2F ("A gen eta vs phi", "Eta vs Phi",1000,-1.6,1.6,1000,-4,4); //For EB
     gen_eta1_vs_eta2 = new TH2F ("Gen_eta1_vs_eta2","#eta1 vs #eta2", 1000,-3,3,1000,-3,3);
     Gen_pho_sep= new TH2F("Separation between gen photons","Separation between gen photons",6,0,6,6,0,6);
    

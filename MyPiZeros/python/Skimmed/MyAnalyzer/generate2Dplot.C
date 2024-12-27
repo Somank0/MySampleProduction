@@ -221,7 +221,8 @@ void generate2Dplot()
 
 MixedData varName[] = {
 {"A gen mass vs pt","M_{a} vs p_{Ta}","M_{a} (GeV)", "p_{Ta} (GeV)",10,0,120,-0.5,2.5},
-{"A gen eta vs phi", "#eta_{a} vs #phi_{a}", "|#eta_{a}|","#phi_{a}", 10, -4,4, 1.4,2.6},
+//{"A gen eta vs phi", "#eta_{a} vs #phi_{a}", "|#eta_{a}|","#phi_{a}", 10, -4,4, 1.4,2.6},
+{"A gen eta vs phi", "#eta_{a} vs #phi_{a}", "#eta_{a}","#phi_{a}", 8, -4,4, -1.6,1.6},
 {"Gen_eta1_vs_eta2","Gen #eta1 vs #eta2", "#eta1", "#eta2",10,-3,3,-3,3},
 {"E_pho1_vs_E_pho2"," Energy of photons" ,"E_pho1 (GeV)", "E_pho2 (GeV)",10,0,800,0,800},
 {"Angle vs gamma (240<= Ma <=260)","Angle vs Lorentz boost (240<= Ma <=260 MeV)" , "Lorentz boost (#gamma)","Angle",10,0,0.22,1,3000},

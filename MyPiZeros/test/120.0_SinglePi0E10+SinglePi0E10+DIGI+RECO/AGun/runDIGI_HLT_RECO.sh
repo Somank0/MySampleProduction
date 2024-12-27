@@ -21,7 +21,7 @@ do
 	echo "------------------------------Using CMSSW_10_6_29------------------------------"
 #	cmsRun AToGG_GEN_SIM_MeV_mass_fixed.py mass=$i ptMin=20 ptMax=100 etaMin=1.44 etaMax=2.5 maxEvents=2000 clusterID=$4;
 	echo "==============================GEN-SIM step complete! Starting DIGI-PREMIX-RAW step=============================="
-	cmsRun genSimDigiRaw_mcProd_SS.py mass=$i clusterID=$4;
+	cmsRun genSimDigiRaw_mcProd_SS_new.py mass=$i clusterID=$4;
 	echo "==============================DIGI-PREMIX-RAW step complete! Starting HLT step=============================="
 	cd CMSSW_10_2_16_UL/src;
 	cmsenv;
