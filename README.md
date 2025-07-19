@@ -30,19 +30,19 @@ cmsRun HToGG_pythia8_cfi_GEN_SIM.py
 
 # To run AtoGG sample, go to the AGun/HomeDirScripts 
 
-# Change the afs and eos paths in the runSampleGen_EE_plus.sh (or runSampleGen_EE_minus.sh).
+Change the afs and eos paths in the runSampleGen_EE_plus.sh (or runSampleGen_EE_minus.sh).
 
 ./runSampleGen_EE_plus(minus).sh [Massmin] [Massmax] [Stepsize] [UniqueID]
 
 ## For AtoGG :
 
-### GEN-SIM step file : AToGG_GEN_SIM_MeV_mass_fixed.py
+#### GEN-SIM step file : AToGG_GEN_SIM_MeV_mass_fixed.py
 
-### DIGI step file : genSimDigiRaw_mcProd_SS.py
+#### DIGI step file : genSimDigiRaw_mcProd_SS.py
 
-### HLT step file :  CMSSW_10_2_16_UL/src/hlt_SS.py
+#### HLT step file :  CMSSW_10_2_16_UL/src/hlt_SS.py
 
-### RECO step file : recoStepUL2018_SS.py
+#### RECO step file : recoStepUL2018_SS.py
 
 # To make the ntuples from the reco file :
 
