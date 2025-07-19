@@ -44,6 +44,8 @@ Change the afs and eos paths in the runSampleGen_EE_plus.sh (or runSampleGen_EE_
 
 #### RECO step file : recoStepUL2018_SS.py
 
+> If the HLT step does not work, create a new CMSSW release of CMSSW_10_2_16_UL, and move the hlt_SS.py from the previous  CMSSW_10_2_16_UL/src to the new one.
+
 # To make the ntuples from the reco file :
 
 cd MySampleProduction/MyPiZeros/python
