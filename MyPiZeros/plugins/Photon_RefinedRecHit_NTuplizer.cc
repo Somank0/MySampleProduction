@@ -242,7 +242,7 @@ void Photon_RefinedRecHit_NTuplizer::analyze(const edm::Event &iEvent, const edm
     //ecalRecHits->insert(ecalRecHits->end(),recHitsEB->begin(),recHitsEB->end());
     //ecalRecHits->insert(ecalRecHits->end(),recHitsEE->begin(),recHitsEE->end());
 //================================
-    double maxEnergy = -99;
+    double maxEnergy = -99.;
     EcalRecHit seed;
     /**
     for (EcalRecHitCollection::const_iterator hitItr = recHitsEB->begin(); hitItr != recHitsEB->end(); ++hitItr)
@@ -667,7 +667,7 @@ void Photon_RefinedRecHit_NTuplizer::analyze(const edm::Event &iEvent, const edm
 //========================= Getting raw rechtis w/o seeding or gathering thresholds =============================
 
 if(isEB){ //cout << "IsEB" <<endl;
-    maxEnergy = -99;
+    maxEnergy = -99.;
     for (EcalRecHitCollection::const_iterator hitItr = recHitsEB->begin(); hitItr != recHitsEB->end(); ++hitItr)
     {
 	 double energy = hitItr->energy();
@@ -679,7 +679,7 @@ if(isEB){ //cout << "IsEB" <<endl;
 	 }
     }
     shared_ptr<const CaloCellGeometry> seedgeom = ecalEBGeom->getGeometry(seed.detid());
-    if(maxEnergy!=-99)
+    if(maxEnergy >-99.)
     {
 	// cout<<"Seed Energy is :"<<seed.energy()<<endl;
 	 //cout<<"Seed Eta is :"<<seedgeom->etaPos()<<endl;
@@ -754,7 +754,7 @@ if(isEB){ //cout << "IsEB" <<endl;
     }
 }
 if(isEE){ //cout << "IsEE" << endl;
-    maxEnergy=-99;
+    maxEnergy=-99.;
     for (EcalRecHitCollection::const_iterator hitItr = recHitsEE->begin(); hitItr != recHitsEE->end(); ++hitItr)
     {
 	 double energy = hitItr->energy();
@@ -765,7 +765,7 @@ if(isEE){ //cout << "IsEE" << endl;
 	 }
     }
     shared_ptr<const CaloCellGeometry> seedgeom = ecalEEGeom->getGeometry(seed.detid());
-    if(maxEnergy!=-99)
+    if(maxEnergy >-99.)
     {      
 	 //cout<<"Seed Energy is :"<<seed.energy()<<endl;
 	 //cout<<"Seed Eta is :"<<seedgeom->etaPos()<<endl;

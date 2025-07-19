@@ -168,7 +168,7 @@ E_pho2_by_E_pho1->Fill(Epho2/Epho1);
   a_gen_E->Fill(genEnergy);
   a_gen_mass_vs_pt->Fill(genMass,AgenPt);
   //a_gen_eta_vs_phi->Fill(abs(AgenEta),AgenPhi);       //For the endcaps
-  if(abs(AgenEta) <=1.4) a_gen_eta_vs_phi->Fill(AgenEta,AgenPhi);              //For the barrel
+  if(abs(AgenEta) <=1.44) {a_gen_eta_vs_phi->Fill(AgenEta,AgenPhi);}              //For the barrel
   gen_eta1_vs_eta2->Fill(eta1,eta2);
   if(genMass>=0.24 && genMass<=0.26){
    angle_240_260->Fill(genAngle);
@@ -186,6 +186,9 @@ E_pho2_by_E_pho1->Fill(Epho2/Epho1);
     if(1.44<=eta->at(i) && eta->at(i)<=1.57){r9_eta_1->Fill(Pho_R9->at(i));}
     if(1.57< eta->at(i) && eta->at(i)<=2){r9_eta_2->Fill(Pho_R9->at(i));}
     if(2< eta->at(i) && eta->at(i)<=2.5){r9_eta_3->Fill(Pho_R9->at(i));}
+    if(0 < eta->at(i) && eta->at(i)<=1.){r9_eta_EB_0->Fill(Pho_R9->at(i));}
+    if (1. < eta0>at(i) && eta->at(i) <= 1.2){r9_eta_EB_1->Fill(Pho_R9->at(i));}
+    if(1.2 < eta->at(i) && eta->at(i)<=1.44){r9_eta_EB_2->Fill(Pho_R9->at(i));}
   }
 
 

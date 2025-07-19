@@ -18,8 +18,8 @@ cmsenv;
 #files=( 9120502 )
 
 #Trache1
-folder=/eos/cms/store/group/dpg_ecal/alca_ecalcalib/ecalelf/ntuples/rchatter/Particle_Gun/;
-files=( 9007189 9007195 9025723 9029467 9007190 9007196 9025724 9029468 9007191 9007197 9025725 9007192 9007198 9025726 9007193 9025721 9025729 9007194 9025722 9029461 )
+#folder=/eos/cms/store/group/dpg_ecal/alca_ecalcalib/ecalelf/ntuples/rchatter/Particle_Gun/;
+#files=( 9007189 9007195 9025723 9029467 9007190 9007196 9025724 9029468 9007191 9007197 9025725 9007192 9007198 9025726 9007193 9025721 9025729 9007194 9025722 9029461 )
 #for i in ${files[@]};
 #do
 #echo "Running Skimmer on $folder/${i}_AToGG_RECO_M2000.0.root"
@@ -53,9 +53,12 @@ files=( 9007189 9007195 9025723 9029467 9007190 9007196 9025724 9029468 9007191 
 #set1
 #folder=/eos/user/s/sosaha/CMSSW_10_6_29/src/MySampleProduction/MyPiZeros/test/120.0_SinglePi0E10+SinglePi0E10+DIGI+RECO/AGun/Barrel_extended_samples//EB_extended_sample_set1
 #files=(5743380.0 5745568.3 5743380.2 5745568.4 5743380.3 5745569.0 5743380.4 5745569.1 5743380.5 5745569.2 5743380.6 5745569.3 5743380.7 5745570.0 5743380.8 5745570.1 5743380.9 5748019.0 5743414.0 5748019.1 5743414.1 5749332.1 5743414.2 5749405.0 5743414.3 5749405.1 5743414.4 5749587.0 5743502.1 5749587.1 5743502.2 5749588.0 5743502.3 5749588.1 5745568.0 5749588.2 5745568.1 5749588.3)
+#====================================================================
+folder=/eos/user/s/sosaha/CMSSW_10_6_29/src/MySampleProduction/MyPiZeros/test/120.0_SinglePi0E10+SinglePi0E10+DIGI+RECO/AGun
+files=(6013746.0)
 for i in ${files[@]};
 do
-echo "Running Skimmer on $folder/${i}_AToGG_RECO_M1000.0.root"
+echo "Running Skimmer on $folder/${i}_AToGG_RECO_M2000.0.root"
 cmsRun Photons_rajdeep_dr_cfg.py inputFile=$folder/${i}_AToGG_RECO_M2000.0.root
 echo "set1 done"
 done

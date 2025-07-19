@@ -287,6 +287,9 @@ public:
   TH1F *r9_eta_1;
   TH1F *r9_eta_2;
   TH1F *r9_eta_3;
+  TH1F *r9_eta_EB_0;
+  TH1F *r9_eta_EB_1;
+  TH1F *r9_eta_EB_2;
   TH1F *ES_L1_hits;
   TH1F *ES_L2_hits;
   TH1F *ES_L1_hits_En_weighed;
@@ -573,7 +576,7 @@ public:
   TH1F *Clu_Hit_noise_ma_1800;
   TH1F *Clu_Hit_noise_ma_1900;
   TH1F *Clu_Hit_noise_ma_2000;
-
+  
   
   TH1F *Clu_rec_E_ma_100;
   TH1F *Clu_rec_E_ma_200;
@@ -959,10 +962,13 @@ E_sublead_by_E_lead =   new       TH1F    ("E_sublead_by_E_lead","E_sublead/E_le
     
 
   
-    r9_eta_1= new TH1F("R9 (1.44<= Eta <=1.57)","1.44<= Eta <=1.57",1000,-0.5,1.5);
-    r9_eta_2= new TH1F("R9 (1.57< Eta <2)","1.57< Eta <=2",1000,-0.5,1.5);
-    r9_eta_3=new TH1F("R9 2< Eta <=2.5","2< Eta <=2.5",1000,-0.5,1.5);
-    
+    r9_eta_1= new TH1F("R9_1p44_1p57","1.44<= Eta <=1.57",1000,-0.5,1.5);
+    r9_eta_2= new TH1F("R9_1p57_2","1.57< Eta <=2",1000,-0.5,1.5);
+    r9_eta_3=new TH1F("R9_2_2p5","2< Eta <=2.5",1000,-0.5,1.5);
+    r9_eta_EB_0= new TH1F ("R9_0_1","",1000,-0.5,1.5);
+    r9_eta_EB_1 = new TH1F ("R9_1_1p2","",1000,-0.5,1.5);
+    r9_eta_EB_2 = new TH1F ("R9_1p2_1p44","",1000,-0.5,1.5);
+
 // ECAL Hits
     pho1_EE_hit_eta               =   new   TH1F  ("Photon1 EE rechit eta "    , "Pho1 EE hit eta"     ,  1000    , -3    ,   3);
     pho1_EE_hit_phi               =   new   TH1F  ("Pho1_hit_phi"              , "Pho1_hit_phi"        ,  1000    , -4    ,   4);
